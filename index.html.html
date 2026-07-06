@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FP 강사소개 및 세미나 랜딩페이지</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2f3b89',      /* 메인 남색 */
+                        primaryLight: '#7e8be2', /* 연보라색 */
+                        accent: '#2f3b89',
+                        bgGray: '#f8f9fa',       /* 옅은 배경 회색 */
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #ffffff; color: #333333; }
+        
+        /* 모달 스크롤바 커스텀 */
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: #f1f1f1; }
+        .modal-content::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        .modal-content::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+        /* 탭 전환 스타일 */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* 카테고리 그리드 테두리 */
+        .category-grid {
+            border-top: 1px solid #e5e7eb;
+            border-left: 1px solid #e5e7eb;
+        }
+        .category-btn {
+            border-bottom: 1px solid #e5e7eb;
+            border-right: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="antialiased font-sans">
+
+    <!-- Header -->
+    <header class="bg-white sticky top-0 z-40">
+        <!-- 최상단 미니 메뉴 -->
+        <div class="border-b border-gray-100">
+            <div class="container mx-auto px-4 max-w-7xl">
+                <div class="flex justify-end items-center py-2 text-[11px] text-gray-500 space-x-3">
+                    <a href="#" class="hover:text-gray-800">운영자님</a>
+                    <a href="#" class="hover:text-gray-800 before:content-['|'] before:mr-3 before:text-gray-300">관리자</a>
+                    <a href="#" class="hover:text-gray-800 before:content-['|'] before:mr-3 before:text-gray-300">회원사</a>
+                    <a href="#" class="hover:text-gray-800 before:content-['|'] before:mr-3 before:text-gray-300">마이페이지</a>
+                    <a href="#" class="hover:text-gray-800 before:content-['|'] before:mr-3 before:text-gray-300">로그아웃</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 메인 네비게이션 -->
+        <div class="border-b border-gray-200 bg-white">
+            <div class="container mx-auto px-4 max-w-7xl">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center cursor-pointer" onclick="switchTab('landing')">
+                        <!-- 로고 영역 -->
+                        <div class="text-2xl font-black text-primary tracking-tighter flex items-center">
+                            <i class="fas fa-project-diagram mr-2 text-primary"></i> FP
+                        </div>
+                        <div class="ml-2 text-[10px] text-gray-500 leading-tight hidden sm:block">
+                            온·오프 융합<br>세일즈 역량강화 플랫폼
+                        </div>
+                    </div>
+                    
+                    <nav class="hidden lg:flex items-center space-x-5 text-[13px] font-medium text-gray-700">
+                        <a href="#" class="hover:text-primary rounded-full border border-gray-300 px-3 py-1.5 text-xs">콘텐츠보관함</a>
+                        <a href="#" class="bg-primary text-white px-3 py-1.5 rounded-full text-xs hover:bg-opacity-90">무료체험</a>
+                        <a href="#" class="hover:text-primary">FP자료실</a>
+                        <a href="#" class="hover:text-primary">개설과정</a>
+                        <a href="#" class="hover:text-primary">커뮤니티</a>
+                        <a href="#" class="hover:text-primary">추천리뷰</a>
+                        <a href="#" class="hover:text-primary">이용권 구입</a>
+                        <a href="#" class="text-primary font-bold">강사소개</a>
+                    </nav>
+
+                    <div class="flex space-x-2">
+                        <button onclick="switchTab('admin')" class="px-3 py-1.5 text-xs font-medium text-white bg-primary rounded shadow-sm hover:bg-opacity-90 transition flex items-center">
+                            <i class="fas fa-user-cog mr-1.5"></i>강사 등록
+                        </button>
+                        <button onclick="switchTab('admin-poster')" class="px-3 py-1.5 text-xs font-medium text-white bg-primaryLight rounded shadow-sm hover:bg-opacity-90 transition flex items-center">
+                            <i class="fas fa-pen mr-1.5"></i>공고 글쓰기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 사용자 화면 탭 (랜딩) -->
+    <div id="landing-tab" class="tab-content active">
+        
+        <!-- Hero 배너 -->
+        <section class="bg-[#0b1b3d] text-white bg-gradient-to-r from-[#0b1b3d] to-[#1a365d]">
+            <div class="container mx-auto px-4 max-w-7xl">
+                <div class="py-14 md:py-24 flex flex-col justify-center relative overflow-hidden text-center md:text-left">
+                    <div class="relative z-10 w-full pl-0 md:pl-10">
+                        <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight drop-shadow-md leading-tight">
+                            당신이 찾던 <br class="hidden md:block">
+                            <span class="text-teal-300">살아있는 강의!</span>
+                        </h1>
+                        <h2 class="text-lg md:text-xl font-light text-gray-300">
+                            현장에서 증명된 생생한 노하우와 팁을 직접 확인하세요<br>
+                            '사이트 상단 메뉴' → '강사소개'
+                        </h2>
+                    </div>
+                    <div class="absolute right-10 top-1/2 opacity-20 text-[150px] pointer-events-none transform -translate-y-1/2 hidden md:block text-teal-400">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 검색 및 카테고리 섹션 -->
+        <section class="pt-12 pb-8 bg-white">
+            <div class="container mx-auto px-4 max-w-5xl">
+                
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-3 md:space-y-0 md:space-x-4 mb-6">
+                    <button class="flex items-center text-xs border border-gray-300 rounded-full px-4 py-1.5 text-gray-600 hover:bg-gray-50 transition font-medium">
+                        <i class="far fa-play-circle text-primary mr-1.5 text-sm"></i> 수강 매뉴얼
+                    </button>
+                    <h3 class="text-2xl font-black text-gray-900 tracking-tight">어떤 강의를 찾고 계신가요?</h3>
+                    <span class="text-xs bg-blue-50 text-blue-600 border border-blue-100 rounded-full px-3 py-1 font-bold">#전체</span>
+                </div>
+                
+                <div class="flex justify-center mb-10">
+                    <div class="w-full max-w-2xl relative">
+                        <input type="text" id="search-input" placeholder="검색어를 입력해주세요." 
+                               class="w-full py-3 pl-5 pr-12 rounded bg-gray-50 border border-gray-200 text-sm text-gray-700 focus:outline-none focus:border-primary transition-all">
+                        <button id="search-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="category-grid grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 w-full mb-10 bg-white" id="category-filters">
+                    <!-- JS에서 버튼 생성 -->
+                </div>
+
+                <div class="flex justify-center space-x-2 mb-4">
+                    <button id="tag-all" onclick="setTagFilter('all')" class="px-5 py-2 text-[13px] rounded-full bg-primary text-white font-medium transition-colors">전체보기</button>
+                    <button id="tag-famous" onclick="setTagFilter('유명강사')" class="px-5 py-2 text-[13px] rounded-full border border-gray-300 text-gray-600 hover:text-primary font-medium transition-colors bg-white">유명강사</button>
+                    <button id="tag-recommended" onclick="setTagFilter('추천강사')" class="px-5 py-2 text-[13px] rounded-full border border-gray-300 text-gray-600 hover:text-primary font-medium transition-colors bg-white">추천강사</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 강사 리스트 섹션 -->
+        <section class="py-6 bg-white">
+            <div class="container mx-auto px-4 max-w-7xl">
+                
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <div class="w-1.5 h-5 bg-primary mr-2.5"></div>
+                        <h3 class="text-[17px] font-bold text-gray-900" id="list-title">전체 강사</h3>
+                    </div>
+                    <button class="text-xs text-gray-500 hover:text-gray-800 bg-gray-50 px-2 py-1 rounded">
+                        총 <span id="instructor-count" class="font-bold text-primary">0</span>명
+                    </button>
+                </div>
+
+                <div id="instructor-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                    <!-- JS에서 카드 생성 -->
+                </div>
+
+                <div id="no-data-msg" class="hidden text-center py-20 text-gray-400">
+                    <i class="fas fa-search text-3xl mb-3"></i>
+                    <p class="text-sm">조건에 맞는 강사가 없습니다.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 지점 세미나 및 공고 포스터 섹션 -->
+        <section class="py-12 bg-white mt-4">
+            <div class="container mx-auto px-4 max-w-7xl">
+                
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <div class="w-1.5 h-5 bg-primaryLight mr-2.5"></div>
+                        <h3 class="text-[17px] font-bold text-gray-900">지점 세미나 및 공고</h3>
+                    </div>
+                    <button class="text-xs text-gray-500 hover:text-gray-800 bg-gray-50 px-2 py-1 rounded" onclick="switchTab('admin-poster')">
+                        글쓰기 <i class="fas fa-chevron-right text-[10px] ml-1"></i>
+                    </button>
+                </div>
+
+                <div id="poster-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    <!-- JS에서 카드 생성 -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- 푸터 여백 -->
+        <div class="h-20 bg-white"></div>
+    </div>
+
+    <!-- [관리자] 강사 등록 탭 -->
+    <div id="admin-tab" class="tab-content bg-bgGray min-h-screen py-10">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="bg-white rounded border border-gray-200 overflow-hidden shadow-sm">
+                <div class="bg-primary text-white px-6 py-4 flex items-center justify-between">
+                    <h2 class="text-lg font-bold" id="admin-form-title">강사 등록 / 수정</h2>
+                    <button onclick="cancelAdminForm()" class="text-white hover:text-gray-200"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <div class="p-6 md:p-8 space-y-6">
+                    <div class="border border-gray-200 rounded-sm p-5">
+                        <label class="block text-sm font-bold text-gray-800 mb-4">분야 선택 <span class="text-xs font-normal text-red-500 ml-2">*최대 3개</span></label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="admin-category-checkboxes">
+                            <!-- JS 생성 -->
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-sm p-5">
+                        <label class="block text-sm font-bold text-gray-800 mb-4">강사 태그</label>
+                        <div class="flex flex-wrap gap-5">
+                            <label class="flex items-center space-x-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="radio" name="admin_tag" value="none" checked class="text-primary w-4 h-4 focus:ring-primary">
+                                <span>선택안함</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="radio" name="admin_tag" value="유명강사" class="text-primary w-4 h-4 focus:ring-primary">
+                                <span>유명강사</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-sm text-gray-600 cursor-pointer">
+                                <input type="radio" name="admin_tag" value="추천강사" class="text-primary w-4 h-4 focus:ring-primary">
+                                <span>추천강사</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-5">
+                        <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
+                            <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">강의 제목</label>
+                            <input type="text" id="admin-title" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="예: 거절을 승낙으로 바꾸는 화법">
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
+                            <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">강사명</label>
+                            <input type="text" id="admin-name" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="강사명을 입력하세요">
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
+                            <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">프로필 사진</label>
+                            <div class="flex-1">
+                                <input type="file" id="admin-photo" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer border border-gray-300 rounded-sm p-1">
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
+                            <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">소개문구</label>
+                            <textarea id="admin-intro" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary h-20 resize-none" placeholder="짧은 소개글을 입력하세요."></textarea>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
+                            <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">상세 프로필</label>
+                            <textarea id="admin-profile" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary h-32 resize-none" placeholder="경력, 학력 등 상세 프로필 (엔터로 줄바꿈)"></textarea>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
+                            <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">연락처</label>
+                            <input type="text" id="admin-phone" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="예: 02-525-1686">
+                        </div>
+                        <div class="pt-4 border-t border-gray-100">
+                            <label class="block text-sm font-bold text-gray-800 mb-3">영상 등록 (임베드 URL 최대 3개)</label>
+                            <div class="space-y-2">
+                                <input type="text" id="admin-video-1" class="w-full p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 1 URL">
+                                <input type="text" id="admin-video-2" class="w-full p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 2 URL">
+                                <input type="text" id="admin-video-3" class="w-full p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 3 URL">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-2 border-t border-gray-200">
+                    <button class="px-5 py-2 border border-gray-300 rounded-sm text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" onclick="cancelAdminForm()">취소</button>
+                    <button id="admin-submit-btn" class="px-6 py-2 bg-primary rounded-sm text-sm font-bold text-white hover:bg-opacity-90 transition-colors shadow-sm" onclick="saveInstructor()">등록하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- [관리자] 포스터 공고 등록 탭 -->
+    <div id="admin-poster-tab" class="tab-content bg-bgGray min-h-screen py-10">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="bg-white rounded border border-gray-200 overflow-hidden shadow-sm">
+                <div class="bg-primaryLight text-white px-6 py-4 flex items-center justify-between">
+                    <h2 class="text-lg font-bold" id="admin-poster-form-title">공고 글쓰기</h2>
+                    <button onclick="cancelPosterAdminForm()" class="text-white hover:text-gray-100"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <div class="p-6 md:p-8 space-y-5">
+                    <div class="flex flex-col md:flex-row md:items-center pt-2">
+                        <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">공고 제목</label>
+                        <input type="text" id="admin-poster-title" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primaryLight" placeholder="예: 성공적인 숏폼 마케팅 세미나">
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
+                        <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">일시</label>
+                        <input type="text" id="admin-poster-date" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primaryLight" placeholder="예: 2026년 6월 20일 (토) 14:00 - 17:00">
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
+                        <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">장소</label>
+                        <input type="text" id="admin-poster-location" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primaryLight" placeholder="예: 강남구 테헤란로 대교육장">
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
+                        <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">포스터 이미지</label>
+                        <div class="flex-1">
+                            <input type="file" id="admin-poster-image" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer border border-gray-300 rounded-sm p-1">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
+                        <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">상세 안내</label>
+                        <textarea id="admin-poster-desc" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primaryLight h-40 resize-none" placeholder="대상, 혜택, 세부 프로그램 등 상세 내용을 입력하세요."></textarea>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-2 border-t border-gray-200">
+                    <button class="px-5 py-2 border border-gray-300 rounded-sm text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" onclick="cancelPosterAdminForm()">취소</button>
+                    <button id="admin-poster-submit-btn" class="px-6 py-2 bg-primaryLight rounded-sm text-sm font-bold text-white hover:bg-opacity-90 transition-colors shadow-sm" onclick="savePoster()">등록하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 강사 모달 -->
+    <div id="instructor-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-md shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-gray-50">
+                <h3 class="text-lg font-bold text-gray-800" id="modal-name">강사명</h3>
+                <div class="flex items-center space-x-3">
+                    <button onclick="startEdit()" class="text-xs px-3 py-1.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-sm transition flex items-center shadow-sm">
+                        <i class="fas fa-edit mr-1.5"></i> 수정
+                    </button>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="modal-content overflow-y-auto p-6 md:p-8 flex-1">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/3 flex-shrink-0">
+                        <div class="border border-gray-200 rounded-sm overflow-hidden shadow-sm aspect-w-3 aspect-h-4">
+                            <img id="modal-photo" src="" alt="강사 사진" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-2/3 flex flex-col">
+                        <div id="modal-categories" class="flex flex-wrap gap-1.5 mb-3"></div>
+                        <h4 id="modal-title" class="text-2xl font-black text-gray-900 mb-3 leading-tight tracking-tight">타이틀</h4>
+                        <p id="modal-intro" class="text-sm text-gray-600 mb-6 bg-gray-50 p-4 rounded-sm border border-gray-100 leading-relaxed">소개문구</p>
+                        
+                        <div class="mb-6 flex-1">
+                            <h5 class="text-sm font-bold text-gray-800 border-b border-gray-200 pb-2 mb-3"><i class="fas fa-list-ul mr-2 text-primary"></i>주요 프로필</h5>
+                            <div id="modal-profile" class="text-[13px] text-gray-600 leading-relaxed space-y-1"></div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-sm p-4 border border-gray-200 mt-auto flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 mb-0.5">강의의뢰 및 문의</p>
+                                <p class="text-base font-bold text-primary flex items-center" id="modal-phone">000-0000-0000</p>
+                            </div>
+                            <i class="fas fa-phone-alt text-gray-300 text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <h5 class="text-sm font-bold text-gray-800 mb-4"><i class="fab fa-youtube mr-2 text-red-500"></i>관련 영상</h5>
+                    <div id="modal-videos" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 포스터 모달 -->
+    <div id="poster-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-md shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-gray-50">
+                <h3 class="text-lg font-bold text-gray-800" id="poster-modal-title">공고 제목</h3>
+                <div class="flex items-center space-x-3">
+                    <button onclick="startPosterEdit()" class="text-xs px-3 py-1.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-sm transition flex items-center shadow-sm">
+                        <i class="fas fa-edit mr-1.5"></i> 수정
+                    </button>
+                    <button onclick="closePosterModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="modal-content overflow-y-auto p-6 md:p-8 flex-1">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/2 flex-shrink-0">
+                        <div class="border border-gray-200 rounded-sm overflow-hidden shadow-sm">
+                            <img id="poster-modal-img" src="" alt="포스터 이미지" class="w-full h-auto object-contain bg-gray-50">
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/2 flex flex-col">
+                        <div class="bg-gray-50 rounded-sm p-5 border border-gray-200 mb-6 space-y-3">
+                            <div>
+                                <p class="text-[11px] font-bold text-gray-500 mb-1">일시</p>
+                                <p id="poster-modal-date" class="text-sm text-gray-800 font-medium"></p>
+                            </div>
+                            <div class="border-t border-gray-200 pt-3">
+                                <p class="text-[11px] font-bold text-gray-500 mb-1">장소</p>
+                                <p id="poster-modal-location" class="text-sm text-gray-800 font-medium"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex-1">
+                            <h5 class="text-sm font-bold text-gray-800 border-b border-gray-200 pb-2 mb-3">상세 안내</h5>
+                            <div id="poster-modal-desc" class="text-[13px] text-gray-600 leading-relaxed whitespace-pre-wrap"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 기능 구현 Javascript -->
+    <script>
+        const categories = ["전체분야", "FPShip", "메디컬화법", "약관&보상&고지의무", "실손보험", "종신&정기보험", "변액보험", "연금&저축성보험", "자동차&운전자보험", "배상책임&화재보험", "치아&어린이&치매보험", "세무설계", "초회상담(AP)", "상담프로세스", "상품영업전략", "DB영업"];
+        
+        const instructors = [
+            { id: 1, name: "장신명", photo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800", categories: ["상품영업전략", "종신&정기보험"], title: "이달의 보험영업 전략 브리핑", profile: "현) FP파트너스 대표 강사\n전) 외국계 생명보험사 지점장", intro: "매월 바뀌는 보험사별 상품 판매 전략과 트렌드를 분석하여 현장에 즉시 적용 가능한 세일즈 포인트를 제공합니다.", phone: "02-1234-5678", specialTag: "유명강사", videos: [] },
+            { id: 2, name: "김나현", photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800", categories: ["변액보험", "연금&저축성보험"], title: "FP를 위한 경제 브리핑", profile: "투자자산운용사\n경제 칼럼니스트", intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.", phone: "010-9876-5432", specialTag: "추천강사", videos: [] }
+        ];
+
+        const posters = [
+            { id: 1, title: "이달의 보험영업 전략 브리핑 (오프라인 세미나)", image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800", date: "2026년 6월 15일 (월) 10:00 - 12:00", location: "본사 2층 대교육장", description: "매월 초 진행되는 정기 세일즈 브리핑입니다. 생명/손해보험사별 주력 상품의 셀링 포인트와 타겟 고객군을 완벽하게 분석해 드립니다." },
+            { id: 2, title: "실손보험 전환 특강 및 고객 터치 전략", image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800", date: "2026년 6월 22일 (월) 14:00 - 16:00", location: "강남지점 회의실", description: "4세대 실손 전환 이슈를 활용한 기존 고객 터치 및 업셀링 전략을 공유하는 소규모 세미나입니다." }
+        ];
+
+        let currentFilter = "전체분야";
+        let currentTag = "all"; 
+        let currentKeyword = ""; 
+        let editingId = null; 
+        let currentModalId = null; 
+        let editingPosterId = null;
+        let currentPosterModalId = null;
+
+        function init() {
+            renderFilters();
+            renderInstructors();
+            renderPosters();
+            
+            const adminCatContainer = document.getElementById('admin-category-checkboxes');
+            if (adminCatContainer) {
+                adminCatContainer.innerHTML = '';
+                categories.forEach(cat => {
+                    if (cat === "전체분야") return;
+                    adminCatContainer.innerHTML += `
+                        <label class="flex items-center space-x-2 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" name="category" value="${cat}" class="text-primary rounded-sm">
+                            <span>${cat}</span>
+                        </label>
+                    `;
+                });
+
+                document.querySelectorAll('input[name="category"]').forEach(cb => {
+                    cb.addEventListener('change', function() {
+                        if(document.querySelectorAll('input[name="category"]:checked').length > 3) {
+                            this.checked = false; alert("분야는 최대 3개까지만 선택 가능합니다.");
+                        }
+                    });
+                });
+            }
+
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = document.getElementById('search-btn');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => { currentKeyword = e.target.value.trim().toLowerCase(); renderInstructors(); });
+                searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') { currentKeyword = e.target.value.trim().toLowerCase(); renderInstructors(); } });
+            }
+            if (searchBtn) searchBtn.addEventListener('click', () => { currentKeyword = searchInput.value.trim().toLowerCase(); renderInstructors(); });
+        }
+
+        function renderFilters() {
+            const container = document.getElementById('category-filters');
+            if (!container) return;
+            container.innerHTML = '';
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                const isActive = currentFilter === cat;
+                btn.className = `category-btn w-full py-3 text-[12px] md:text-[13px] transition-colors duration-150 ${isActive ? 'bg-gray-50 text-primary font-bold shadow-inner' : 'bg-white text-gray-700 hover:bg-gray-50'}`;
+                btn.textContent = cat;
+                btn.onclick = () => { currentFilter = cat; renderFilters(); renderInstructors(); };
+                container.appendChild(btn);
+            });
+        }
+
+        function setTagFilter(tag) {
+            currentTag = tag;
+            const allBtn = document.getElementById('tag-all');
+            const famousBtn = document.getElementById('tag-famous');
+            const recBtn = document.getElementById('tag-recommended');
+            const defaultClass = "px-5 py-2 text-[13px] rounded-full border border-gray-300 text-gray-600 hover:text-primary font-medium transition-colors bg-white";
+            const activeClass = "px-5 py-2 text-[13px] rounded-full bg-primary text-white font-medium transition-colors border border-primary";
+            
+            allBtn.className = defaultClass; famousBtn.className = defaultClass; recBtn.className = defaultClass;
+            
+            if (tag === 'all') allBtn.className = activeClass;
+            else if (tag === '유명강사') famousBtn.className = activeClass;
+            else if (tag === '추천강사') recBtn.className = activeClass;
+            
+            renderInstructors();
+        }
+
+        function renderInstructors() {
+            const container = document.getElementById('instructor-grid');
+            const noDataMsg = document.getElementById('no-data-msg');
+            const listTitle = document.getElementById('list-title');
+            const countDisplay = document.getElementById('instructor-count');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            if(listTitle) listTitle.textContent = currentFilter === "전체분야" ? "전체 강사" : `${currentFilter} 강사`;
+
+            let filtered = instructors;
+            if (currentFilter !== "전체분야") filtered = filtered.filter(inst => inst.categories.includes(currentFilter));
+            if (currentTag !== 'all') filtered = filtered.filter(inst => inst.specialTag === currentTag);
+            if (currentKeyword !== "") {
+                filtered = filtered.filter(inst => inst.name.toLowerCase().includes(currentKeyword) || inst.title.toLowerCase().includes(currentKeyword) || inst.intro.toLowerCase().includes(currentKeyword));
+            }
+
+            if(countDisplay) countDisplay.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                container.classList.add('hidden');
+                if(noDataMsg) noDataMsg.classList.remove('hidden');
+                return;
+            } else {
+                container.classList.remove('hidden');
+                if(noDataMsg) noDataMsg.classList.add('hidden');
+            }
+
+            filtered.forEach(inst => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-sm border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group hover:border-primary transition-colors duration-200';
+                card.onclick = () => openModal(inst.id);
+
+                const catsDisplay = inst.categories[0] + (inst.categories.length > 1 ? ' 외' : '');
+                let tagColor = inst.specialTag === '유명강사' ? 'text-blue-500' : (inst.specialTag === '추천강사' ? 'text-red-500' : 'hidden');
+                let tagName = inst.specialTag === 'none' ? '' : inst.specialTag;
+
+                card.innerHTML = `
+                    <div class="aspect-w-16 aspect-h-10 bg-gray-100 overflow-hidden relative h-36 sm:h-40">
+                        <img src="${inst.photo}" alt="${inst.name}" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute top-2 left-2 flex gap-1">
+                            <span class="text-[10px] font-bold bg-white text-gray-700 px-1.5 py-0.5 rounded-sm border border-gray-200 shadow-sm">${catsDisplay}</span>
+                        </div>
+                    </div>
+                    <div class="p-3.5 flex-1 flex flex-col">
+                        <p class="text-[10px] font-bold ${tagColor} mb-1 ${tagName ? '' : 'hidden'}">${tagName}</p>
+                        <h4 class="text-[14px] font-bold text-gray-900 mb-1 line-clamp-2 leading-snug">${inst.title}</h4>
+                        <p class="text-xs text-gray-500 mt-auto flex items-center"><i class="fas fa-user mr-1.5 text-gray-400"></i>${inst.name}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // [수정된 부분] 포스터 이미지 object-contain 적용
+        function renderPosters() {
+            const container = document.getElementById('poster-grid');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            posters.forEach(poster => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-sm border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group hover:border-primaryLight transition-colors duration-200';
+                card.onclick = () => openPosterModal(poster.id);
+                
+                card.innerHTML = `
+                    <div class="aspect-w-3 aspect-h-4 bg-gray-50 overflow-hidden relative h-56 sm:h-64 flex items-center justify-center border-b border-gray-100">
+                        <img src="${poster.image}" alt="${poster.title}" class="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105">
+                    </div>
+                    <div class="p-3.5 flex-1 flex flex-col justify-between">
+                        <h4 class="text-[14px] font-bold text-gray-900 mb-2 line-clamp-2 leading-snug">${poster.title}</h4>
+                        <p class="text-[11px] text-gray-500"><i class="far fa-calendar-alt mr-1 text-primaryLight"></i>${poster.date.split('일')[0]}일</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 모달 제어
+        function openModal(id) {
+            currentModalId = id; const inst = instructors.find(i => i.id === id); if (!inst) return;
+            document.getElementById('modal-name').textContent = inst.name;
+            document.getElementById('modal-photo').src = inst.photo;
+            document.getElementById('modal-title').textContent = inst.title;
+            document.getElementById('modal-intro').textContent = inst.intro;
+            document.getElementById('modal-profile').innerHTML = inst.profile.split('\n').map(line => `<p>${line}</p>`).join('');
+            document.getElementById('modal-phone').textContent = inst.phone;
+            
+            const catsContainer = document.getElementById('modal-categories');
+            catsContainer.innerHTML = '';
+            inst.categories.forEach(cat => {
+                catsContainer.innerHTML += `<span class="px-2 py-0.5 bg-gray-100 border border-gray-200 text-gray-600 rounded-sm text-[11px] font-medium">${cat}</span>`;
+            });
+
+            const vContainer = document.getElementById('modal-videos');
+            vContainer.innerHTML = '';
+            if (inst.videos && inst.videos.length > 0) {
+                inst.videos.forEach(url => {
+                    vContainer.innerHTML += `<iframe class="w-full aspect-video rounded-sm border border-gray-200" src="${url}" frameBorder="0" allowFullscreen></iframe>`;
+                });
+            } else { vContainer.innerHTML = '<p class="text-xs text-gray-400">등록된 영상이 없습니다.</p>'; }
+
+            toggleModal('instructor-modal', true);
+        }
+
+        function openPosterModal(id) {
+            currentPosterModalId = id; const poster = posters.find(p => p.id === id); if (!poster) return;
+            document.getElementById('poster-modal-title').textContent = poster.title;
+            document.getElementById('poster-modal-img').src = poster.image;
+            document.getElementById('poster-modal-date').textContent = poster.date;
+            document.getElementById('poster-modal-location').textContent = poster.location;
+            document.getElementById('poster-modal-desc').textContent = poster.description;
+            toggleModal('poster-modal', true);
+        }
+
+        function closeModal() { toggleModal('instructor-modal', false); document.getElementById('modal-videos').innerHTML = ''; }
+        function closePosterModal() { toggleModal('poster-modal', false); }
+
+        function toggleModal(modalId, show) {
+            const el = document.getElementById(modalId);
+            if(show) {
+                el.classList.remove('hidden');
+                setTimeout(() => { el.classList.remove('opacity-0'); el.firstElementChild.classList.remove('scale-95'); el.firstElementChild.classList.add('scale-100'); }, 10);
+                document.body.style.overflow = 'hidden'; 
+            } else {
+                el.classList.add('opacity-0'); el.firstElementChild.classList.remove('scale-100'); el.firstElementChild.classList.add('scale-95');
+                setTimeout(() => { el.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('instructor-modal')?.addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+            document.getElementById('poster-modal')?.addEventListener('click', function(e) { if (e.target === this) closePosterModal(); });
+        });
+
+        function switchTab(tabId) {
+            if (tabId === 'admin' && editingId === null) resetAdminFormUI();
+            if (tabId === 'admin-poster' && editingPosterId === null) resetPosterAdminFormUI(); 
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // --- 관리자 폼 공통 로직 ---
+        function startEdit() {
+            const inst = instructors.find(i => i.id === currentModalId); if (!inst) return;
+            editingId = inst.id;
+            document.getElementById('admin-name').value = inst.name; document.getElementById('admin-title').value = inst.title;
+            document.getElementById('admin-intro').value = inst.intro; document.getElementById('admin-profile').value = inst.profile;
+            document.getElementById('admin-phone').value = inst.phone;
+            document.getElementById('admin-video-1').value = inst.videos[0] || ''; document.getElementById('admin-video-2').value = inst.videos[1] || ''; document.getElementById('admin-video-3').value = inst.videos[2] || '';
+            document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = inst.categories.includes(cb.value));
+            const tagRadio = document.querySelector(`input[name="admin_tag"][value="${inst.specialTag}"]`);
+            if (tagRadio) tagRadio.checked = true; else document.querySelector(`input[name="admin_tag"][value="none"]`).checked = true;
+            document.getElementById('admin-photo').value = '';
+            
+            document.getElementById('admin-form-title').textContent = "강사 수정";
+            const btn = document.getElementById('admin-submit-btn'); btn.textContent = "수정하기"; btn.classList.replace('bg-primary', 'bg-green-600');
+            closeModal(); switchTab('admin');
+        }
+
+        function resetAdminFormUI() {
+            editingId = null;
+            document.getElementById('admin-form-title').textContent = "강사 등록";
+            const btn = document.getElementById('admin-submit-btn'); btn.textContent = "등록하기"; btn.classList.replace('bg-green-600', 'bg-primary');
+            ['name','title','intro','profile','phone','photo','video-1','video-2','video-3'].forEach(id => document.getElementById('admin-'+id).value = '');
+            document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = false);
+            const defaultTag = document.querySelector('input[name="admin_tag"][value="none"]'); if(defaultTag) defaultTag.checked = true;
+        }
+
+        function cancelAdminForm() { resetAdminFormUI(); switchTab('landing'); }
+
+        function saveInstructor() {
+            const name = document.getElementById('admin-name').value.trim();
+            if (!name) { alert("강사명을 입력해주세요."); return; }
+            const categoryNodes = document.querySelectorAll('input[name="category"]:checked');
+            const selectedCategories = Array.from(categoryNodes).map(cb => cb.value);
+            if (selectedCategories.length === 0) { alert("분야를 최소 1개 이상 선택해주세요."); return; }
+
+            const newData = {
+                name: name, title: document.getElementById('admin-title').value.trim(), intro: document.getElementById('admin-intro').value.trim(),
+                profile: document.getElementById('admin-profile').value.trim(), phone: document.getElementById('admin-phone').value.trim(),
+                categories: selectedCategories, specialTag: document.querySelector('input[name="admin_tag"]:checked')?.value || 'none',
+                videos: ['admin-video-1', 'admin-video-2', 'admin-video-3'].map(id => document.getElementById(id).value.trim()).filter(v => v)
+            };
+
+            const photoInput = document.getElementById('admin-photo');
+            if (photoInput.files[0]) newData.photo = URL.createObjectURL(photoInput.files[0]);
+
+            if (editingId) {
+                const idx = instructors.findIndex(i => i.id === editingId);
+                if (idx > -1) { Object.assign(instructors[idx], newData); alert("수정되었습니다!"); }
+            } else {
+                newData.id = instructors.length > 0 ? Math.max(...instructors.map(i => i.id)) + 1 : 1;
+                if (!newData.photo) newData.photo = "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=800";
+                instructors.unshift(newData); alert("등록되었습니다!");
+            }
+            cancelAdminForm(); renderFilters(); setTagFilter('all');
+        }
+
+        function startPosterEdit() {
+            const p = posters.find(x => x.id === currentPosterModalId); if (!p) return;
+            editingPosterId = p.id;
+            document.getElementById('admin-poster-title').value = p.title; document.getElementById('admin-poster-date').value = p.date;
+            document.getElementById('admin-poster-location').value = p.location; document.getElementById('admin-poster-desc').value = p.description;
+            document.getElementById('admin-poster-image').value = '';
+            document.getElementById('admin-poster-form-title').textContent = "공고 수정";
+            const btn = document.getElementById('admin-poster-submit-btn'); btn.textContent = "수정하기"; btn.classList.replace('bg-primaryLight', 'bg-green-600');
+            closePosterModal(); switchTab('admin-poster');
+        }
+
+        function resetPosterAdminFormUI() {
+            editingPosterId = null;
+            document.getElementById('admin-poster-form-title').textContent = "공고 글쓰기";
+            const btn = document.getElementById('admin-poster-submit-btn'); btn.textContent = "등록하기"; btn.classList.replace('bg-green-600', 'bg-primaryLight');
+            ['title','date','location','desc','image'].forEach(id => document.getElementById('admin-poster-'+id).value = '');
+        }
+
+        function cancelPosterAdminForm() { resetPosterAdminFormUI(); switchTab('landing'); }
+
+        function savePoster() {
+            const title = document.getElementById('admin-poster-title').value.trim();
+            if (!title) { alert("제목을 입력해주세요."); return; }
+
+            const newData = {
+                title: title, date: document.getElementById('admin-poster-date').value.trim() || '-',
+                location: document.getElementById('admin-poster-location').value.trim() || '-', description: document.getElementById('admin-poster-desc').value.trim()
+            };
+            const fileInput = document.getElementById('admin-poster-image');
+            if (fileInput.files[0]) newData.image = URL.createObjectURL(fileInput.files[0]);
+
+            if (editingPosterId) {
+                const idx = posters.findIndex(p => p.id === editingPosterId);
+                if (idx > -1) { Object.assign(posters[idx], newData); alert("수정되었습니다."); }
+            } else {
+                newData.id = posters.length > 0 ? Math.max(...posters.map(p => p.id)) + 1 : 1;
+                if (!newData.image) newData.image = "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800";
+                posters.unshift(newData); alert("등록되었습니다.");
+            }
+            cancelPosterAdminForm(); renderPosters();
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
