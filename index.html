@@ -408,9 +408,15 @@
             <div class="modal-content overflow-y-auto p-6 md:p-8 flex-1">
                 <div class="flex flex-col md:flex-row gap-8">
                     <div class="md:w-1/2 flex-shrink-0">
-                        <div class="border border-gray-200 rounded-sm overflow-hidden shadow-sm">
-                            <img id="poster-modal-img" src="" alt="포스터 이미지" class="w-full h-auto object-contain bg-gray-50">
-                        </div>
+                    <div class="border border-gray-200 rounded-sm overflow-hidden shadow-sm">
+                        <img id="poster-modal-img" src="" alt="포스터 이미지" class="w-full h-auto object-contain bg-gray-50">
+                    </div>
+                    
+                    <div id="modalRouteArea" class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                        <h4 class="font-bold text-gray-800 text-sm mb-2">📍 찾아오는 길</h4>
+                        <img id="modalMapImage" src="" alt="약도" class="w-full rounded border border-gray-200 mb-2 hidden">
+                        <p id="modalRouteDescription" class="text-xs text-gray-600 leading-relaxed whitespace-pre-line"></p>
+                    </div>
                     </div>
                     
                     <div class="md:w-1/2 flex flex-col">
@@ -671,15 +677,45 @@
             toggleModal('instructor-modal', true);
         }
 
-        function openPosterModal(id) {
-            currentPosterModalId = id; const poster = posters.find(p => p.id === id); if (!poster) return;
-            document.getElementById('poster-modal-title').textContent = poster.title;
-            document.getElementById('poster-modal-img').src = poster.image;
-            document.getElementById('poster-modal-date').textContent = poster.date;
-            document.getElementById('poster-modal-location').textContent = poster.location;
-            document.getElementById('poster-modal-desc').textContent = poster.description;
-            toggleModal('poster-modal', true);
+       function openPosterModal(id) {
+    currentPosterModalId = id; const poster = posters.find(p => p.id === id); if (!poster) return;
+    document.getElementById('poster-modal-title').textContent = poster.title;
+    document.getElementById('poster-modal-img').src = poster.image;
+    document.getElementById('poster-modal-date').textContent = poster.date;
+    document.getElementById('poster-modal-location').textContent = poster.location;
+    document.getElementById('poster-modal-desc').textContent = poster.description;
+
+    // 🗺️ 약도 이미지 및 길 안내 텍스트 세팅
+    const mapImg = document.getElementById('modalMapImage');
+    const routeDesc = document.getElementById('modalRouteDescription');
+    const routeArea = document.getElementById('modalRouteArea');
+
+    if (mapImg && routeDesc && routeArea) {
+        // 공고 데이터에 mapImage나 route가 등록되어 있는 경우
+        if (poster.mapImage || poster.route) {
+            routeArea.classList.remove('hidden');
+            
+            if (poster.mapImage) {
+                mapImg.src = poster.mapImage;
+                mapImg.classList.remove('hidden');
+            } else {
+                mapImg.classList.add('hidden');
+            }
+
+            if (poster.route) {
+                routeDesc.textContent = poster.route;
+                routeDesc.classList.remove('hidden');
+            } else {
+                routeDesc.classList.add('hidden');
+            }
+        } else {
+            // 정보가 없으면 약도 영역 전체를 숨김
+            routeArea.classList.add('hidden');
         }
+    }
+
+    toggleModal('poster-modal', true);
+}
 
         function closeModal() { toggleModal('instructor-modal', false); document.getElementById('modal-videos').innerHTML = ''; }
         function closePosterModal() { toggleModal('poster-modal', false); }
