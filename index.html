@@ -452,6 +452,7 @@
     { 
         id: 1, 
         name: "장신영", 
+        type: "제휴",
         photo: "https://i.ibb.co/C5w37qxP/2026-07-03-223922-removebg-preview.png", 
         categories: ["상품영업전략", "종신&정기보험"], 
         title: "보장분석 전문 강사입니다.", 
@@ -461,6 +462,7 @@
     { 
         id: 2, 
         name: "조대수", 
+        type: "제휴",
         photo: "https://i.ibb.co/bRyNrgtT/2026-07-06-164042-removebg-preview.png", 
         categories: ["변액보험", "연금&저축성보험"], 
         title: "AI 전문가로 만들어드립니다!", 
@@ -470,6 +472,7 @@
     { 
         id: 3, 
         name: "김낙현", 
+        type: "제휴",
         photo: "https://i.ibb.co/gZcBpZHQ/2026-02-27-123319-removebg-preview.png", 
         categories: ["변액보험", "연금&저축성보험"], 
         title: "FP를 위한 경제 브리핑", 
@@ -615,8 +618,19 @@
                 card.innerHTML = `
                     <div class="aspect-w-16 aspect-h-10 bg-gray-100 overflow-hidden relative h-36 sm:h-40">
                         <img src="${inst.photo}" alt="${inst.name}" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute top-2 left-2 flex gap-1">
+                       <!-- 분야 뱃지와 제휴/추천 뱃지를 가로로 예쁘게 나열 -->
+                        <div class="absolute top-2 left-2 flex items-center gap-1.5 z-10">
+                            <!-- 1. 기존 분야 뱃지 (예: 변액보험 외) -->
                             <span class="text-[10px] font-bold bg-white text-gray-700 px-1.5 py-0.5 rounded-sm border border-gray-200 shadow-sm">${catsDisplay}</span>
+                            
+                            <!-- 2. 신규 제휴/추천 뱃지 (type 값에 따라 파란색/초록색으로 다르게 표시) -->
+                            ${inst.type ? `
+                                <span class="text-[10px] font-bold text-white px-1.5 py-0.5 rounded-sm shadow-sm ${
+                                    inst.type === '제휴' 
+                                        ? 'bg-blue-600' 
+                                        : 'bg-emerald-600'
+                                }">${inst.type}</span>
+                            ` : ''}
                         </div>
                     </div>
                     <div class="p-3.5 flex-1 flex flex-col">
