@@ -585,18 +585,18 @@
             const countDisplay = document.getElementById('instructor-count');
             if (!container) return;
             
-           587:   let filtered = instructors;
-588:   
-589:   if (currentFilter !== "전체" && currentFilter !== "전체분야") {
-590:       filtered = filtered.filter(inst => inst.categories.includes(currentFilter));
-591:   }
-592:   
-593:   if (currentTag !== 'all') {
-594:       filtered = filtered.filter(inst => inst.type === currentTag || inst.specialTag === currentTag);
-595:   }
-596:   
-597:   if (currentKeyword !== "") {
-598:       filtered = filtered.filter(inst => inst.name.toLowerCase().includes(currentKeyword) ...
+let filtered = instructors;
+
+    if (currentFilter !== "전체" && currentFilter !== "전체분야") {
+        filtered = filtered.filter(inst => inst.categories.includes(currentFilter));
+    }
+
+    if (currentTag !== 'all') {
+        filtered = filtered.filter(inst => inst.type === currentTag || inst.specialTag === currentTag);
+    }
+
+    if (currentKeyword !== "") {
+        filtered = filtered.filter(inst => inst.name.toLowerCase().includes(currentKeyword) ...
 
             if(countDisplay) countDisplay.textContent = filtered.length;
 
