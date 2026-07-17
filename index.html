@@ -669,7 +669,6 @@
     document.getElementById('modal-title').textContent = inst.title;
     document.getElementById('modal-intro').textContent = inst.intro;
     document.getElementById('modal-profile').innerHTML = inst.profile.split('\n').map(line => `<p>${line}</p>`).join('');
-    document.getElementById('modal-phone').textContent = inst.phone;
 
     const catsContainer = document.getElementById('modal-categories');
     catsContainer.innerHTML = '';
