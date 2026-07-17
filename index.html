@@ -588,9 +588,15 @@
             container.innerHTML = '';
             if(listTitle) listTitle.textContent = currentFilter === "전체분야" ? "전체 강사" : `${currentFilter} 강사`;
 
-            let filtered = instructors;
-            if (currentFilter !== "전체분야") filtered = filtered.filter(inst => inst.categories.includes(currentFilter));
-            if (currentTag !== 'all') filtered = filtered.filter(inst => inst.specialTag === currentTag);
+           let filtered = instructors;
+// 1. "전체분야" 또는 "전체"가 아닐 때만 카테고리 필터링이 작동하도록 수정
+if (currentFilter !== "전체" && currentFilter !== "전체분야") {
+    filtered = filtered.filter(inst => inst.categories.includes(currentFilter));
+}
+// 2. 제휴/추천강사 필터가 강사의 type 데이터("제휴")와 맞물리도록 수정
+if (currentTag !== 'all') {
+    filtered = filtered.filter(inst => inst.type === currentTag || inst.specialTag === currentTag);
+}
             if (currentKeyword !== "") {
                 filtered = filtered.filter(inst => inst.name.toLowerCase().includes(currentKeyword) || inst.title.toLowerCase().includes(currentKeyword) || inst.intro.toLowerCase().includes(currentKeyword));
             }
