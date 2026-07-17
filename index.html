@@ -159,7 +159,7 @@
 
                 <div class="flex justify-center space-x-2 mb-4">
                     <button id="tag-all" onclick="setTagFilter('all')" class="px-5 py-2 text-[13px] rounded-full bg-primary text-white font-medium transition-colors">전체보기</button>
-                    <button id="tag-famous" onclick="setTagFilter('유명강사')" class="px-5 py-2 text-[13px] rounded-full border border-gray-300 text-gray-600 hover:text-primary font-medium transition-colors bg-white">유명강사</button>
+                    <button id="tag-famous" onclick="setTagFilter('제휴강사')" class="px-5 py-2 text-[13px] rounded-full border border-gray-300 text-gray-600 hover:text-primary font-medium transition-colors bg-white">제휴강사</button>
                     <button id="tag-recommended" onclick="setTagFilter('추천강사')" class="px-5 py-2 text-[13px] rounded-full border border-gray-300 text-gray-600 hover:text-primary font-medium transition-colors bg-white">추천강사</button>
                 </div>
             </div>
@@ -240,8 +240,8 @@
                                 <span>선택안함</span>
                             </label>
                             <label class="flex items-center space-x-2 text-sm text-gray-600 cursor-pointer">
-                                <input type="radio" name="admin_tag" value="유명강사" class="text-primary w-4 h-4 focus:ring-primary">
-                                <span>유명강사</span>
+                                <input type="radio" name="admin_tag" value="제휴강사" class="text-primary w-4 h-4 focus:ring-primary">
+                                <span>제휴강사</span>
                             </label>
                             <label class="flex items-center space-x-2 text-sm text-gray-600 cursor-pointer">
                                 <input type="radio" name="admin_tag" value="추천강사" class="text-primary w-4 h-4 focus:ring-primary">
@@ -569,7 +569,7 @@
             allBtn.className = defaultClass; famousBtn.className = defaultClass; recBtn.className = defaultClass;
             
             if (tag === 'all') allBtn.className = activeClass;
-            else if (tag === '유명강사') famousBtn.className = activeClass;
+            else if (tag === '제휴강사') famousBtn.className = activeClass;
             else if (tag === '추천강사') recBtn.className = activeClass;
             
             renderInstructors();
@@ -609,7 +609,7 @@
                 card.onclick = () => openModal(inst.id);
 
                 const catsDisplay = inst.categories[0] + (inst.categories.length > 1 ? ' 외' : '');
-                let tagColor = inst.specialTag === '유명강사' ? 'text-blue-500' : (inst.specialTag === '추천강사' ? 'text-red-500' : 'hidden');
+                let tagColor = inst.specialTag === '제휴강사' ? 'text-blue-500' : (inst.specialTag === '추천강사' ? 'text-red-500' : 'hidden');
                 let tagName = inst.specialTag === 'none' ? '' : inst.specialTag;
 
                 card.innerHTML = `
