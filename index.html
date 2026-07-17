@@ -664,7 +664,22 @@
         // 모달 제어
         function openModal(id) {
     currentModalId = id; const inst = instructors.find(i => i.id === id); if (!inst) return;
-    document.getElementById('modal-name').textContent = inst.name;
+   const modalNameEl = document.getElementById('modal-name');
+    if (modalNameEl) {
+        let badgeHtml = '';
+        if (inst.type) {
+            badgeHtml = `
+                <span class="inline-block ml-2 px-1.5 py-0.5 rounded text-[11px] font-bold shadow-sm text-white ${
+                    inst.type === '제휴' 
+                        ? 'bg-blue-600' 
+                        : 'bg-emerald-600'
+                }">
+                    ${inst.type}
+                </span>
+            `;
+        }
+        modalNameEl.innerHTML = `${inst.name}${badgeHtml}`;
+    }
     document.getElementById('modal-photo').src = inst.photo;
     document.getElementById('modal-title').textContent = inst.title;
     document.getElementById('modal-intro').textContent = inst.intro;
