@@ -690,18 +690,32 @@
             typeNotice = "*강의 의뢰 시 담당 실무자가 상세 일정을 안내해 드립니다.";
         }
 
-        contactContainer.innerHTML = `
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 relative flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-6">
-                <!-- 좌측: 타이틀 및 타입별 작은 안내 문구 -->
-                <div class="space-y-1">
-                    <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">강의의뢰 및 문의</h4>
-                    <p class="text-[11px] text-gray-400 font-light leading-relaxed">${typeNotice}</p>
+       contactContainer.innerHTML = `
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 mt-6 flex flex-col space-y-4">
+                <!-- 1층: 타이틀과 전화번호를 양옆 끝으로 나란히 배치 (줄바꿈 방지) -->
+                <div class="flex justify-between items-center w-full">
+                    <!-- 좌측 상단: 타이틀 -->
+                    <h4 class="text-xs md:text-sm font-bold text-gray-700 tracking-wider">
+                        강의의뢰 및 문의
+                    </h4>
+                    
+                    <!-- 우측 상단: 일자로 길게 들어가는 전화번호 (whitespace-nowrap으로 줄바꿈 차단) -->
+                    <div class="flex items-center space-x-1.5 whitespace-nowrap">
+                        <i class="fas fa-phone-alt text-xs md:text-sm text-blue-600"></i>
+                        <span class="text-base md:text-xl font-black text-gray-800 tracking-tight leading-none">
+                            02-1234-5678
+                        </span>
+                    </div>
                 </div>
                 
-                <!-- 우측: 큼직하고 굵은 전화번호 표시 -->
-                <div class="flex items-center space-x-2 self-end md:self-auto">
-                    <i class="fas fa-phone-alt text-base text-blue-600"></i>
-                    <span class="text-xl md:text-2xl font-black text-gray-800 tracking-tight">02-1234-5678</span>
+                <!-- 2층: 얇은 구분선 (박스 내부 레이아웃 분리) -->
+                <div class="border-t border-gray-200/60 my-1"></div>
+                
+                <!-- 3층: 맨 밑에 깔리는 안내 문구 (우측 하단 정렬) -->
+                <div class="text-right">
+                    <p class="text-[10px] md:text-[11px] text-gray-400 font-light leading-relaxed inline-block">
+                        \${typeNotice}
+                    </p>
                 </div>
             </div>
         `;
