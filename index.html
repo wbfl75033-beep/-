@@ -585,13 +585,18 @@
             const countDisplay = document.getElementById('instructor-count');
             if (!container) return;
             
-            container.innerHTML = '';
-            if(listTitle) listTitle.textContent = currentFilter === "전체분야" ? "전체 강사" : `${currentFilter} 강사`;
-
-          
-            if (currentKeyword !== "") {
-                filtered = filtered.filter(inst => inst.name.toLowerCase().includes(currentKeyword) || inst.title.toLowerCase().includes(currentKeyword) || inst.intro.toLowerCase().includes(currentKeyword));
-            }
+           587:   let filtered = instructors;
+588:   
+589:   if (currentFilter !== "전체" && currentFilter !== "전체분야") {
+590:       filtered = filtered.filter(inst => inst.categories.includes(currentFilter));
+591:   }
+592:   
+593:   if (currentTag !== 'all') {
+594:       filtered = filtered.filter(inst => inst.type === currentTag || inst.specialTag === currentTag);
+595:   }
+596:   
+597:   if (currentKeyword !== "") {
+598:       filtered = filtered.filter(inst => inst.name.toLowerCase().includes(currentKeyword) ...
 
             if(countDisplay) countDisplay.textContent = filtered.length;
 
