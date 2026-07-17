@@ -535,20 +535,34 @@
             if (searchBtn) searchBtn.addEventListener('click', () => { currentKeyword = searchInput.value.trim().toLowerCase(); renderInstructors(); });
         }
 
-        function renderFilters() {
-            const container = document.getElementById('category-filters');
-            if (!container) return;
-            container.innerHTML = '';
-            categories.forEach(cat => {
-                const btn = document.createElement('button');
-                const isActive = currentFilter === cat;
-                btn.className = `category-btn w-full py-3 text-[12px] md:text-[13px] transition-colors duration-150 ${isActive ? 'bg-gray-50 text-primary font-bold shadow-inner' : 'bg-white text-gray-700 hover:bg-gray-50'}`;
-                btn.textContent = cat;
-                btn.onclick = () => { currentFilter = cat; renderFilters(); renderInstructors(); };
-                container.appendChild(btn);
-            });
-        }
+       function renderFilters() {
+    const container = document.getElementById('category-filters');
+    if (!container) return;
+    
+    // 모바일 2열, 태블릿 4열, PC(1024px 이상)에서는 가로 6열(grid-cols-6)로 강제 정렬합니다.
+    container.className = "category-grid grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 bg-white border border-gray-200 rounded-lg overflow-hidden divide-x divide-y divide-gray-200";
+    container.innerHTML = '';
 
+    categories.forEach(cat => {
+        const btn = document.createElement('button');
+        const isActive = currentFilter === cat;
+        
+        // 버튼 기본 스타일 및 활성화되었을 때 스타일
+        const activeClass = "category-btn bg-blue-50 text-blue-700 font-bold py-3.5 text-center transition-colors border-t-0 border-l-0 shadow-inner";
+        const normalClass = "category-btn text-gray-700 py-3.5 text-center hover:bg-gray-50 transition-colors border-t-0 border-l-0 bg-white";
+        
+        btn.className = isActive ? activeClass : normalClass;
+        btn.textContent = cat;
+        
+        // 기존 필터 시스템 및 강사 새로고침(renderInstructors) 기능과 완벽 연동
+        btn.onclick = () => { 
+            currentFilter = cat; 
+            renderFilters(); 
+            renderInstructors(); 
+        };
+        container.appendChild(btn);
+    });
+}
         function setTagFilter(tag) {
             currentTag = tag;
             const allBtn = document.getElementById('tag-all');
