@@ -595,8 +595,9 @@ let filtered = instructors;
         filtered = filtered.filter(inst => inst.type === currentTag || inst.specialTag === currentTag);
     }
 
-    if (currentKeyword !== "") {
-        filtered = filtered.filter(inst => inst.name.toLowerCase().includes(currentKeyword) ...
+   if (currentKeyword !== "") {
+        filtered = filtered.filter(inst => inst.name.toLowerCase().includes(currentKeyword));
+    }
 
             if(countDisplay) countDisplay.textContent = filtered.length;
 
