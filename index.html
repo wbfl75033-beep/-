@@ -457,6 +457,11 @@
         id: 2, 
         name: "조대수", 
         type: "제휴",
+        videos: [
+            "https://vimeo.com/1207296757", // 
+            "https://vimeo.com/1207296757", //
+            "https://vimeo.com/1207296757"
+        ],
         photo: "https://i.ibb.co/bRyNrgtT/2026-07-06-164042-removebg-preview.png", 
         categories: ["변액보험", "연금&저축성보험"], 
         title: "AI 전문가로 만들어드립니다!", 
@@ -736,13 +741,51 @@
         `;
     }
 
-    const vContainer = document.getElementById('modal-videos');
-    vContainer.innerHTML = '';
-    if (inst.videos && inst.videos.length > 0) {
-        inst.videos.forEach(url => {
-            vContainer.innerHTML += `<iframe class="w-full aspect-video rounded-sm border border-gray-200" src="${url}" frameBorder="0" allowFullscreen></iframe>`;
-        });
-    } else { vContainer.innerHTML = '<p class="text-xs text-gray-400">등록된 영상이 없습니다.</p>'; }
+   const vContainer = document.getElementById('modal-videos');
+    if (vContainer) {
+        vContainer.innerHTML = '';
+        
+        if (inst.videos && inst.videos.length > 0) {
+            inst.videos.forEach(url => {
+                let embedUrl = url;
+
+                // 1. 유튜브 단축 주소 (youtu.be) 변환
+                if (url.includes('youtu.be/')) {
+                    const videoId = url.split('youtu.be/')[1].split('?')[0];
+                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                }
+                // 2. 유튜브 일반 주소 (youtube.com) 변환
+                else if (url.includes('youtube.com/watch')) {
+                    const urlParams = new URLSearchParams(new URL(url).search);
+                    const videoId = urlParams.get('v');
+                    if (videoId) {
+                        embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    }
+                }
+                // 3. 비메오 주소 (vimeo.com) 변환
+                else if (url.includes('vimeo.com/')) {
+                    const vimeoId = url.split('vimeo.com/')[1].split('?')[0].split('/')[0];
+                    embedUrl = `https://player.vimeo.com/video/${vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479`;
+                }
+
+                // 가로 3개 배치용 그리드 아이템 추가
+                vContainer.innerHTML += `
+                    <div class="w-full aspect-video rounded-md border border-gray-200 overflow-hidden shadow-sm">
+                        <iframe 
+                            src="${embedUrl}" 
+                            class="w-full h-full"
+                            frameborder="0" 
+                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                `;
+            });
+        } else { 
+            vContainer.innerHTML = '<p class="text-xs text-gray-400 py-4">등록된 영상이 없습니다.</p>'; 
+        }
+    }
 
     toggleModal('instructor-modal', true);
 }
