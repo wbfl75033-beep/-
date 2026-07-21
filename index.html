@@ -578,7 +578,7 @@
             renderInstructors();
         }
 
-       function renderInstructors() {
+      function renderInstructors() {
     const container = document.getElementById('instructor-grid');
     const noDataMsg = document.getElementById('no-data-msg');
     const listTitle = document.getElementById('list-title');
@@ -586,33 +586,50 @@
     
     if (!container) return;
 
-    // 1. 강사 리스트 중복 방지를 위해 싹 비우기
+    // 1. 기존 리스트 비우기 (복제 방지)
     container.innerHTML = '';
 
     let filtered = instructors;
 
-    if (currentFilter !== "전체" && currentFilter !== "전체분야") {
-        filtered = filtered.filter(inst => inst.categories.includes(currentFilter));
+    // 2. 카테고리 필터링
+    if (currentFilter && currentFilter !== "전체" && currentFilter !== "전체분야") {
+        filtered = filtered.filter(inst => inst.categories && inst.categories.includes(currentFilter));
     }
 
-    // 2. 제휴/추천 버튼 클릭 시 필터링 (specialTag 기준)
-    if (currentTag !== 'all') {
-        filtered = filtered.filter(inst => inst.specialTag === currentTag || inst.type === currentTag);
+    // 3. 제휴강사 / 추천강사 필터링 ('제휴' / '추천' 단어 완벽 지원)
+    if (currentTag && currentTag !== 'all' && currentTag !== '전체') {
+        filtered = filtered.filter(inst => {
+            const tagStr = String(currentTag);
+            const typeStr = String(inst.type || '');
+            const specStr = String(inst.specialTag || '');
+
+            if (tagStr.includes('제휴')) {
+                return typeStr.includes('제휴') || specStr.includes('제휴');
+            }
+            if (tagStr.includes('추천')) {
+                return typeStr.includes('추천') || specStr.includes('추천');
+            }
+            return typeStr === tagStr || specStr === tagStr;
+        });
     }
 
-    if (currentKeyword !== "") {
-        filtered = filtered.filter(inst => inst.name.toLowerCase().includes(currentKeyword));
+    // 4. 검색어 필터링
+    if (currentKeyword && currentKeyword !== "") {
+        filtered = filtered.filter(inst => 
+            (inst.name && inst.name.toLowerCase().includes(currentKeyword.toLowerCase())) ||
+            (inst.title && inst.title.toLowerCase().includes(currentKeyword.toLowerCase()))
+        );
     }
 
-    if(countDisplay) countDisplay.textContent = filtered.length;
+    if (countDisplay) countDisplay.textContent = filtered.length;
 
     if (filtered.length === 0) {
         container.classList.add('hidden');
-        if(noDataMsg) noDataMsg.classList.remove('hidden');
+        if (noDataMsg) noDataMsg.classList.remove('hidden');
         return;
     } else {
         container.classList.remove('hidden');
-        if(noDataMsg) noDataMsg.classList.add('hidden');
+        if (noDataMsg) noDataMsg.classList.add('hidden');
     }
 
     filtered.forEach(inst => {
@@ -620,20 +637,30 @@
         card.className = 'bg-white rounded-sm border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group hover:border-primary transition-colors duration-200';
         card.onclick = () => openModal(inst.id);
 
-        const catsDisplay = inst.categories[0] + (inst.categories.length > 1 ? ' 외' : '');
+        // 분야 표시 (예: 번역보험 외)
+        const catsDisplay = (inst.categories && inst.categories.length > 0) 
+            ? inst.categories[0] + (inst.categories.length > 1 ? ' 외' : '')
+            : '기타';
         
-        // 뱃지 색상 및 이름 설정
-        let tagColor = inst.specialTag === '제휴강사' ? 'bg-blue-600' : (inst.specialTag === '추천강사' ? 'bg-emerald-600' : '');
-        let tagName = (inst.specialTag === 'none' || !inst.specialTag) ? '' : inst.specialTag;
-        
+        // 제휴 / 추천 뱃지 표시 로직 (파란색: 제휴, 초록색: 추천)
+        let badgeText = '';
+        let badgeBg = '';
+        const tagValue = String(inst.type || inst.specialTag || '');
+
+        if (tagValue.includes('제휴')) {
+            badgeText = '제휴';
+            badgeBg = 'bg-blue-600';
+        } else if (tagValue.includes('추천')) {
+            badgeText = '추천';
+            badgeBg = 'bg-emerald-600';
+        }
+
         card.innerHTML = `
             <div class="aspect-w-16 aspect-h-10 bg-gray-100 overflow-hidden relative h-36 sm:h-40">
                 <img src="${inst.photo}" alt="${inst.name}" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute top-2 left-2 flex items-center gap-1.5 z-10">
                     <span class="text-[10px] font-bold bg-white text-gray-700 px-1.5 py-0.5 rounded-sm border border-gray-200 shadow-sm">${catsDisplay}</span>
-                    ${tagName ? `
-                        <span class="text-[10px] font-bold text-white px-1.5 py-0.5 rounded-sm shadow-sm ${tagColor}">${tagName}</span>
-                    ` : ''}
+                    ${badgeText ? `<span class="text-[10px] font-bold text-white px-1.5 py-0.5 rounded-sm shadow-sm ${badgeBg}">${badgeText}</span>` : ''}
                 </div>
             </div>
             <div class="p-3.5 flex-1 flex flex-col">
