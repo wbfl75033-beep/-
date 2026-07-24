@@ -1152,31 +1152,16 @@ function openPosterModal(id) {
     const poster = posters.find(p => p.id === id); 
     if (!poster) return;
 
-    // 1. 기본 정보 채우기
+    // 1. 기본 정보 및 주제 데이터 채우기
     document.getElementById('poster-modal-title').textContent = poster.title;
     document.getElementById('poster-modal-img').src = poster.image;
     document.getElementById('poster-modal-date').textContent = poster.date;
     document.getElementById('poster-modal-location').textContent = poster.location;
+    document.getElementById('poster-modal-topic').textContent = poster.topic || ''; // 👈 주제 데이터 바로 주입
     document.getElementById('poster-modal-desc').textContent = poster.description;
 
     // 2. 주제(topic) 데이터 처리 (HTML에 주제를 표시할 요소가 없다면 자동 생성/적용)
-    let topicEl = document.getElementById('poster-modal-topic');
-    const locationParent = document.getElementById('poster-modal-location').parentElement.parentElement;
-    
-    if (poster.topic) {
-        if (!topicEl) {
-            // 주제 엘리먼트가 없으면 장소 아래에 동적으로 생성
-            const topicDiv = document.createElement('div');
-            topicDiv.className = 'flex items-center mt-2 pt-2 border-t border-gray-100';
-            topicDiv.innerHTML = `<span class="font-bold text-gray-700 w-12 flex-shrink-0 text-sm">주제</span><span id="poster-modal-topic" class="text-gray-900 font-medium text-sm"></span>`;
-            locationParent.appendChild(topicDiv);
-            topicEl = document.getElementById('poster-modal-topic');
-        }
-        topicEl.textContent = poster.topic;
-        topicEl.parentElement.style.display = 'flex';
-    } else if (topicEl) {
-        topicEl.parentElement.style.display = 'none';
-    }
+   document.getElementById('poster-modal-topic').textContent = poster.topic || '';
 
     // 3. 약도 이미지 및 지도/버튼 처리
     const mapImg = document.getElementById('modalMapImage');
