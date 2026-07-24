@@ -189,6 +189,7 @@
                     <!-- JS에서 카드 생성 -->
                 </div>
 
+                <div id="instructor-more" class="flex justify-center mt-10"></div>
                 <div id="no-data-msg" class="hidden text-center py-20 text-gray-400">
                     <i class="fas fa-search text-3xl mb-3"></i>
                     <p class="text-sm">조건에 맞는 강사가 없습니다.</p>
@@ -836,6 +837,21 @@
         let currentModalId = null; 
         let editingPosterId = null;
         let currentPosterModalId = null;
+        // ===== 강사 목록 더보기 =====
+        const INSTRUCTOR_LIMIT = 10;   // 전체분야일 때 처음 보여줄 강사 수
+        let showAllInstructors = false;
+        let lastFilterKey = null;
+
+        function expandInstructors() {
+            showAllInstructors = true;
+            renderInstructors();
+        }
+
+        function collapseInstructors() {
+            showAllInstructors = false;
+            renderInstructors();
+            document.getElementById('instructor-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
         // ===== 메인 히어로 배너 슬라이더 =====
         // 배너를 추가/수정하려면 아래 배열만 고치면 됩니다.
@@ -1085,6 +1101,9 @@
 
     if (countDisplay) countDisplay.textContent = filtered.length;
 
+    const moreWrap = document.getElementById('instructor-more');
+    if (moreWrap) moreWrap.innerHTML = '';
+
     if (filtered.length === 0) {
         container.classList.add('hidden');
         if (noDataMsg) noDataMsg.classList.remove('hidden');
@@ -1094,8 +1113,39 @@
         if (noDataMsg) noDataMsg.classList.add('hidden');
     }
 
-  
-        filtered.forEach(inst => {
+    // ===== 전체분야일 때만 10명까지 잘라서 보여주기 =====
+    // 필터(카테고리/태그/검색어)가 바뀌면 펼침 상태를 초기화
+    const filterKey = currentFilter + '|' + currentTag + '|' + currentKeyword;
+    if (filterKey !== lastFilterKey) {
+        showAllInstructors = false;
+        lastFilterKey = filterKey;
+    }
+
+    const isAllCategory = (currentFilter === "전체분야" || currentFilter === "전체");
+    const canCollapse   = isAllCategory && filtered.length > INSTRUCTOR_LIMIT;
+    const visible       = (canCollapse && !showAllInstructors)
+                            ? filtered.slice(0, INSTRUCTOR_LIMIT)
+                            : filtered;
+
+    if (moreWrap && canCollapse) {
+        const btnClass = "inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white " +
+                         "ring-1 ring-gray-200 text-[13px] font-bold text-gray-700 " +
+                         "shadow-[0_2px_10px_rgba(17,24,39,0.05)] " +
+                         "hover:text-primary hover:ring-primary/30 hover:shadow-[0_6px_20px_rgba(17,24,39,0.1)] " +
+                         "hover:-translate-y-0.5 transition-all duration-200";
+
+        moreWrap.innerHTML = showAllInstructors
+            ? `<button onclick="collapseInstructors()" class="${btnClass}">
+                   접기 <i class="fas fa-chevron-up text-[11px]"></i>
+               </button>`
+            : `<button onclick="expandInstructors()" class="${btnClass}">
+                   강사 더보기
+                   <span class="text-primary">+${filtered.length - INSTRUCTOR_LIMIT}</span>
+                   <i class="fas fa-chevron-down text-[11px]"></i>
+               </button>`;
+    }
+
+        visible.forEach(inst => {
         const card = document.createElement('div');
         card.className = 'bg-white rounded-2xl overflow-hidden cursor-pointer flex flex-col h-full group ' +
                          'ring-1 ring-gray-100 shadow-[0_2px_10px_rgba(17,24,39,0.06)] ' +
