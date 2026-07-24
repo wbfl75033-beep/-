@@ -1227,14 +1227,27 @@ function openPosterModal(id) {
     toggleModal('poster-modal', true);
 }
 
-    // 3. 모달창 팝업 실행
-    toggleModal('poster-modal', true);
-} 
+   function toggleModal(id, show) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (show) {
+                el.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => {
+                    el.classList.remove('opacity-0');
+                    el.firstElementChild.classList.remove('scale-95');
+                    el.firstElementChild.classList.add('scale-100');
+                }, 10);
             } else {
-                el.classList.add('opacity-0'); el.firstElementChild.classList.remove('scale-100'); el.firstElementChild.classList.add('scale-95');
+                el.classList.add('opacity-0');
+                el.firstElementChild.classList.remove('scale-100');
+                el.firstElementChild.classList.add('scale-95');
                 setTimeout(() => { el.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
             }
         }
+
+        function closeModal() { toggleModal('instructor-modal', false); }
+        function closePosterModal() { toggleModal('poster-modal', false); }
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('instructor-modal')?.addEventListener('click', function(e) { if (e.target === this) closeModal(); });
