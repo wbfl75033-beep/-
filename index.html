@@ -1152,43 +1152,53 @@ function openPosterModal(id) {
     const poster = posters.find(p => p.id === id); 
     if (!poster) return;
 
-    // 1. 기본 정보 및 주제 데이터 채우기
-    document.getElementById('poster-modal-title').textContent = poster.title;
-    document.getElementById('poster-modal-img').src = poster.image;
-    document.getElementById('poster-modal-date').textContent = poster.date;
-    document.getElementById('poster-modal-location').textContent = poster.location;
-    document.getElementById('poster-modal-topic').textContent = poster.topic || ''; // 👈 주제 데이터 바로 주입
-    document.getElementById('poster-modal-desc').textContent = poster.description;
+    // 💡 에러 방지용 안전 대입 헬퍼 함수
+    const setVal = (elementId, value) => {
+        const el = document.getElementById(elementId);
+        if (el) el.textContent = value || '';
+    };
 
-    // 2. 주제(topic) 데이터 처리 (HTML에 주제를 표시할 요소가 없다면 자동 생성/적용)
-   document.getElementById('poster-modal-topic').textContent = poster.topic || '';
+    const setSrc = (elementId, srcUrl) => {
+        const el = document.getElementById(elementId);
+        if (el) el.src = srcUrl || '';
+    };
 
-    // 3. 약도 이미지 및 지도/버튼 처리
-    const mapImg = document.getElementById('modalMapImage');
-    const routeDesc = document.getElementById('modalRouteDescription');
+    // 1. 데이터 안전하게 주입
+    setVal('poster-modal-title', poster.title);
+    setVal('modal-title', poster.title);
+    setSrc('poster-modal-img', poster.image);
+    setVal('poster-modal-date', poster.date);
+    setVal('poster-modal-location', poster.location);
+    setVal('poster-modal-topic', poster.topic); // 주제 데이터
+    setVal('poster-modal-desc', poster.description);
+
+    // 2. 찾아오는 길 (지도 및 버튼) 영역 처리
     const routeArea = document.getElementById('modalRouteArea');
-
-    if (mapImg && routeDesc && routeArea) {
+    if (routeArea) {
         if (poster.mapImage || poster.route || poster.mapUrl) {
             routeArea.classList.remove('hidden');
 
-            // 약도 이미지 처리
-            if (poster.mapImage) {
-                mapImg.src = poster.mapImage;
-                mapImg.classList.remove('hidden');
-            } else {
-                mapImg.classList.add('hidden');
+            const mapImg = document.getElementById('modalMapImage');
+            if (mapImg) {
+                if (poster.mapImage) {
+                    mapImg.src = poster.mapImage;
+                    mapImg.classList.remove('hidden');
+                } else {
+                    mapImg.classList.add('hidden');
+                }
             }
 
-            // 길 안내 텍스트 처리
-            if (poster.route) {
-                routeDesc.textContent = poster.route;
-                routeDesc.classList.remove('hidden');
-            } else {
-                routeDesc.classList.add('hidden');
+            const routeDesc = document.getElementById('modalRouteDescription');
+            if (routeDesc) {
+                if (poster.route) {
+                    routeDesc.textContent = poster.route;
+                    routeDesc.classList.remove('hidden');
+                } else {
+                    routeDesc.classList.add('hidden');
+                }
             }
 
-            // 네이버 지도 버튼 처리
+            // 네이버 지도 버튼 동적 생성 및 처리
             let mapBtn = document.getElementById('naver-map-btn');
             if (poster.mapUrl) {
                 if (!mapBtn) {
@@ -1210,18 +1220,9 @@ function openPosterModal(id) {
         }
     }
 
+    // 3. 모달창 팝업 실행
     toggleModal('poster-modal', true);
-}
-
-        function closeModal() { toggleModal('instructor-modal', false); document.getElementById('modal-videos').innerHTML = ''; }
-        function closePosterModal() { toggleModal('poster-modal', false); }
-
-        function toggleModal(modalId, show) {
-            const el = document.getElementById(modalId);
-            if(show) {
-                el.classList.remove('hidden');
-                setTimeout(() => { el.classList.remove('opacity-0'); el.firstElementChild.classList.remove('scale-95'); el.firstElementChild.classList.add('scale-100'); }, 10);
-                document.body.style.overflow = 'hidden'; 
+} 
             } else {
                 el.classList.add('opacity-0'); el.firstElementChild.classList.remove('scale-100'); el.firstElementChild.classList.add('scale-95');
                 setTimeout(() => { el.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
