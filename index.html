@@ -1152,32 +1152,34 @@ function openPosterModal(id) {
     const poster = posters.find(p => p.id === id); 
     if (!poster) return;
 
-    // 💡 에러 방지용 안전 대입 헬퍼 함수
-    const setVal = (elementId, value) => {
-        const el = document.getElementById(elementId);
-        if (el) el.textContent = value || '';
-    };
+    // 1. 기본 정보 및 주제 데이터 채우기
+    const titleEl = document.getElementById('poster-modal-title') || document.getElementById('modal-title');
+    if (titleEl) titleEl.textContent = poster.title;
 
-    const setSrc = (elementId, srcUrl) => {
-        const el = document.getElementById(elementId);
-        if (el) el.src = srcUrl || '';
-    };
+    const imgEl = document.getElementById('poster-modal-img');
+    if (imgEl) imgEl.src = poster.image;
 
-    // 1. 데이터 안전하게 주입
-    setVal('poster-modal-title', poster.title);
-    setVal('modal-title', poster.title);
-    setSrc('poster-modal-img', poster.image);
-    setVal('poster-modal-date', poster.date);
-    setVal('poster-modal-location', poster.location);
-    setVal('poster-modal-topic', poster.topic); // 주제 데이터
-    setVal('poster-modal-desc', poster.description);
+    const dateEl = document.getElementById('poster-modal-date');
+    if (dateEl) dateEl.textContent = poster.date;
 
-    // 2. 찾아오는 길 (지도 및 버튼) 영역 처리
+    const locEl = document.getElementById('poster-modal-location');
+    if (locEl) locEl.textContent = poster.location;
+
+    const topicEl = document.getElementById('poster-modal-topic');
+    if (topicEl) topicEl.textContent = poster.topic || '';
+
+    const descEl = document.getElementById('poster-modal-desc');
+    if (descEl) descEl.textContent = poster.description;
+
+    // 2. 찾아오는 길 (약도 및 지도 버튼) 영역 처리
     const routeArea = document.getElementById('modalRouteArea');
     if (routeArea) {
-        if (poster.mapImage || poster.route || poster.mapUrl) {
+        const hasRouteInfo = poster.mapImage || poster.route || poster.mapUrl;
+
+        if (hasRouteInfo) {
             routeArea.classList.remove('hidden');
 
+            // 약도 이미지 처리
             const mapImg = document.getElementById('modalMapImage');
             if (mapImg) {
                 if (poster.mapImage) {
@@ -1188,6 +1190,7 @@ function openPosterModal(id) {
                 }
             }
 
+            // 길 안내 텍스트 처리
             const routeDesc = document.getElementById('modalRouteDescription');
             if (routeDesc) {
                 if (poster.route) {
@@ -1198,7 +1201,7 @@ function openPosterModal(id) {
                 }
             }
 
-            // 네이버 지도 버튼 동적 생성 및 처리
+            // 네이버 지도 버튼 처리
             let mapBtn = document.getElementById('naver-map-btn');
             if (poster.mapUrl) {
                 if (!mapBtn) {
@@ -1219,6 +1222,10 @@ function openPosterModal(id) {
             routeArea.classList.add('hidden');
         }
     }
+
+    // 3. 모달 팝업 창 띄우기
+    toggleModal('poster-modal', true);
+}
 
     // 3. 모달창 팝업 실행
     toggleModal('poster-modal', true);
