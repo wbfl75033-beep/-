@@ -108,15 +108,44 @@
     <!-- 사용자 화면 탭 (랜딩) -->
     <div id="landing-tab" class="tab-content active">
         
-        <!-- Hero 배너 -->
-      <!-- 🌟 새로운 1280x300 광고 이미지 배너 영역 -->
+       <!-- 🌟 메인 히어로 배너 슬라이더 -->
         <section class="w-full py-6">
-            <div class="w-full aspect-[1280/300] max-h-[300px] rounded-lg overflow-hidden shadow-sm">
-                <img 
-                    src="https://i.ibb.co/RGXZ6Wp1/AI-260630-1.png](https://i.ibb.co/RGXZ6Wp1/AI-260630-1.png" 
-                    alt="메인 광고 배너" 
-                    class="w-full h-full object-cover"
-                />
+            <div id="banner-slider"
+                 onmouseenter="clearInterval(bannerTimer)" onmouseleave="startBannerAuto()"
+                 class="group relative w-full h-[320px] md:h-[440px] rounded-2xl overflow-hidden
+                        shadow-[0_8px_30px_rgba(17,24,39,0.14)] bg-gray-900">
+
+                <!-- 슬라이드가 JS로 생성됩니다 -->
+                <div id="banner-track" class="absolute inset-0"></div>
+
+                <!-- 좌우 화살표 (마우스 올렸을 때만) -->
+                <button onclick="moveBanner(-1)" aria-label="이전 배너"
+                        class="absolute left-5 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full
+                               bg-white/15 backdrop-blur-sm text-white border border-white/25
+                               opacity-0 group-hover:opacity-100 hover:bg-white/30 transition-all duration-300">
+                    <i class="fas fa-chevron-left text-sm"></i>
+                </button>
+                <button onclick="moveBanner(1)" aria-label="다음 배너"
+                        class="absolute right-5 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full
+                               bg-white/15 backdrop-blur-sm text-white border border-white/25
+                               opacity-0 group-hover:opacity-100 hover:bg-white/30 transition-all duration-300">
+                    <i class="fas fa-chevron-right text-sm"></i>
+                </button>
+
+                <!-- 아래로 스크롤 유도 (가운데 하단) -->
+                <button onclick="document.getElementById('search-input')?.scrollIntoView({behavior:'smooth', block:'center'})"
+                        aria-label="아래로 이동"
+                        class="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 text-white/60 hover:text-white
+                               animate-bounce transition-colors">
+                    <i class="fas fa-chevron-down text-lg"></i>
+                </button>
+
+                <!-- 인디케이터 + 카운터 (우하단) -->
+                <div class="absolute bottom-6 right-7 z-30 flex items-center gap-3">
+                    <div id="banner-dots" class="flex items-center gap-2"></div>
+                    <span id="banner-counter"
+                          class="text-[11px] font-semibold text-white/85 tracking-wider"></span>
+                </div>
             </div>
         </section>
         
