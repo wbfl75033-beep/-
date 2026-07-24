@@ -182,7 +182,7 @@
         </section>
 
         <!-- 강사 리스트 섹션 -->
-        <section class="py-6 bg-white">
+        <section id="instructor-section" class="py-6 bg-white scroll-mt-20">
             <div class="container mx-auto px-4 max-w-7xl">
                 
                 <div class="flex items-center justify-between mb-6">
@@ -208,7 +208,7 @@
         </section>
 
         <!-- 지점 세미나 및 공고 포스터 섹션 -->
-        <section class="py-12 bg-white mt-4">
+        <section id="poster-section" class="py-12 bg-white mt-4 scroll-mt-20">
             <div class="container mx-auto px-4 max-w-7xl">
                 
                 <div class="flex items-center justify-between mb-6">
@@ -847,7 +847,127 @@
         let editingPosterId = null;
         let currentPosterModalId = null;
 
+        // ===== 메인 히어로 배너 슬라이더 =====
+        // 배너를 추가/수정하려면 아래 배열만 고치면 됩니다.
+        const banners = [
+            {
+                image: "https://i.ibb.co/RGXZ6Wp1/AI-260630-1.png",
+                line1: "대한민국 보험영업의",
+                line2: "모든 강사 공고",
+                btnText: "강사 공고 보기",
+                link: "#instructor-section"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1600&q=80",
+                line1: "현장에서 바로 쓰는",
+                line2: "공개 강좌 안내",
+                btnText: "강좌 일정 보기",
+                link: "#poster-section"
+            }
+        ];
+
+        let bannerIdx = 0;
+        let bannerTimer = null;
+
+        function renderBanner() {
+            const track = document.getElementById('banner-track');
+            const dots  = document.getElementById('banner-dots');
+            if (!track) return;
+
+            track.innerHTML = '';
+            banners.forEach((b, i) => {
+                const slide = document.createElement('div');
+                slide.className = 'banner-slide absolute inset-0 transition-opacity duration-[900ms] ease-out';
+                slide.style.opacity = (i === 0) ? '1' : '0';
+                slide.style.zIndex  = (i === 0) ? '10' : '0';
+                slide.innerHTML = `
+                    <img src="${b.image}" alt="${b.line2 || ''}"
+                         class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/10"></div>
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="px-8 md:px-16 max-w-2xl">
+                            <p class="banner-l1 text-white/90 text-lg md:text-3xl font-light mb-1 md:mb-2 break-keep">${b.line1 || ''}</p>
+                            <h2 class="banner-l2 text-white text-2xl md:text-[42px] font-black leading-[1.25] tracking-tight mb-6 md:mb-8 break-keep">${b.line2 || ''}</h2>
+                            ${b.btnText ? `<a href="${b.link || '#'}"
+                                 class="banner-btn inline-block bg-white text-gray-900 text-[13px] md:text-sm font-bold
+                                        px-8 md:px-10 py-3 md:py-3.5 shadow-lg hover:bg-gray-100 hover:shadow-xl
+                                        transition-all duration-200">${b.btnText}</a>` : ''}
+                        </div>
+                    </div>
+                `;
+                track.appendChild(slide);
+            });
+
+            if (dots) {
+                dots.innerHTML = '';
+                if (banners.length > 1) {
+                    banners.forEach((_, i) => {
+                        const dot = document.createElement('button');
+                        dot.onclick = () => goBanner(i);
+                        dots.appendChild(dot);
+                    });
+                }
+            }
+
+            updateBanner();
+            startBannerAuto();
+        }
+
+        function updateBanner() {
+            const track   = document.getElementById('banner-track');
+            const dots    = document.getElementById('banner-dots');
+            const counter = document.getElementById('banner-counter');
+            if (!track) return;
+
+            Array.from(track.children).forEach((el, i) => {
+                const on = (i === bannerIdx);
+                el.style.opacity = on ? '1' : '0';
+                el.style.zIndex  = on ? '10' : '0';
+
+                // 텍스트 등장 애니메이션
+                ['.banner-l1', '.banner-l2', '.banner-btn'].forEach((sel, k) => {
+                    const t = el.querySelector(sel);
+                    if (!t) return;
+                    t.style.transition = 'opacity 700ms ease-out, transform 700ms ease-out';
+                    t.style.transitionDelay = on ? `${150 + k * 120}ms` : '0ms';
+                    t.style.opacity = on ? '1' : '0';
+                    t.style.transform = on ? 'translateY(0)' : 'translateY(16px)';
+                });
+            });
+
+            if (dots) {
+                Array.from(dots.children).forEach((d, i) => {
+                    d.className = 'h-1.5 rounded-full transition-all duration-300 ' +
+                                  (i === bannerIdx ? 'w-7 bg-white' : 'w-1.5 bg-white/45 hover:bg-white/75');
+                });
+            }
+
+            if (counter) {
+                counter.textContent = banners.length > 1
+                    ? `${String(bannerIdx + 1).padStart(2, '0')} / ${String(banners.length).padStart(2, '0')}`
+                    : '';
+                counter.style.display = banners.length > 1 ? '' : 'none';
+            }
+        }
+
+        function goBanner(i) {
+            bannerIdx = (i + banners.length) % banners.length;
+            updateBanner();
+            startBannerAuto();
+        }
+
+        function moveBanner(step) { goBanner(bannerIdx + step); }
+
+        function startBannerAuto() {
+            clearInterval(bannerTimer);
+            if (banners.length < 2) return;
+            bannerTimer = setInterval(() => {
+                bannerIdx = (bannerIdx + 1) % banners.length;
+                updateBanner();
+            }, 6000);
+        }
         function init() {
+            renderBanner();
             renderFilters();
             renderInstructors();
             renderPosters();
