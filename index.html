@@ -38,15 +38,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
-        /* 카테고리 그리드 테두리 */
-        .category-grid {
-            border-top: 1px solid #e5e7eb;
-            border-left: 1px solid #e5e7eb;
-        }
-        .category-btn {
-            border-bottom: 1px solid #e5e7eb;
-            border-right: 1px solid #e5e7eb;
-        }
+    
     </style>
 </head>
 <body class="antialiased font-sans">
@@ -167,7 +159,7 @@
                     </div>
                 </div>
 
-                <div class="category-grid grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 w-full mb-10 bg-white" id="category-filters">
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)]" id="category-filters">
                     <!-- JS에서 버튼 생성 -->
                 </div>
 
@@ -1003,30 +995,30 @@
             if (searchBtn) searchBtn.addEventListener('click', () => { currentKeyword = searchInput.value.trim().toLowerCase(); renderInstructors(); });
         }
 
-       function renderFilters() {
+      function renderFilters() {
     const container = document.getElementById('category-filters');
     if (!container) return;
-    
-    // 모바일 2열, 태블릿 4열, PC(1024px 이상)에서는 가로 6열(grid-cols-6)로 강제 정렬합니다.
-    container.className = "category-grid grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 bg-white border border-gray-200 rounded-lg overflow-hidden divide-x divide-y divide-gray-200";
+
+    container.className = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)]";
     container.innerHTML = '';
 
     categories.forEach(cat => {
         const btn = document.createElement('button');
         const isActive = currentFilter === cat;
-        
-        // 버튼 기본 스타일 및 활성화되었을 때 스타일
-        const activeClass = "category-btn bg-blue-50 text-blue-700 font-bold py-3.5 text-center transition-colors border-t-0 border-l-0 shadow-inner";
-        const normalClass = "category-btn text-gray-700 py-3.5 text-center hover:bg-gray-50 transition-colors border-t-0 border-l-0 bg-white";
-        
+
+        const activeClass = "border-b border-r border-gray-100 bg-[#eef0f9] " +
+                            "px-2 py-4 text-[13px] text-center font-bold text-primary transition-colors duration-200";
+        const normalClass = "border-b border-r border-gray-100 bg-white " +
+                            "px-2 py-4 text-[13px] text-center text-gray-600 " +
+                            "hover:bg-gray-50 hover:text-primary transition-colors duration-200";
+
         btn.className = isActive ? activeClass : normalClass;
         btn.textContent = cat;
-        
-        // 기존 필터 시스템 및 강사 새로고침(renderInstructors) 기능과 완벽 연동
-        btn.onclick = () => { 
-            currentFilter = cat; 
-            renderFilters(); 
-            renderInstructors(); 
+
+        btn.onclick = () => {
+            currentFilter = cat;
+            renderFilters();
+            renderInstructors();
         };
         container.appendChild(btn);
     });
@@ -1036,8 +1028,8 @@
             const allBtn = document.getElementById('tag-all');
             const famousBtn = document.getElementById('tag-famous');
             const recBtn = document.getElementById('tag-recommended');
-            const defaultClass = "px-5 py-2 text-[13px] rounded-full border border-gray-300 text-gray-600 hover:text-primary font-medium transition-colors bg-white";
-            const activeClass = "px-5 py-2 text-[13px] rounded-full bg-primary text-white font-medium transition-colors border border-primary";
+            const defaultClass = "px-6 py-2.5 text-[13px] rounded-full bg-white ring-1 ring-gray-200 text-gray-600 font-medium shadow-[0_1px_4px_rgba(17,24,39,0.04)] hover:ring-gray-300 hover:shadow-[0_4px_14px_rgba(17,24,39,0.09)] hover:-translate-y-0.5 transition-all duration-200";
+            const activeClass = "px-6 py-2.5 text-[13px] rounded-full bg-primary text-white font-bold shadow-[0_4px_14px_rgba(47,59,137,0.25)] transition-all duration-200";
             
             allBtn.className = defaultClass; famousBtn.className = defaultClass; recBtn.className = defaultClass;
             
