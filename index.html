@@ -376,10 +376,10 @@
 
 <!-- 포스터 모달 -->
     <div id="poster-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-lg shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col transform scale-95 transition-transform duration-300">
-            
-            <!-- 모달 헤더 -->
-            <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-gray-50 shrink-0">
+        <div class="bg-white rounded-md shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col transform scale-95 transition-transform duration-300">
+
+            <!-- 헤더 -->
+            <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-gray-50 flex-shrink-0">
                 <h3 class="text-lg font-bold text-gray-800" id="poster-modal-title">공고 제목</h3>
                 <div class="flex items-center space-x-3">
                     <button onclick="startPosterEdit()" class="text-xs px-3 py-1.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-sm transition flex items-center shadow-sm">
@@ -390,18 +390,17 @@
                     </button>
                 </div>
             </div>
-            
-            <!-- 모달 본문 (2단 Grid 레이아웃) -->
-            <div class="modal-content overflow-y-auto p-6 md:p-8 flex-1">
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-                    
-                    <!-- 👈 좌측 영역: 포스터 이미지 + 정보 박스 -->
-                    <div class="md:col-span-5 flex flex-col space-y-5">
-                        <div id="poster-img-wrap" class="w-full bg-gray-50 rounded border border-gray-200 overflow-hidden flex items-center justify-center p-2">
-                            <img id="poster-modal-img" src="" alt="포스터 이미지" class="w-full h-auto object-contain max-h-[500px]">
-                        </div>
 
-                        <!-- 일정, 장소, 주제 정보 박스 -->
+            <!-- 본문 (좌: 포스터 + 일시/장소/주제 / 우: 상세안내 + 찾아오는 길) -->
+            <div class="modal-content overflow-y-auto p-6 flex-1">
+                <div class="flex flex-col md:flex-row gap-6 items-start">
+
+                    <!-- 왼쪽 컬럼: 포스터 이미지 + 일시/장소/주제 -->
+                    <div class="w-full md:w-1/2 min-w-0 space-y-4">
+                        <img id="poster-modal-img" src="" alt="세미나 포스터"
+                             class="block w-full h-auto rounded-sm border border-gray-200 bg-gray-50 object-contain">
+
+                        <!-- 일시 / 장소 / 주제 (포스터 바로 아래) -->
                         <div class="bg-gray-50 rounded-sm p-4 border border-gray-200 space-y-3">
                             <div>
                                 <p class="text-[11px] font-bold text-gray-500 mb-1">일시</p>
@@ -418,28 +417,29 @@
                         </div>
                     </div>
 
-                    <!-- 👉 우측 영역: 상세 안내 (상단) + 찾아오는 길/지도 (하단) -->
-                    <div class="md:col-span-7 flex flex-col space-y-6">
-                        <!-- 상세 안내 -->
+                    <!-- 오른쪽 컬럼: 상세 안내 + 찾아오는 길 -->
+                    <div class="w-full md:w-1/2 min-w-0 flex flex-col space-y-5">
+
+                        <!-- 1. 상세 안내 (우측 최상단, 길게) -->
                         <div>
-                            <h4 class="font-bold text-gray-800 text-sm mb-2">상세 안내</h4>
-                            <p id="poster-modal-desc" class="text-[13px] text-gray-700 leading-relaxed whitespace-pre-line"></p>
+                            <h4 class="text-base font-bold text-gray-900 border-b border-gray-200 pb-2 mb-3">상세 안내</h4>
+                            <p id="poster-modal-desc"
+                               class="text-[13px] text-gray-700 leading-[1.9] whitespace-pre-line break-keep"></p>
                         </div>
 
-                        <!-- 찾아오는 길 (지도 크기 절대 안 커지게 고정 적용) -->
-                        <div id="modalRouteArea" class="border-t border-gray-200 pt-5 hidden">
-                            <h4 class="font-bold text-gray-800 text-sm mb-3 flex items-center">
+                        <!-- 2. 찾아오는 길 -->
+                        <div id="modalRouteArea" class="border-t border-gray-200 pt-4">
+                            <h4 class="font-bold text-gray-800 text-sm mb-2 flex items-center">
                                 <i class="fas fa-map-marker-alt text-red-500 mr-1.5"></i>찾아오는 길
                             </h4>
-                            <!-- w-[400px]와 h-[220px]로 크기를 고정하여 절대 늘어나지 않음 -->
-                            <img id="modalMapImage" src="" alt="약도" class="w-[400px] h-[220px] object-cover rounded border border-gray-200 mb-3 mx-auto">
-                            <p id="modalRouteDescription" class="text-[13px] text-gray-600 leading-relaxed whitespace-pre-line mb-4"></p>
-                            <!-- 네이버 지도 버튼은 여기에 자동 생성됩니다 -->
+                            <img id="modalMapImage" src="" alt="약도" class="block w-full max-w-full h-auto rounded border border-gray-200 mb-2 hidden">
+                            <p id="modalRouteDescription" class="text-xs text-gray-500 leading-relaxed whitespace-pre-line mb-3"></p>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
     <!-- 기능 구현 Javascript -->
