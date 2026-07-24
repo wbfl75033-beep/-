@@ -769,7 +769,8 @@
         title: "이달의 보험영업 전략 브리핑 (오프라인 세미나)", 
         image: "https://i.ibb.co/S48jzbnq/44.png", 
         date: "2026년 6월 15일 (월) 10:00 - 12:00", 
-        location: "본사 2층 대교육장", 
+        location: "본사 2층 대교육장",
+        topic: "Sustainable Growth & Innovation",
         description: "매월 초 진행되는 정기 세일즈 브리핑입니다. 생명/손해보험사별 주력 상품의 셀링 포인트와 타겟 고객군을 완벽하게 분석해 드립니다.",
         
         // 📍 새로 추가되는 찾아오는 길 데이터
@@ -1117,24 +1118,47 @@
     toggleModal('instructor-modal', true);
 }
 
-       function openPosterModal(id) {
-    currentPosterModalId = id; const poster = posters.find(p => p.id === id); if (!poster) return;
+function openPosterModal(id) {
+    currentPosterModalId = id; 
+    const poster = posters.find(p => p.id === id); 
+    if (!poster) return;
+
+    // 1. 기본 정보 채우기
     document.getElementById('poster-modal-title').textContent = poster.title;
     document.getElementById('poster-modal-img').src = poster.image;
     document.getElementById('poster-modal-date').textContent = poster.date;
     document.getElementById('poster-modal-location').textContent = poster.location;
     document.getElementById('poster-modal-desc').textContent = poster.description;
 
-    // 🗺️ 약도 이미지 및 길 안내 텍스트 세팅
+    // 2. 주제(topic) 데이터 처리 (HTML에 주제를 표시할 요소가 없다면 자동 생성/적용)
+    let topicEl = document.getElementById('poster-modal-topic');
+    const locationParent = document.getElementById('poster-modal-location').parentElement.parentElement;
+    
+    if (poster.topic) {
+        if (!topicEl) {
+            // 주제 엘리먼트가 없으면 장소 아래에 동적으로 생성
+            const topicDiv = document.createElement('div');
+            topicDiv.className = 'flex items-center mt-2 pt-2 border-t border-gray-100';
+            topicDiv.innerHTML = `<span class="font-bold text-gray-700 w-12 flex-shrink-0 text-sm">주제</span><span id="poster-modal-topic" class="text-gray-900 font-medium text-sm"></span>`;
+            locationParent.appendChild(topicDiv);
+            topicEl = document.getElementById('poster-modal-topic');
+        }
+        topicEl.textContent = poster.topic;
+        topicEl.parentElement.style.display = 'flex';
+    } else if (topicEl) {
+        topicEl.parentElement.style.display = 'none';
+    }
+
+    // 3. 약도 이미지 및 지도/버튼 처리
     const mapImg = document.getElementById('modalMapImage');
     const routeDesc = document.getElementById('modalRouteDescription');
     const routeArea = document.getElementById('modalRouteArea');
 
     if (mapImg && routeDesc && routeArea) {
-        // 공고 데이터에 mapImage나 route가 등록되어 있는 경우
-        if (poster.mapImage || poster.route) {
+        if (poster.mapImage || poster.route || poster.mapUrl) {
             routeArea.classList.remove('hidden');
-            
+
+            // 약도 이미지 처리
             if (poster.mapImage) {
                 mapImg.src = poster.mapImage;
                 mapImg.classList.remove('hidden');
@@ -1142,34 +1166,38 @@
                 mapImg.classList.add('hidden');
             }
 
-           if (poster.route) {
-            routeDesc.textContent = poster.route;
-            routeDesc.classList.remove('hidden');
-        } else {
-            routeDesc.classList.add('hidden');
-        }
+            // 길 안내 텍스트 처리
+            if (poster.route) {
+                routeDesc.textContent = poster.route;
+                routeDesc.classList.remove('hidden');
+            } else {
+                routeDesc.classList.add('hidden');
+            }
 
-        // 🚀 네이버 지도 버튼 생성 및 추가 로직
-        const existingBtn = document.getElementById('naver-map-btn');
-        if (existingBtn) existingBtn.remove(); // 기존 버튼이 있으면 지움 (중복 생성 방지)
-
-        if (poster.mapUrl) {
-            const mapBtn = document.createElement('a');
-            mapBtn.id = 'naver-map-btn';
-            mapBtn.href = poster.mapUrl;
-            mapBtn.target = '_blank';
-            mapBtn.className = 'inline-flex items-center justify-center w-full bg-[#03C75A] text-white font-bold py-2.5 px-4 rounded-sm mt-3 hover:bg-[#02b351] transition-colors';
-            mapBtn.innerHTML = '<i class="fas fa-map-marker-alt mr-2"></i>네이버 지도로 길찾기';
-            
-            routeArea.appendChild(mapBtn); // 약도 설명 영역 맨 아래에 버튼을 추가
-        }
+            // 네이버 지도 버튼 처리
+            let mapBtn = document.getElementById('naver-map-btn');
+            if (poster.mapUrl) {
+                if (!mapBtn) {
+                    mapBtn = document.createElement('a');
+                    mapBtn.id = 'naver-map-btn';
+                    mapBtn.target = '_blank';
+                    mapBtn.rel = 'noopener noreferrer';
+                    mapBtn.className = 'inline-flex items-center justify-center w-full bg-[#03C75A] text-white font-bold py-2.5 px-4 rounded-sm mt-3 hover:bg-[#02b351] transition-colors text-sm shadow-sm';
+                    routeArea.appendChild(mapBtn);
+                }
+                mapBtn.href = poster.mapUrl;
+                mapBtn.innerHTML = '<i class="fas fa-map-marker-alt mr-2"></i>네이버 지도로 길찾기';
+                mapBtn.style.display = 'inline-flex';
+            } else if (mapBtn) {
+                mapBtn.style.display = 'none';
+            }
         } else {
-            // 정보가 없으면 약도 영역 전체를 숨김
             routeArea.classList.add('hidden');
         }
     }
 
     toggleModal('poster-modal', true);
+}
 }
 
         function closeModal() { toggleModal('instructor-modal', false); document.getElementById('modal-videos').innerHTML = ''; }
