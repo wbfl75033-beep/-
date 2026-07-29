@@ -531,9 +531,9 @@
         name: "장신영", 
         type: "제휴",
         videos: [
-            { url: "https://vimeo.com/1212513043", title: "- 상품영업전략" },
-            { url: "https://vimeo.com/1212513044", title: "- 종신&정기보험" },
-            { url: "https://vimeo.com/1212513045", title: "- 상품영업전략" },
+            { url: "https://vimeo.com/1212513043", title: "상품영업전략" },
+            { url: "https://vimeo.com/1212513044", title: "종신&정기보험" },
+            { url: "https://vimeo.com/1212513045", title: "상품영업전략" },
         ],
         photo: "https://i.ibb.co/C5w37qxP/2026-07-03-223922-removebg-preview.png", 
         categories: ["상품영업전략", "종신&정기보험"], 
@@ -546,9 +546,9 @@
         name: "조대수", 
         type: "제휴",
         videos: [
-            { url: "https://vimeo.com/1207296757", title: "- AI세일즈" },
-            { url: "https://vimeo.com/1212510054", title: "- AI세일즈" },
-            { url: "https://vimeo.com/1212510053", title: "- 법인영업" },
+            { url: "https://vimeo.com/1207296757", title: "AI세일즈" },
+            { url: "https://vimeo.com/1212510054", title: "AI세일즈" },
+            { url: "https://vimeo.com/1212510053", title: "법인영업" },
         ],
         photo: "https://i.ibb.co/bRyNrgtT/2026-07-06-164042-removebg-preview.png", 
         categories: ["AI세일즈", "연금&저축성보험", "법인영업"], 
@@ -883,18 +883,18 @@
         let currentModalId = null; 
         let editingPosterId = null;
         let currentPosterModalId = null;
-        // ===== 강사 목록 더보기 =====
-        const INSTRUCTOR_LIMIT = 10;   // 전체분야일 때 처음 보여줄 강사 수
-        let showAllInstructors = false;
+        // ===== 강사 목록 더보기 (전체분야일 때 10명씩 점진 노출) =====
+        const INSTRUCTOR_LIMIT = 10;   // 처음 보여줄 강사 수 & 더보기 1회당 추가 수
+        let instructorVisibleCount = INSTRUCTOR_LIMIT;
         let lastFilterKey = null;
 
         function expandInstructors() {
-            showAllInstructors = true;
+            instructorVisibleCount += INSTRUCTOR_LIMIT;   // 10명씩 추가
             renderInstructors();
         }
 
         function collapseInstructors() {
-            showAllInstructors = false;
+            instructorVisibleCount = INSTRUCTOR_LIMIT;    // 다시 10명으로 접기
             renderInstructors();
             document.getElementById('instructor-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -1170,6 +1170,12 @@
 
     if (countDisplay) countDisplay.textContent = filtered.length;
 
+    // ===== 제목 자동 변경: 전체분야면 "이달의 추천 강사", 그 외엔 분야명 =====
+    if (listTitle) {
+        const isAll = (!currentFilter || currentFilter === "전체분야" || currentFilter === "전체");
+        listTitle.textContent = isAll ? "이달의 추천 강사" : currentFilter;
+    }
+
     const moreWrap = document.getElementById('instructor-more');
     if (moreWrap) moreWrap.innerHTML = '';
 
@@ -1182,36 +1188,44 @@
         if (noDataMsg) noDataMsg.classList.add('hidden');
     }
 
-    // ===== 전체분야일 때만 10명까지 잘라서 보여주기 =====
-    // 필터(카테고리/태그/검색어)가 바뀌면 펼침 상태를 초기화
+    // ===== 전체분야일 때만 10명씩 점진 노출 =====
+    // 필터(카테고리/태그/검색어)가 바뀌면 노출 수 초기화
     const filterKey = currentFilter + '|' + currentTag + '|' + currentKeyword;
     if (filterKey !== lastFilterKey) {
-        showAllInstructors = false;
+        instructorVisibleCount = INSTRUCTOR_LIMIT;
         lastFilterKey = filterKey;
     }
 
     const isAllCategory = (currentFilter === "전체분야" || currentFilter === "전체");
-    const canCollapse   = isAllCategory && filtered.length > INSTRUCTOR_LIMIT;
-    const visible       = (canCollapse && !showAllInstructors)
-                            ? filtered.slice(0, INSTRUCTOR_LIMIT)
-                            : filtered;
+    // 전체분야가 아니면 개수 제한 없이 전부 노출
+    const limited = isAllCategory && filtered.length > INSTRUCTOR_LIMIT;
+    const visible = limited ? filtered.slice(0, instructorVisibleCount) : filtered;
 
-    if (moreWrap && canCollapse) {
+    if (moreWrap && limited) {
         const btnClass = "inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white " +
                          "ring-1 ring-gray-200 text-[13px] font-bold text-gray-700 " +
                          "shadow-[0_2px_10px_rgba(17,24,39,0.05)] " +
                          "hover:text-primary hover:ring-primary/30 hover:shadow-[0_6px_20px_rgba(17,24,39,0.1)] " +
                          "hover:-translate-y-0.5 transition-all duration-200";
 
-        moreWrap.innerHTML = showAllInstructors
-            ? `<button onclick="collapseInstructors()" class="${btnClass}">
-                   접기 <i class="fas fa-chevron-up text-[11px]"></i>
-               </button>`
-            : `<button onclick="expandInstructors()" class="${btnClass}">
-                   강사 더보기
-                   <span class="text-primary">+${filtered.length - INSTRUCTOR_LIMIT}</span>
-                   <i class="fas fa-chevron-down text-[11px]"></i>
-               </button>`;
+        const remaining = filtered.length - instructorVisibleCount;
+
+        if (remaining > 0) {
+            // 아직 더 보여줄 강사가 있음 → 다음 10명(또는 남은 수)
+            const nextCount = Math.min(INSTRUCTOR_LIMIT, remaining);
+            moreWrap.innerHTML = `
+                <button onclick="expandInstructors()" class="${btnClass}">
+                    강사 더보기
+                    <span class="text-primary">+${nextCount}</span>
+                    <i class="fas fa-chevron-down text-[11px]"></i>
+                </button>`;
+        } else {
+            // 전부 펼쳐진 상태 → 접기
+            moreWrap.innerHTML = `
+                <button onclick="collapseInstructors()" class="${btnClass}">
+                    접기 <i class="fas fa-chevron-up text-[11px]"></i>
+                </button>`;
+        }
     }
 
         visible.forEach((inst, idx) => {
