@@ -1463,17 +1463,11 @@
                 </button>
             </div>` : '';
 
-        // 찜(하트) 버튼
+        // 찜(하트) 버튼 - 사진 우측 하단에 배치 (태그/순서버튼 안 가림)
         const isWished = wishlist.includes(inst.id);
-        const heartHtml = `
-            <button onclick="toggleWish(${inst.id}, event)" title="찜하기"
-                    class="absolute top-2 left-2 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm ring-1 ring-gray-200 shadow-sm flex items-center justify-center hover:ring-red-200 transition">
-                <i class="${isWished ? 'fas text-red-500' : 'far text-gray-400'} fa-heart text-sm"></i>
-            </button>`;
 
         card.classList.add('relative');
         card.innerHTML = `
-            ${heartHtml}
             ${reorderHtml}
             <!-- 상단: 태그 -->
             <div class="flex items-center gap-2 px-3.5 pt-3.5 pb-2.5">
@@ -1483,9 +1477,13 @@
 
             <!-- 사진 -->
             <div class="px-3.5">
-                <div class="aspect-[3/4] w-full rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100">
+                <div class="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100">
                     <img src="${inst.photo}" alt="${inst.name}"
                          class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]">
+                    <button onclick="toggleWish(${inst.id}, event)" title="찜하기"
+                            class="absolute bottom-2.5 right-2.5 z-20 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm ring-1 ring-gray-200 shadow-md flex items-center justify-center hover:ring-red-200 hover:scale-110 transition">
+                        <i class="${isWished ? 'fas text-red-500' : 'far text-gray-500'} fa-heart text-sm"></i>
+                    </button>
                 </div>
             </div>
 
@@ -1505,12 +1503,38 @@
 }
 
         // [수정된 부분] 포스터 이미지 object-contain 적용
+        // 공고 일시 문자열에서 D-day 계산 ("2026년 6월 15일 ..." 형식)
+        function getDday(dateStr) {
+            if (!dateStr) return null;
+            const m = String(dateStr).match(/(\d{4})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일/);
+            if (!m) return null;
+            const target = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+            const today = new Date();
+            target.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            const diff = Math.round((target - today) / (1000 * 60 * 60 * 24));
+            return diff;
+        }
+
         function renderPosters() {
             const container = document.getElementById('poster-grid');
             if (!container) return;
             container.innerHTML = '';
             
           posters.forEach((poster, idx) => {
+                // ===== D-day 계산 =====
+                const dday = getDday(poster.date);
+                let ddayHtml = '';
+                if (dday !== null) {
+                    let bg, label;
+                    if (dday < 0)        { bg = 'bg-gray-400';    label = '마감'; }
+                    else if (dday === 0) { bg = 'bg-red-500';     label = 'D-DAY'; }
+                    else if (dday <= 3)  { bg = 'bg-red-500';     label = 'D-' + dday; }
+                    else if (dday <= 7)  { bg = 'bg-orange-500';  label = 'D-' + dday; }
+                    else                 { bg = 'bg-primary';     label = 'D-' + dday; }
+                    ddayHtml = `<span class="absolute top-2.5 left-2.5 z-10 px-2.5 py-1 rounded-full text-[11px] font-bold text-white shadow-sm ${bg}">${label}</span>`;
+                }
+
                 const card = document.createElement('div');
                 card.className = 'reveal bg-white rounded-2xl overflow-hidden cursor-pointer flex flex-col h-full group ' +
                                  'ring-1 ring-gray-100 shadow-[0_2px_10px_rgba(17,24,39,0.06)] ' +
@@ -1521,7 +1545,8 @@
 
                 card.innerHTML = `
                     <div class="px-3.5 pt-3.5">
-                        <div class="aspect-[3/4] w-full rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100 flex items-center justify-center">
+                        <div class="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100 flex items-center justify-center">
+                            ${ddayHtml}
                             <img src="${poster.image}" alt="${poster.title}" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.04]">
                         </div>
                     </div>
