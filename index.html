@@ -404,6 +404,14 @@
                         <input type="text" id="admin-poster-topic" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: Sustainable Growth & Innovation">
                     </div>
 
+                    <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
+                        <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">상세페이지 링크</label>
+                        <div class="flex-1">
+                            <input type="text" id="admin-poster-link" class="w-full p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: https://fppartners.co.kr/main.php">
+                            <p class="text-[11px] text-gray-400 mt-1.5">공고 상세창에서 포스터를 클릭하면 이 주소로 이동합니다. (비워두면 이동 없음)</p>
+                        </div>
+                    </div>
+
                     <div class="pt-5 mt-1 border-t border-gray-100">
                         <p class="text-sm font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-map-marker-alt text-primaryLight mr-2"></i>찾아오는 길 <span class="text-xs font-normal text-gray-400 ml-2">(선택)</span></p>
                         <div class="space-y-4">
@@ -1151,18 +1159,18 @@
         // 배너를 추가/수정하려면 아래 배열만 고치면 됩니다.
        const banners = [
             {
-                image: "https://images.unsplash.com/photo-1762968274962-20c12e6e8ecd?auto=format&fit=crop&w=1920&q=80",
-                line1: "대한민국 보험영업의",
-                line2: "모든 강사 공고",
-                btnText: "강사 공고 보기",
-                link: "#instructor-section"
-            },
-            {
                 image: "https://images.unsplash.com/photo-1544531585-f14f463149ec?auto=format&fit=crop&w=1920&q=80",
                 line1: "현장에서 바로 쓰는",
                 line2: "공개 강좌 안내",
                 btnText: "강좌 일정 보기",
                 link: "#poster-section"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1762968274962-20c12e6e8ecd?auto=format&fit=crop&w=1920&q=80",
+                line1: "대한민국 보험영업의",
+                line2: "모든 강사 공고",
+                btnText: "강사 공고 보기",
+                link: "#instructor-section"
             }
         ];
         
@@ -2078,6 +2086,7 @@ function openPosterModal(id) {
             document.getElementById('admin-poster-topic').value = p.topic || '';
             document.getElementById('admin-poster-mapurl').value = p.mapUrl || '';
             document.getElementById('admin-poster-route').value = p.route || '';
+            document.getElementById('admin-poster-link').value = p.link || '';
             document.getElementById('admin-poster-image').value = '';
             document.getElementById('admin-poster-mapimage').value = '';
             document.getElementById('admin-poster-form-title').textContent = "공고 수정";
@@ -2089,7 +2098,7 @@ function openPosterModal(id) {
             editingPosterId = null;
             document.getElementById('admin-poster-form-title').textContent = "공고 글쓰기";
             const btn = document.getElementById('admin-poster-submit-btn'); btn.textContent = "등록하기"; btn.classList.replace('bg-green-600', 'bg-primaryLight');
-            ['title','date','location','desc','image','topic','mapurl','route','mapimage'].forEach(id => { const el = document.getElementById('admin-poster-'+id); if (el) el.value = ''; });
+            ['title','date','location','desc','image','topic','mapurl','route','mapimage','link'].forEach(id => { const el = document.getElementById('admin-poster-'+id); if (el) el.value = ''; });
         }
 
         function cancelPosterAdminForm() { resetPosterAdminFormUI(); switchTab('landing'); }
@@ -2104,7 +2113,8 @@ function openPosterModal(id) {
                 topic: document.getElementById('admin-poster-topic').value.trim(),
                 description: document.getElementById('admin-poster-desc').value.trim(),
                 mapUrl: document.getElementById('admin-poster-mapurl').value.trim(),
-                route: document.getElementById('admin-poster-route').value.trim()
+                route: document.getElementById('admin-poster-route').value.trim(),
+                link: document.getElementById('admin-poster-link').value.trim()
             };
             const fileInput = document.getElementById('admin-poster-image');
             if (fileInput.files[0]) newData.image = URL.createObjectURL(fileInput.files[0]);
