@@ -302,9 +302,18 @@
                         <div class="pt-4 border-t border-gray-100">
                             <label class="block text-sm font-bold text-gray-800 mb-3">영상 등록 (임베드 URL 최대 3개)</label>
                             <div class="space-y-2">
-                                <input type="text" id="admin-video-1" class="w-full p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 1 URL">
-                                <input type="text" id="admin-video-2" class="w-full p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 2 URL">
-                                <input type="text" id="admin-video-3" class="w-full p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 3 URL">
+                               <div class="flex gap-2">
+                                    <input type="text" id="admin-video-1" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 1 URL">
+                                    <input type="text" id="admin-video-title-1" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 1 제목">
+                                </div>
+                                <div class="flex gap-2">
+                                    <input type="text" id="admin-video-2" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 2 URL">
+                                    <input type="text" id="admin-video-title-2" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 2 제목">
+                                </div>
+                                <div class="flex gap-2">
+                                    <input type="text" id="admin-video-3" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 3 URL">
+                                    <input type="text" id="admin-video-title-3" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 3 제목">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1335,7 +1344,11 @@
         vContainer.innerHTML = '';
         
         if (inst.videos && inst.videos.length > 0) {
-            inst.videos.forEach(url => {
+            inst.videos.forEach(item => {
+                // 문자열(구버전)과 {url, title} 객체(신버전) 모두 지원
+                const url   = (typeof item === 'string') ? item : (item.url || '');
+                const title = (typeof item === 'string') ? '' : (item.title || '');
+                if (!url) return;
                 let embedUrl = url;
 
                 // 1. 유튜브 단축 주소 (youtu.be) 변환
@@ -1357,17 +1370,20 @@
                     embedUrl = `https://player.vimeo.com/video/${vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479`;
                 }
 
-                // 가로 3개 배치용 그리드 아이템 추가
+                // 가로 3개 배치용 그리드 아이템 추가 (영상 + 제목)
                 vContainer.innerHTML += `
-                    <div class="w-full aspect-video rounded-md border border-gray-200 overflow-hidden shadow-sm">
-                        <iframe 
-                            src="${embedUrl}" 
-                            class="w-full h-full"
-                            frameborder="0" 
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
+                    <div class="w-full">
+                        <div class="w-full aspect-video rounded-md border border-gray-200 overflow-hidden shadow-sm">
+                            <iframe
+                                src="${embedUrl}"
+                                class="w-full h-full"
+                                frameborder="0"
+                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        ${title ? `<p class="mt-2 text-[13px] font-medium text-gray-700 leading-snug line-clamp-2 break-keep">${title}</p>` : ''}
                     </div>
                 `;
             });
@@ -1501,7 +1517,13 @@ function openPosterModal(id) {
             document.getElementById('admin-name').value = inst.name; document.getElementById('admin-title').value = inst.title;
             document.getElementById('admin-intro').value = inst.intro; document.getElementById('admin-profile').value = inst.profile;
             document.getElementById('admin-phone').value = inst.phone;
-            document.getElementById('admin-video-1').value = inst.videos[0] || ''; document.getElementById('admin-video-2').value = inst.videos[1] || ''; document.getElementById('admin-video-3').value = inst.videos[2] || '';
+            for (let k = 0; k < 3; k++) {
+                const v = inst.videos[k];
+                const url = v ? (typeof v === 'string' ? v : (v.url || '')) : '';
+                const ttl = v && typeof v === 'object' ? (v.title || '') : '';
+                document.getElementById('admin-video-' + (k+1)).value = url;
+                document.getElementById('admin-video-title-' + (k+1)).value = ttl;
+            }
             document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = inst.categories.includes(cb.value));
             const tagRadio = document.querySelector(`input[name="admin_tag"][value="${inst.specialTag}"]`);
             if (tagRadio) tagRadio.checked = true; else document.querySelector(`input[name="admin_tag"][value="none"]`).checked = true;
@@ -1516,7 +1538,7 @@ function openPosterModal(id) {
             editingId = null;
             document.getElementById('admin-form-title').textContent = "강사 등록";
             const btn = document.getElementById('admin-submit-btn'); btn.textContent = "등록하기"; btn.classList.replace('bg-green-600', 'bg-primary');
-            ['name','title','intro','profile','phone','photo','video-1','video-2','video-3'].forEach(id => document.getElementById('admin-'+id).value = '');
+            ['name','title','intro','profile','phone','photo','video-1','video-2','video-3','video-title-1','video-title-2','video-title-3'].forEach(id => { const el = document.getElementById('admin-'+id); if (el) el.value = ''; });
             document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = false);
             const defaultTag = document.querySelector('input[name="admin_tag"][value="none"]'); if(defaultTag) defaultTag.checked = true;
         }
@@ -1534,7 +1556,10 @@ function openPosterModal(id) {
                 name: name, title: document.getElementById('admin-title').value.trim(), intro: document.getElementById('admin-intro').value.trim(),
                 profile: document.getElementById('admin-profile').value.trim(), phone: document.getElementById('admin-phone').value.trim(),
                 categories: selectedCategories, specialTag: document.querySelector('input[name="admin_tag"]:checked')?.value || 'none',
-                videos: ['admin-video-1', 'admin-video-2', 'admin-video-3'].map(id => document.getElementById(id).value.trim()).filter(v => v)
+               videos: [1, 2, 3].map(k => ({
+                    url:   document.getElementById('admin-video-' + k).value.trim(),
+                    title: document.getElementById('admin-video-title-' + k).value.trim()
+                })).filter(v => v.url)
             };
 
             const photoInput = document.getElementById('admin-photo');
