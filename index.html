@@ -302,9 +302,18 @@
                         <div class="pt-4 border-t border-gray-100">
                             <label class="block text-sm font-bold text-gray-800 mb-3">영상 등록 (임베드 URL 최대 3개)</label>
                             <div class="space-y-2">
-                                <input type="text" id="admin-video-1" class="w-full p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 1 URL">
-                                <input type="text" id="admin-video-2" class="w-full p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 2 URL">
-                                <input type="text" id="admin-video-3" class="w-full p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 3 URL">
+                               <div class="flex gap-2">
+                                    <input type="text" id="admin-video-1" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 1 URL">
+                                    <input type="text" id="admin-video-title-1" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 1 제목">
+                                </div>
+                                <div class="flex gap-2">
+                                    <input type="text" id="admin-video-2" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 2 URL">
+                                    <input type="text" id="admin-video-title-2" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 2 제목">
+                                </div>
+                                <div class="flex gap-2">
+                                    <input type="text" id="admin-video-3" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 3 URL">
+                                    <input type="text" id="admin-video-title-3" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 3 제목">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -500,9 +509,9 @@
         name: "장신영", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1212513043", //
-            "https://vimeo.com/1212513044", //
-            "https://vimeo.com/1212513045"
+            { url: "https://vimeo.com/1212513043", title: "상품영업전략" },
+            { url: "https://vimeo.com/1212513044", title: "종신&정기보험" },
+            { url: "https://vimeo.com/1212513045", title: "상품영업전략" },
         ],
         photo: "https://i.ibb.co/C5w37qxP/2026-07-03-223922-removebg-preview.png", 
         categories: ["상품영업전략", "종신&정기보험"], 
@@ -515,9 +524,9 @@
         name: "조대수", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1212510054", //
-            "https://vimeo.com/1212510053"
+            { url: "https://vimeo.com/1207296757", title: "AI세일즈" },
+            { url: "https://vimeo.com/1212510054", title: "AI세일즈" },
+            { url: "https://vimeo.com/1212510053", title: "법인영업" },
         ],
         photo: "https://i.ibb.co/bRyNrgtT/2026-07-06-164042-removebg-preview.png", 
         categories: ["AI세일즈", "연금&저축성보험", "법인영업"], 
@@ -530,9 +539,9 @@
         name: "김낙현", 
         type: "추천",
         videos: [
-            "https://vimeo.com/1212515054", //
-            "https://vimeo.com/1212515056", //
-            "https://vimeo.com/1212515055"
+            { url: "https://vimeo.com/1212515054", title: "" },
+            { url: "https://vimeo.com/1212515056", title: "" },
+            { url: "https://vimeo.com/1212515055", title: "" },
         ],
         photo: "https://i.ibb.co/gZcBpZHQ/2026-02-27-123319-removebg-preview.png", 
         categories: ["변액보험", "연금&저축성보험"], 
@@ -545,9 +554,9 @@
         name: "염동준", 
         type: "추천",
         videos: [
-            "https://vimeo.com/1212517124", // 
-            "https://vimeo.com/1212517125", //
-            "https://vimeo.com/1212517123"
+            { url: "https://vimeo.com/1212517124", title: "" },
+            { url: "https://vimeo.com/1212517125", title: "" },
+            { url: "https://vimeo.com/1212517123", title: "" },
         ],
         photo: "https://i.ibb.co/23Hs3846/2026-07-21-154054-removebg-preview.png", 
         categories: ["상품영업전략", "연금&저축성보험"], 
@@ -560,9 +569,9 @@
         name: "이병조", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1212518927", // 
-            "https://vimeo.com/1212518926", //
-            "https://vimeo.com/1212518925"
+            { url: "https://vimeo.com/1212518927", title: "" },
+            { url: "https://vimeo.com/1212518926", title: "" },
+            { url: "https://vimeo.com/1212518925", title: "" },
         ],
         photo: "https://i.ibb.co/FM5jtr5/2026-06-20-025447-removebg-preview.png", 
         categories: ["메디컬화법", "약관&보상&고지의무"], 
@@ -575,9 +584,9 @@
         name: "이해웅", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1212519971", // 
-            "https://vimeo.com/1212519970", //
-            "https://vimeo.com/1212519972"
+            { url: "https://vimeo.com/1212519971", title: "" },
+            { url: "https://vimeo.com/1212519970", title: "" },
+            { url: "https://vimeo.com/1212519972", title: "" },
         ],
         photo: "https://i.ibb.co/nSL1Jtd/2026-07-21-160036.png", 
         categories: ["상품영업전략", "약관&보상&고지의무"], 
@@ -590,9 +599,9 @@
         name: "한민국", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1212521173", // 
-            "https://vimeo.com/1212521172", //
-            "https://vimeo.com/1212521171"
+            { url: "https://vimeo.com/1212521173", title: "" },
+            { url: "https://vimeo.com/1212521172", title: "" },
+            { url: "https://vimeo.com/1212521171", title: "" },
         ],
         photo: "https://i.ibb.co/sv6QYyLc/2026-07-21-162756-removebg-preview.png", 
         categories: ["법인영업", "실손보험"], 
@@ -605,9 +614,9 @@
         name: "박승용", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1212522732", // 
-            "https://vimeo.com/1212522733", //
-            "https://vimeo.com/1212522734"
+            { url: "https://vimeo.com/1212522732", title: "" },
+            { url: "https://vimeo.com/1212522733", title: "" },
+            { url: "https://vimeo.com/1212522734", title: "" },
         ],
         photo: "https://i.ibb.co/0yDfGRSW/2026-07-24-083427.png", 
         categories: ["법인영업", "실손보험"], 
@@ -620,9 +629,9 @@
         name: "최승은", 
         type: "추천",
         videos: [
-            "https://vimeo.com/1212542644", // 
-            "https://vimeo.com/1212542645", //
-            "https://vimeo.com/1212542646"
+            { url: "https://vimeo.com/1212542644", title: "" },
+            { url: "https://vimeo.com/1212542645", title: "" },
+            { url: "https://vimeo.com/1212542646", title: "" },
         ],
         photo: "https://i.ibb.co/CKd3wKq9/2026-07-24-083855.png", 
         categories: ["법인영업", "실손보험"], 
@@ -635,9 +644,9 @@
         name: "김윤호", 
         type: "추천",
         videos: [
-            "https://vimeo.com/1212569736", // 
-            "https://vimeo.com/1212569735", //
-            "https://vimeo.com/1212569737"
+            { url: "https://vimeo.com/1212569736", title: "" },
+            { url: "https://vimeo.com/1212569735", title: "" },
+            { url: "https://vimeo.com/1212569737", title: "" },
         ],
         photo: "https://i.ibb.co/WNSm6B9J/2026-07-24-084031.png", 
         categories: ["법인영업", "실손보험"], 
@@ -650,9 +659,9 @@
         name: "김지율", 
         type: "추천",
         videos: [
-            "https://vimeo.com/1212572556", // 
-            "https://vimeo.com/1212572557", //
-            "https://vimeo.com/1212572555"
+            { url: "https://vimeo.com/1212572556", title: "" },
+            { url: "https://vimeo.com/1212572557", title: "" },
+            { url: "https://vimeo.com/1212572555", title: "" },
         ],
         photo: "https://i.ibb.co/0R2d7r3t/2026-07-24-084205.png", 
         categories: ["법인영업", "실손보험"], 
@@ -665,9 +674,9 @@
         name: "원승현", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/zWw0nyyr/2026-07-24-084507.png", 
         categories: ["법인영업", "실손보험"], 
@@ -680,9 +689,9 @@
         name: "황선찬", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/HLXpt8Vw/2026-07-24-084721.png", 
         categories: ["법인영업", "실손보험"], 
@@ -695,9 +704,9 @@
         name: "김현진", 
         type: "추천",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/r2KMDL8g/2026-07-24-085235.png", 
         categories: ["법인영업", "실손보험"], 
@@ -710,9 +719,9 @@
         name: "김효석", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/jkZ2TghS/2026-07-24-085445.png", 
         categories: ["법인영업", "실손보험"], 
@@ -725,9 +734,9 @@
         name: "이상훈", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/JFs7bCyM/2026-07-24-085624.png", 
         categories: ["법인영업", "실손보험"], 
@@ -740,9 +749,9 @@
         name: "박준용", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/LhXvhk0j/2026-07-24-085747.png", 
         categories: ["법인영업", "실손보험"], 
@@ -755,9 +764,9 @@
         name: "이희준", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/XrLX09Ln/2026-07-24-085917.png", 
         categories: ["법인영업", "실손보험"], 
@@ -770,9 +779,9 @@
         name: "박중환", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/C5jX9kJC/2026-07-24-090042.png", 
         categories: ["법인영업", "실손보험"], 
@@ -785,9 +794,9 @@
         name: "노규한", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/Z6vKwNBM/2026-07-24-090227.png", 
         categories: ["법인영업", "실손보험"], 
@@ -800,9 +809,9 @@
         name: "백문영", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/SX86czXc/2026-07-24-090414.png", 
         categories: ["법인영업", "실손보험"], 
@@ -815,9 +824,9 @@
         name: "장준혁", 
         type: "제휴",
         videos: [
-            "https://vimeo.com/1207296757", // 
-            "https://vimeo.com/1207296757", //
-            "https://vimeo.com/1207296757"
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
+            { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/vCHWLTzZ/Kakao-Talk-20260303-225628490.jpg", 
         categories: ["법인영업", "실손보험"], 
@@ -1335,7 +1344,11 @@
         vContainer.innerHTML = '';
         
         if (inst.videos && inst.videos.length > 0) {
-            inst.videos.forEach(url => {
+            inst.videos.forEach(item => {
+                // 문자열(구버전)과 {url, title} 객체(신버전) 모두 지원
+                const url   = (typeof item === 'string') ? item : (item.url || '');
+                const title = (typeof item === 'string') ? '' : (item.title || '');
+                if (!url) return;
                 let embedUrl = url;
 
                 // 1. 유튜브 단축 주소 (youtu.be) 변환
@@ -1357,17 +1370,20 @@
                     embedUrl = `https://player.vimeo.com/video/${vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479`;
                 }
 
-                // 가로 3개 배치용 그리드 아이템 추가
+                // 가로 3개 배치용 그리드 아이템 추가 (영상 + 제목)
                 vContainer.innerHTML += `
-                    <div class="w-full aspect-video rounded-md border border-gray-200 overflow-hidden shadow-sm">
-                        <iframe 
-                            src="${embedUrl}" 
-                            class="w-full h-full"
-                            frameborder="0" 
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
-                        </iframe>
+                    <div class="w-full">
+                        <div class="w-full aspect-video rounded-md border border-gray-200 overflow-hidden shadow-sm">
+                            <iframe
+                                src="${embedUrl}"
+                                class="w-full h-full"
+                                frameborder="0"
+                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        ${title ? `<p class="mt-2 text-[13px] font-medium text-gray-700 leading-snug line-clamp-2 break-keep">${title}</p>` : ''}
                     </div>
                 `;
             });
@@ -1501,7 +1517,13 @@ function openPosterModal(id) {
             document.getElementById('admin-name').value = inst.name; document.getElementById('admin-title').value = inst.title;
             document.getElementById('admin-intro').value = inst.intro; document.getElementById('admin-profile').value = inst.profile;
             document.getElementById('admin-phone').value = inst.phone;
-            document.getElementById('admin-video-1').value = inst.videos[0] || ''; document.getElementById('admin-video-2').value = inst.videos[1] || ''; document.getElementById('admin-video-3').value = inst.videos[2] || '';
+            for (let k = 0; k < 3; k++) {
+                const v = inst.videos[k];
+                const url = v ? (typeof v === 'string' ? v : (v.url || '')) : '';
+                const ttl = v && typeof v === 'object' ? (v.title || '') : '';
+                document.getElementById('admin-video-' + (k+1)).value = url;
+                document.getElementById('admin-video-title-' + (k+1)).value = ttl;
+            }
             document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = inst.categories.includes(cb.value));
             const tagRadio = document.querySelector(`input[name="admin_tag"][value="${inst.specialTag}"]`);
             if (tagRadio) tagRadio.checked = true; else document.querySelector(`input[name="admin_tag"][value="none"]`).checked = true;
@@ -1516,7 +1538,7 @@ function openPosterModal(id) {
             editingId = null;
             document.getElementById('admin-form-title').textContent = "강사 등록";
             const btn = document.getElementById('admin-submit-btn'); btn.textContent = "등록하기"; btn.classList.replace('bg-green-600', 'bg-primary');
-            ['name','title','intro','profile','phone','photo','video-1','video-2','video-3'].forEach(id => document.getElementById('admin-'+id).value = '');
+            ['name','title','intro','profile','phone','photo','video-1','video-2','video-3','video-title-1','video-title-2','video-title-3'].forEach(id => { const el = document.getElementById('admin-'+id); if (el) el.value = ''; });
             document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = false);
             const defaultTag = document.querySelector('input[name="admin_tag"][value="none"]'); if(defaultTag) defaultTag.checked = true;
         }
@@ -1534,7 +1556,10 @@ function openPosterModal(id) {
                 name: name, title: document.getElementById('admin-title').value.trim(), intro: document.getElementById('admin-intro').value.trim(),
                 profile: document.getElementById('admin-profile').value.trim(), phone: document.getElementById('admin-phone').value.trim(),
                 categories: selectedCategories, specialTag: document.querySelector('input[name="admin_tag"]:checked')?.value || 'none',
-                videos: ['admin-video-1', 'admin-video-2', 'admin-video-3'].map(id => document.getElementById(id).value.trim()).filter(v => v)
+               videos: [1, 2, 3].map(k => ({
+                    url:   document.getElementById('admin-video-' + k).value.trim(),
+                    title: document.getElementById('admin-video-title-' + k).value.trim()
+                })).filter(v => v.url)
             };
 
             const photoInput = document.getElementById('admin-photo');
