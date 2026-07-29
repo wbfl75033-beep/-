@@ -100,10 +100,10 @@
                     </nav>
 
                     <div class="flex space-x-2">
-                        <button onclick="switchTab('admin')" class="px-3 py-1.5 text-xs font-medium text-white bg-primary rounded shadow-sm hover:bg-opacity-90 transition flex items-center">
+                        <button onclick="switchTab('admin')" class="px-4 py-2 text-xs font-bold text-white bg-primary rounded-full shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200 flex items-center">
                             <i class="fas fa-user-cog mr-1.5"></i>강사 등록
                         </button>
-                        <button onclick="switchTab('admin-poster')" class="px-3 py-1.5 text-xs font-medium text-white bg-primaryLight rounded shadow-sm hover:bg-opacity-90 transition flex items-center">
+                        <button onclick="switchTab('admin-poster')" class="px-4 py-2 text-xs font-bold text-white bg-primaryLight rounded-full shadow-[0_4px_14px_rgba(126,139,226,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(126,139,226,0.4)] transition-all duration-200 flex items-center">
                             <i class="fas fa-pen mr-1.5"></i>공고 글쓰기
                         </button>
                     </div>
@@ -238,23 +238,23 @@
     </div>
 
     <!-- [관리자] 강사 등록 탭 -->
-    <div id="admin-tab" class="tab-content bg-bgGray min-h-screen py-10">
+    <div id="admin-tab" class="tab-content bg-[#f6f7fc] min-h-screen py-12">
         <div class="container mx-auto px-4 max-w-4xl">
-            <div class="bg-white rounded border border-gray-200 overflow-hidden shadow-sm">
-                <div class="bg-primary text-white px-6 py-4 flex items-center justify-between">
-                    <h2 class="text-lg font-bold" id="admin-form-title">강사 등록 / 수정</h2>
-                    <button onclick="cancelAdminForm()" class="text-white hover:text-gray-200"><i class="fas fa-times"></i></button>
+            <div class="bg-white rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(17,24,39,0.1)]">
+                <div class="bg-gradient-to-r from-[#2f3b89] to-[#5a6ad0] text-white px-8 py-6 flex items-center justify-between">
+                    <h2 class="text-xl font-black tracking-tight" id="admin-form-title">강사 등록 / 수정</h2>
+                    <button onclick="cancelAdminForm()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/15 transition"><i class="fas fa-times"></i></button>
                 </div>
                 
                 <div class="p-6 md:p-8 space-y-6">
-                    <div class="border border-gray-200 rounded-sm p-5">
+                    <div class="rounded-xl ring-1 ring-gray-100 bg-gray-50/60 p-5">
                         <label class="block text-sm font-bold text-gray-800 mb-4">분야 선택 <span class="text-xs font-normal text-red-500 ml-2">*최대 3개</span></label>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="admin-category-checkboxes">
                             <!-- JS 생성 -->
                         </div>
                     </div>
 
-                    <div class="border border-gray-200 rounded-sm p-5">
+                    <div class="rounded-xl ring-1 ring-gray-100 bg-gray-50/60 p-5">
                         <label class="block text-sm font-bold text-gray-800 mb-4">강사 태그</label>
                         <div class="flex flex-wrap gap-5">
                             <label class="flex items-center space-x-2 text-sm text-gray-600 cursor-pointer">
@@ -275,99 +275,99 @@
                     <div class="space-y-5">
                         <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
                             <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">강의 제목</label>
-                            <input type="text" id="admin-title" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="예: 거절을 승낙으로 바꾸는 화법">
+                            <input type="text" id="admin-title" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: 거절을 승낙으로 바꾸는 화법">
                         </div>
                         <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
                             <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">강사명</label>
-                            <input type="text" id="admin-name" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="강사명을 입력하세요">
+                            <input type="text" id="admin-name" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="강사명을 입력하세요">
                         </div>
                         <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
                             <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">프로필 사진</label>
                             <div class="flex-1">
-                                <input type="file" id="admin-photo" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer border border-gray-300 rounded-sm p-1">
+                                <input type="file" id="admin-photo" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1.5">
                             </div>
                         </div>
                         <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
                             <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">소개문구</label>
-                            <textarea id="admin-intro" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary h-20 resize-none" placeholder="짧은 소개글을 입력하세요."></textarea>
+                            <textarea id="admin-intro" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition h-20 resize-none" placeholder="짧은 소개글을 입력하세요."></textarea>
                         </div>
                         <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
                             <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">상세 프로필</label>
-                            <textarea id="admin-profile" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary h-32 resize-none" placeholder="경력, 학력 등 상세 프로필 (엔터로 줄바꿈)"></textarea>
+                            <textarea id="admin-profile" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition h-32 resize-none" placeholder="경력, 학력 등 상세 프로필 (엔터로 줄바꿈)"></textarea>
                         </div>
                         <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
                             <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">연락처</label>
-                            <input type="text" id="admin-phone" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="예: 02-525-1686">
+                            <input type="text" id="admin-phone" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: 02-525-1686">
                         </div>
                         <div class="pt-4 border-t border-gray-100">
                             <label class="block text-sm font-bold text-gray-800 mb-3">영상 등록 (임베드 URL 최대 3개)</label>
                             <div class="space-y-2">
                                <div class="flex gap-2">
-                                    <input type="text" id="admin-video-1" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 1 URL">
-                                    <input type="text" id="admin-video-title-1" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 1 제목">
+                                    <input type="text" id="admin-video-1" class="w-1/2 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="영상 1 URL">
+                                    <input type="text" id="admin-video-title-1" class="w-1/2 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="영상 1 제목">
                                 </div>
                                 <div class="flex gap-2">
-                                    <input type="text" id="admin-video-2" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 2 URL">
-                                    <input type="text" id="admin-video-title-2" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 2 제목">
+                                    <input type="text" id="admin-video-2" class="w-1/2 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="영상 2 URL">
+                                    <input type="text" id="admin-video-title-2" class="w-1/2 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="영상 2 제목">
                                 </div>
                                 <div class="flex gap-2">
-                                    <input type="text" id="admin-video-3" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 3 URL">
-                                    <input type="text" id="admin-video-title-3" class="w-1/2 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primary" placeholder="영상 3 제목">
+                                    <input type="text" id="admin-video-3" class="w-1/2 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="영상 3 URL">
+                                    <input type="text" id="admin-video-title-3" class="w-1/2 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="영상 3 제목">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-2 border-t border-gray-200">
-                    <button class="px-5 py-2 border border-gray-300 rounded-sm text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" onclick="cancelAdminForm()">취소</button>
-                    <button id="admin-submit-btn" class="px-6 py-2 bg-primary rounded-sm text-sm font-bold text-white hover:bg-opacity-90 transition-colors shadow-sm" onclick="saveInstructor()">등록하기</button>
+                <div class="bg-gray-50/70 px-8 py-5 flex justify-end gap-2.5 border-t border-gray-100">
+                    <button class="px-6 py-2.5 rounded-full ring-1 ring-gray-200 bg-white text-sm font-medium text-gray-600 hover:ring-gray-300 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(17,24,39,0.09)] transition-all duration-200" onclick="cancelAdminForm()">취소</button>
+                    <button id="admin-submit-btn" class="px-8 py-2.5 rounded-full bg-primary text-sm font-bold text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200" onclick="saveInstructor()">등록하기</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- [관리자] 포스터 공고 등록 탭 -->
-    <div id="admin-poster-tab" class="tab-content bg-bgGray min-h-screen py-10">
+    <div id="admin-poster-tab" class="tab-content bg-[#f6f7fc] min-h-screen py-12">
         <div class="container mx-auto px-4 max-w-4xl">
-            <div class="bg-white rounded border border-gray-200 overflow-hidden shadow-sm">
-                <div class="bg-primaryLight text-white px-6 py-4 flex items-center justify-between">
-                    <h2 class="text-lg font-bold" id="admin-poster-form-title">공고 글쓰기</h2>
-                    <button onclick="cancelPosterAdminForm()" class="text-white hover:text-gray-100"><i class="fas fa-times"></i></button>
+            <div class="bg-white rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(17,24,39,0.1)]">
+                <div class="bg-gradient-to-r from-[#5a6ad0] to-[#9aa8ee] text-white px-8 py-6 flex items-center justify-between">
+                    <h2 class="text-xl font-black tracking-tight" id="admin-poster-form-title">공고 글쓰기</h2>
+                    <button onclick="cancelPosterAdminForm()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/15 transition"><i class="fas fa-times"></i></button>
                 </div>
                 
                 <div class="p-6 md:p-8 space-y-5">
                     <div class="flex flex-col md:flex-row md:items-center pt-2">
                         <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">공고 제목</label>
-                        <input type="text" id="admin-poster-title" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primaryLight" placeholder="예: 성공적인 숏폼 마케팅 세미나">
+                        <input type="text" id="admin-poster-title" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: 성공적인 숏폼 마케팅 세미나">
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
                         <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">일시</label>
-                        <input type="text" id="admin-poster-date" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primaryLight" placeholder="예: 2026년 6월 20일 (토) 14:00 - 17:00">
+                        <input type="text" id="admin-poster-date" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: 2026년 6월 20일 (토) 14:00 - 17:00">
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
                         <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">장소</label>
-                        <input type="text" id="admin-poster-location" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primaryLight" placeholder="예: 강남구 테헤란로 대교육장">
+                        <input type="text" id="admin-poster-location" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: 강남구 테헤란로 대교육장">
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
                         <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">포스터 이미지</label>
                         <div class="flex-1">
-                            <input type="file" id="admin-poster-image" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer border border-gray-300 rounded-sm p-1">
+                            <input type="file" id="admin-poster-image" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1.5">
                         </div>
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
                         <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">상세 안내</label>
-                        <textarea id="admin-poster-desc" class="flex-1 p-2.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-primaryLight h-40 resize-none" placeholder="대상, 혜택, 세부 프로그램 등 상세 내용을 입력하세요."></textarea>
+                        <textarea id="admin-poster-desc" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition h-40 resize-none" placeholder="대상, 혜택, 세부 프로그램 등 상세 내용을 입력하세요."></textarea>
                     </div>
                 </div>
 
-                <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-2 border-t border-gray-200">
-                    <button class="px-5 py-2 border border-gray-300 rounded-sm text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors" onclick="cancelPosterAdminForm()">취소</button>
-                    <button id="admin-poster-submit-btn" class="px-6 py-2 bg-primaryLight rounded-sm text-sm font-bold text-white hover:bg-opacity-90 transition-colors shadow-sm" onclick="savePoster()">등록하기</button>
+                <div class="bg-gray-50/70 px-8 py-5 flex justify-end gap-2.5 border-t border-gray-100">
+                    <button class="px-6 py-2.5 rounded-full ring-1 ring-gray-200 bg-white text-sm font-medium text-gray-600 hover:ring-gray-300 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(17,24,39,0.09)] transition-all duration-200" onclick="cancelPosterAdminForm()">취소</button>
+                    <button id="admin-poster-submit-btn" class="px-8 py-2.5 rounded-full bg-primaryLight text-sm font-bold text-white shadow-[0_4px_14px_rgba(126,139,226,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(126,139,226,0.4)] transition-all duration-200" onclick="savePoster()">등록하기</button>
                 </div>
             </div>
         </div>
