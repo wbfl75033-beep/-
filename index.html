@@ -1083,6 +1083,70 @@
 
         // ===== 강사 문의하기 =====
         let inquiryInstId = null;
+        // ===== 제휴 vs 추천 비교 팝업 =====
+        function openTypeCompare(activeType) {
+            const data = {
+                "제휴": {
+                    tag: "제휴강사",
+                    headline: "현장의 프로페셔널, 다이렉트 매칭",
+                    lines: [
+                        "현재 보험 교육 현장에서 활약 중인 최고 수준의 전문 강사진입니다.",
+                        "원하시는 강사와 직접 소통하여 신속하고 자유롭게 섭외하실 수 있습니다.",
+                        "※ 고객사 요청 시, FP파트너즈의 맞춤형 강의 기획·진행 지원 및 강사 추천이 가능합니다."
+                    ]
+                },
+                "추천": {
+                    tag: "추천강사",
+                    headline: "영상으로 검증된, 맞춤형 풀케어(Full-care)",
+                    lines: [
+                        "FP파트너즈가 직접 발굴하고 검증한 프리미엄 강사진입니다.",
+                        "텍스트 프로필로는 알 수 없었던 강사의 실제 강의 역량을 영상 클립으로 직관적으로 확인해 보세요.",
+                        "강사 추천부터 강의 기획·교안 구성·일정 조율까지 FP파트너즈가 조직의 니즈에 맞춰 완벽하게 대행해 드립니다."
+                    ]
+                }
+            };
+
+            function cardHtml(type, active) {
+                const d = data[type];
+                const isP = (type === "제휴");
+                // 활성: 색 있는 박스 / 비활성: 회색
+                const box = active
+                    ? (isP ? "bg-[#eef0f9] ring-2 ring-[#3a4ba0]/30" : "bg-[#e4f5ea] ring-2 ring-emerald-500/30")
+                    : "bg-gray-50 ring-1 ring-gray-200 opacity-60";
+                const badge = active
+                    ? (isP ? "bg-[#3a4ba0]" : "bg-emerald-600")
+                    : "bg-gray-300";
+                const headColor = active
+                    ? (isP ? "text-[#3a4ba0]" : "text-emerald-700")
+                    : "text-gray-400";
+                const textColor = active ? "text-gray-600" : "text-gray-400";
+                return `
+                    <div class="flex-1 rounded-2xl p-5 md:p-6 ${box} transition-all duration-300">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-3 py-1 rounded-full text-[12px] font-bold text-white ${badge}">${d.tag}</span>
+                            ${active ? '<span class="text-[11px] font-bold '+headColor+'">현재 강사</span>' : ''}
+                        </div>
+                        <p class="text-[15px] md:text-[16px] font-black mb-3 ${headColor}">${d.headline}</p>
+                        <ul class="space-y-2">
+                            ${d.lines.map(l => `<li class="text-[12.5px] leading-relaxed ${textColor} flex gap-1.5"><span class="${active ? headColor : 'text-gray-300'} mt-0.5">•</span><span>${l}</span></li>`).join('')}
+                        </ul>
+                    </div>`;
+            }
+
+            const wrap = document.getElementById('type-compare-body');
+            wrap.innerHTML = cardHtml("제휴", activeType === "제휴") + cardHtml("추천", activeType === "추천");
+
+            const m = document.getElementById('type-compare-modal');
+            m.classList.remove('hidden');
+            setTimeout(() => { m.classList.remove('opacity-0'); m.firstElementChild.classList.remove('scale-95'); }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+        function closeTypeCompare() {
+            const m = document.getElementById('type-compare-modal');
+            m.classList.add('opacity-0'); m.firstElementChild.classList.add('scale-95');
+            setTimeout(() => { m.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+        }
+
         function openInquiry(id) {
             inquiryInstId = id;
             const inst = instructors.find(i => i.id === id);
@@ -1494,7 +1558,7 @@
 
     let filtered = instructors.slice();
 
-    // 2. 카테고리 필터링 (다중 선택 = OR 조건: 선택 분야 중 하나라도 해당되면 노출)
+    // 2. 카테고리 필터링 (다중 선택 = AND 조건: 선택 분야를 모두 가진 강사만 노출)
     if (selectedCategories.length > 0) {
         filtered = filtered.filter(inst =>
             inst.categories && selectedCategories.every(c => inst.categories.includes(c))
@@ -1775,10 +1839,13 @@
         let badgeHtml = '';
         if (inst.type) {
             badgeHtml = `
-                <span class="inline-flex items-center ml-3 px-4 py-1 rounded-sm text-[13px] font-bold text-white shadow-sm ${theme.badge}">${inst.type}</span>
+                <button onclick="openTypeCompare('${inst.type}')" title="제휴·추천 강사 비교 보기"
+                        class="group inline-flex items-center ml-3 px-4 py-1 rounded-full text-[13px] font-bold text-white shadow-sm ${theme.badge} hover:brightness-110 hover:-translate-y-0.5 transition-all duration-200">
+                    ${inst.type} <i class="fas fa-circle-question text-[11px] ml-1.5 opacity-80"></i>
+                </button>
             `;
         }
-        modalNameEl.innerHTML = `${inst.name}${badgeHtml}`;
+        modalNameEl.innerHTML = `<span class="align-middle">${inst.name}</span>${badgeHtml}`;
     }
 
     document.getElementById('modal-photo').src = inst.photo;
@@ -1805,11 +1872,11 @@
     if (contactContainer) {
         let typeNotice = "";
         if (inst.type === "제휴") {
-            typeNotice = "*본 강사는 제휴강사로 본사 제휴 프로세스에 따라 강의가 진행됩니다.";
+            typeNotice = "제휴강사 | 현장의 프로페셔널, 다이렉트 매칭  ·  <button onclick=\'openTypeCompare(\"제휴\")\' class=\'underline hover:text-gray-700\'>자세히</button>";
         } else if (inst.type === "추천") {
-            typeNotice = "*본 강사는 추천강사로 검증된 커리큘럼을 기반으로 특별 매칭됩니다.";
+            typeNotice = "추천강사 | 영상으로 검증된, 맞춤형 풀케어(Full-care)  ·  <button onclick=\'openTypeCompare(\"추천\")\' class=\'underline hover:text-gray-700\'>자세히</button>";
         } else {
-            typeNotice = "*강의 의뢰 시 담당 실무자가 상세 일정을 안내해 드립니다.";
+            typeNotice = "강의 의뢰 시 담당 실무자가 상세 일정을 안내해 드립니다.";
         }
 
        contactContainer.innerHTML = `
@@ -2209,6 +2276,20 @@ function openPosterModal(id) {
             <div class="bg-gray-50/70 px-6 py-4 flex justify-end gap-2.5 border-t border-gray-100">
                 <button onclick="closeInquiry()" class="px-5 py-2.5 rounded-full ring-1 ring-gray-200 bg-white text-sm font-medium text-gray-600 hover:ring-gray-300 transition">취소</button>
                 <button onclick="submitInquiry()" class="px-7 py-2.5 rounded-full bg-primary text-sm font-bold text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200">문의 접수</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 제휴 vs 추천 비교 모달 -->
+    <div id="type-compare-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300" onclick="if(event.target===this) closeTypeCompare()">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl transform scale-95 transition-transform duration-300 overflow-hidden">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+                <h3 class="text-lg font-black text-gray-900">제휴강사 · 추천강사 안내</h3>
+                <button onclick="closeTypeCompare()" class="w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"><i class="fas fa-times text-lg"></i></button>
+            </div>
+            <div id="type-compare-body" class="p-6 flex flex-col md:flex-row gap-4"></div>
+            <div class="bg-gray-50/70 px-6 py-4 flex justify-end border-t border-gray-100">
+                <button onclick="closeTypeCompare()" class="px-7 py-2.5 rounded-full bg-primary text-sm font-bold text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 transition-all duration-200">확인</button>
             </div>
         </div>
     </div>
