@@ -194,6 +194,14 @@
                     </div>
                 </div>
 
+                <!-- 전체분야 (별도 버튼) -->
+                <div class="flex justify-center mb-4">
+                    <button id="all-category-btn" onclick="selectAllCategory()"
+                            class="px-8 py-2.5 rounded-full text-[14px] font-bold bg-primary text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200">
+                        <i class="fas fa-border-all text-[12px] mr-1.5"></i> 전체분야
+                    </button>
+                </div>
+
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)]" id="category-filters">
                     <!-- JS에서 버튼 생성 -->
                 </div>
@@ -575,7 +583,7 @@
     </div>
     <!-- 기능 구현 Javascript -->
     <script>
-        const categories = ["전체분야", "FPShip", "메디컬화법", "약관&보상&고지의무", "실손보험", "종신&정기보험", "변액보험", "연금&저축성보험", "자동차&운전자보험", "배상책임&화재보험", "치아&어린이&치매보험", "세무설계", "초회상담(AP)", "상담프로세스", "상품영업전략", "DB영업", "AI세일즈", "법인영업"];
+        const categories = ["FPShip", "메디컬화법", "약관&보상&고지의무", "실손보험", "종신&정기보험", "변액보험", "연금&저축성보험", "자동차&운전자보험", "배상책임&화재보험", "치아&어린이&치매보험", "세무설계", "초회상담(AP)", "상담프로세스", "상품영업전략", "DB영업", "AI세일즈", "법인영업", "매니저 육성"];
         
        const instructors = [
     { 
@@ -591,7 +599,8 @@
         categories: ["상품영업전략", "초회상담(AP)"], 
         title: "보장분석 전문 강사입니다.", 
         profile: "현) FP파트너스 대표 강사\n전) 외국계 생명보험사 지점장", 
-        intro: "매월 바뀌는 보험사별 상품 판매 전략과 트렌드를 분석하여 현장에 즉시 적용 가능한 세일즈 포인트를 제공합니다." 
+        intro: "매월 바뀌는 보험사별 상품 판매 전략과 트렌드를 분석하여 현장에 즉시 적용 가능한 세일즈 포인트를 제공합니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 2, 
@@ -606,7 +615,8 @@
         categories: ["AI세일즈", "FPShip", "법인영업"], 
         title: "AI 전문가로 만들어드립니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 3, 
@@ -621,7 +631,8 @@
         categories: ["DB영업", "상담프로세스", "초회상담(AP)"], 
         title: "FP를 위한 경제 브리핑", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 4, 
@@ -636,7 +647,8 @@
         categories: ["상품영업전략", "상담프로세스"], 
         title: "AI 전문가로 만들어드립니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 5, 
@@ -651,7 +663,8 @@
         categories: ["메디컬화법"], 
         title: "메디컬화법 전문 강사입니다", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 6, 
@@ -666,7 +679,8 @@
         categories: ["상품영업전략", "상담프로세스", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 7, 
@@ -681,7 +695,8 @@
         categories: ["상담프로세스", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 8, 
@@ -696,7 +711,8 @@
         categories: ["종신&정기보험", "상담프로세스", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 9, 
@@ -711,7 +727,8 @@
         categories: ["DB영업", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 10, 
@@ -726,7 +743,8 @@
         categories: ["DB영업", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 11, 
@@ -741,7 +759,8 @@
         categories: ["FPShip", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },   
     { 
         id: 12, 
@@ -756,7 +775,8 @@
         categories: ["FPShip", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 13, 
@@ -771,7 +791,8 @@
         categories: ["종신&정기보험", "FPShip", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 14, 
@@ -786,7 +807,8 @@
         categories: ["AI세일즈", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },  
     { 
         id: 15, 
@@ -801,7 +823,8 @@
         categories: ["FPShip", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 16, 
@@ -816,7 +839,8 @@
         categories: ["상품영업전략", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 17, 
@@ -831,7 +855,8 @@
         categories: ["변액보험"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },     
     { 
         id: 18, 
@@ -846,7 +871,8 @@
         categories: ["상담프로세스", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },   
     { 
         id: 19, 
@@ -861,7 +887,8 @@
         categories: ["법인영업"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },  
     { 
         id: 20, 
@@ -876,7 +903,8 @@
         categories: ["법인영업"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 21, 
@@ -891,7 +919,8 @@
         categories: ["법인영업"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }                     
            
 ];
@@ -1473,18 +1502,31 @@
             initReveal();
         }
 
+        function selectAllCategory() {
+            selectedCategories = [];
+            currentFilter = "전체분야";
+            instructorVisibleCount = INSTRUCTOR_LIMIT;
+            renderFilters();
+            renderInstructors();
+        }
+
       function renderFilters() {
     const container = document.getElementById('category-filters');
     if (!container) return;
+
+    const allBtn = document.getElementById('all-category-btn');
+    if (allBtn) {
+        allBtn.className = (selectedCategories.length === 0)
+            ? "px-8 py-2.5 rounded-full text-[14px] font-bold bg-primary text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200"
+            : "px-8 py-2.5 rounded-full text-[14px] font-bold bg-white ring-1 ring-gray-200 text-gray-500 hover:text-primary hover:ring-primary/30 hover:-translate-y-0.5 transition-all duration-200";
+    }
 
     container.className = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)]";
     container.innerHTML = '';
 
     categories.forEach(cat => {
         const btn = document.createElement('button');
-        const isAllCat = (cat === "전체분야" || cat === "전체");
-        // 활성 판정: "전체분야"는 아무것도 선택 안 됐을 때 / 나머지는 배열에 포함됐을 때
-        const isActive = isAllCat ? (selectedCategories.length === 0) : selectedCategories.includes(cat);
+        const isActive = selectedCategories.includes(cat);
 
         const activeClass = "border-b border-r border-gray-100 bg-[#eef0f9] " +
                             "px-2 py-4 text-[13px] text-center font-bold text-primary transition-colors duration-200";
@@ -1496,14 +1538,9 @@
         btn.textContent = cat;
 
         btn.onclick = () => {
-            if (isAllCat) {
-                selectedCategories = [];          // 전체분야 → 선택 해제
-            } else {
-                const i = selectedCategories.indexOf(cat);
-                if (i > -1) selectedCategories.splice(i, 1);   // 이미 선택 → 해제
-                else selectedCategories.push(cat);             // 새로 선택
-            }
-            // 대표 필터값 동기화 (제목/기존 로직 호환)
+            const i = selectedCategories.indexOf(cat);
+            if (i > -1) selectedCategories.splice(i, 1);
+            else selectedCategories.push(cat);
             currentFilter = selectedCategories.length === 0 ? "전체분야"
                           : (selectedCategories.length === 1 ? selectedCategories[0] : "선택분야");
             instructorVisibleCount = INSTRUCTOR_LIMIT;
