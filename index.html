@@ -60,7 +60,7 @@
 
     <!-- 📢 상단 광고 배너 (gaworld 스타일) -->
     <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 transition-colors duration-500" style="background-color:#eef1f4;">
-        <div id="top-ad-track" class="relative w-full h-[90px] md:h-[110px]"></div>
+        <div id="top-ad-track" class="relative w-full h-[120px] md:h-[150px]"></div>
         <!-- 좌우 화살표 -->
         <button onclick="moveTopAd(-1)" aria-label="이전 광고"
                 class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/70 hover:bg-white text-gray-500 shadow-sm flex items-center justify-center transition">
@@ -1256,26 +1256,18 @@
         let bannerTimer = null;
 
         // ===== 상단 광고 배너 (gaworld 스타일: 가로 슬라이드) =====
+        // 상단 광고: 배너 이미지 한 장(1600 x 150 권장, 최소 폭 1200px)을 그대로 표시
         const topAds = [
             {
-                text1: "GA 행사 여행, 비싸게 진행하지 마세요",
-                text2: "3개 여행사 비교하고 <b class=\'text-blue-600\'>무조건 최저가로</b>",
-                image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=400&q=80",
-                bg: "#eef1f4",
+                image: "https://images.unsplash.com/photo-1707157281599-d155d1da5b4c?auto=format&fit=crop&w=1600&q=80",
                 link: ""
             },
             {
-                text1: "우리 지사 사무실, 임대료 아끼세요",
-                text2: "GA 전용 오피스 임차 <b class=\'text-emerald-600\'>최대 40% 절감</b>",
-                image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80",
-                bg: "#eaf3ee",
+                image: "https://images.unsplash.com/photo-1552581234-26160f608093?auto=format&fit=crop&w=1600&q=80",
                 link: ""
             },
             {
-                text1: "대한민국 1등 영업 컨설팅",
-                text2: "검증된 강사진과 <b class=\'text-orange-500\'>바로 매칭하세요</b>",
-                image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=400&q=80",
-                bg: "#fdf1e7",
+                image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80",
                 link: "#instructor-section"
             }
         ];
@@ -1290,20 +1282,15 @@
             topAds.forEach((ad, i) => {
                 const slide = document.createElement(ad.link ? 'a' : 'div');
                 if (ad.link) { slide.href = ad.link; }
-                slide.className = 'top-ad-slide absolute inset-0 flex items-center justify-center gap-4 md:gap-10 px-16 transition-all duration-500 ease-in-out';
+                slide.className = 'top-ad-slide absolute inset-0 transition-all duration-500 ease-in-out';
                 const on = (i === topAdIdx);
                 slide.style.transformOrigin = 'center';
                 slide.style.transform = on ? 'scaleX(1)' : 'scaleX(0)';
                 slide.style.opacity = on ? '1' : '0';
                 slide.style.zIndex = on ? '10' : '0';
-                slide.style.backgroundColor = ad.bg || '#eef0f4';
                 slide.dataset.idx = i;
                 slide.innerHTML = `
-                    <div class="text-right leading-tight">
-                        <p class="text-[12px] md:text-[14px] text-gray-500 mb-0.5">${ad.text1 || ''}</p>
-                        <p class="text-[15px] md:text-[20px] font-bold text-gray-800">${ad.text2 || ''}</p>
-                    </div>
-                    ${ad.image ? `<img src="${ad.image}" alt="광고" class="h-[62px] md:h-[84px] w-auto object-cover rounded-lg shadow-sm">` : ''}
+                    <img src="${ad.image}" alt="광고 배너" class="w-full h-full object-cover">
                 `;
                 track.appendChild(slide);
             });
@@ -1319,7 +1306,7 @@
                 el.style.zIndex = on ? '10' : '0';
             });
             const bar = document.getElementById('top-ad-bar');
-            if (bar && topAds[topAdIdx]) bar.style.backgroundColor = topAds[topAdIdx].bg || '#eef0f4';
+            if (bar && topAds[topAdIdx] && topAds[topAdIdx].bg) bar.style.backgroundColor = topAds[topAdIdx].bg;
         }
         function moveTopAd(step) {
             topAdIdx = (topAdIdx + step + topAds.length) % topAds.length;
