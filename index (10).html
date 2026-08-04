@@ -57,6 +57,26 @@
     </style>
 </head>
 <body class="antialiased font-sans">
+
+    <!-- 📢 상단 광고 배너 (gaworld 스타일) -->
+    <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 transition-colors duration-500" style="background-color:#eef1f4;">
+        <div id="top-ad-track" class="relative w-full h-[90px] md:h-[110px]"></div>
+        <!-- 좌우 화살표 -->
+        <button onclick="moveTopAd(-1)" aria-label="이전 광고"
+                class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/70 hover:bg-white text-gray-500 shadow-sm flex items-center justify-center transition">
+            <i class="fas fa-chevron-left text-xs"></i>
+        </button>
+        <button onclick="moveTopAd(1)" aria-label="다음 광고"
+                class="absolute right-12 md:right-20 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/70 hover:bg-white text-gray-500 shadow-sm flex items-center justify-center transition">
+            <i class="fas fa-chevron-right text-xs"></i>
+        </button>
+        <!-- 닫기 -->
+        <button onclick="closeTopAd()" aria-label="광고 닫기"
+                class="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full text-gray-400 hover:text-gray-700 hover:bg-white/60 flex items-center justify-center transition">
+            <i class="fas fa-times text-sm"></i>
+        </button>
+    </div>
+
     <div class="min-h-screen bg-white w-full">
 
     <!-- Header -->
@@ -174,6 +194,14 @@
                     </div>
                 </div>
 
+                <!-- 전체분야 (별도 버튼) -->
+                <div class="flex justify-center mb-4">
+                    <button id="all-category-btn" onclick="selectAllCategory()"
+                            class="px-8 py-2.5 rounded-full text-[14px] font-bold bg-primary text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200">
+                        <i class="fas fa-border-all text-[12px] mr-1.5"></i> 전체분야
+                    </button>
+                </div>
+
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)]" id="category-filters">
                     <!-- JS에서 버튼 생성 -->
                 </div>
@@ -195,9 +223,23 @@
                         <div class="w-1.5 h-6 md:h-7 rounded-full bg-gradient-to-b from-[#2f3b89] to-[#9aa8ee] mr-3"></div>
                         <h3 class="text-[22px] md:text-[26px] font-black tracking-tight leading-tight pb-1 bg-gradient-to-r from-[#2f3b89] via-[#5a6ad0] to-[#9aa8ee] bg-clip-text text-transparent" id="list-title">이달의 추천 강사</h3>
                     </div>
-                    <button class="text-xs text-gray-500 hover:text-gray-800 bg-gray-50 px-2 py-1 rounded">
-                        총 <span id="instructor-count" class="font-bold text-primary">0</span>명
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button id="reset-filter-inline" onclick="resetInstructorFilters()" class="hidden items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-primary bg-white ring-1 ring-gray-200 hover:ring-primary/30 px-3 py-1.5 rounded-full transition-all duration-200">
+                            <i class="fas fa-rotate-left text-[10px]"></i> 필터 초기화
+                        </button>
+                        <div class="relative">
+                            <select id="sort-select" onchange="setSort(this.value)"
+                                    class="appearance-none text-xs font-medium text-gray-600 bg-white ring-1 ring-gray-200 rounded-full pl-3.5 pr-8 py-1.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 hover:ring-gray-300 transition">
+                                <option value="default">기본 순</option>
+                                <option value="latest">최신 등록순</option>
+                                <option value="name">이름순</option>
+                            </select>
+                            <i class="fas fa-chevron-down text-[9px] text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        </div>
+                        <span class="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded whitespace-nowrap">
+                            총 <span id="instructor-count" class="font-bold text-primary">0</span>명
+                        </span>
+                    </div>
                 </div>
 
                 <div id="instructor-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
@@ -206,8 +248,12 @@
 
                 <div id="instructor-more" class="flex justify-center mt-10"></div>
                 <div id="no-data-msg" class="hidden text-center py-20 text-gray-400">
+                    <i class="fas fa-user-slash text-4xl text-gray-200 mb-4"></i>
                     <i class="fas fa-search text-3xl mb-3"></i>
-                    <p class="text-sm">조건에 맞는 강사가 없습니다.</p>
+                    <p class="text-sm mb-5">조건에 맞는 강사가 없습니다.</p>
+                    <button onclick="resetInstructorFilters()" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-white text-[13px] font-bold shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200">
+                        <i class="fas fa-rotate-left text-[11px]"></i> 필터 초기화
+                    </button>
                 </div>
 
             </div>
@@ -366,6 +412,14 @@
                         <input type="text" id="admin-poster-topic" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: Sustainable Growth & Innovation">
                     </div>
 
+                    <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
+                        <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">상세페이지 링크</label>
+                        <div class="flex-1">
+                            <input type="text" id="admin-poster-link" class="w-full p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: https://fppartners.co.kr/main.php">
+                            <p class="text-[11px] text-gray-400 mt-1.5">공고 상세창에서 포스터를 클릭하면 이 주소로 이동합니다. (비워두면 이동 없음)</p>
+                        </div>
+                    </div>
+
                     <div class="pt-5 mt-1 border-t border-gray-100">
                         <p class="text-sm font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-map-marker-alt text-primaryLight mr-2"></i>찾아오는 길 <span class="text-xs font-normal text-gray-400 ml-2">(선택)</span></p>
                         <div class="space-y-4">
@@ -405,6 +459,9 @@
                 <div class="flex items-center space-x-3">
                     <button onclick="startEdit()" class="text-xs px-3 py-1.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-sm transition flex items-center shadow-sm">
                         <i class="fas fa-edit mr-1.5"></i> 수정
+                    </button>
+                    <button onclick="deleteInstructor()" class="text-xs px-3 py-1.5 bg-white border border-red-200 hover:bg-red-50 text-red-500 font-medium rounded-sm transition flex items-center shadow-sm">
+                        <i class="fas fa-trash-alt mr-1.5"></i> 삭제
                     </button>
                     <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
                         <i class="fas fa-times text-xl"></i>
@@ -463,6 +520,9 @@
                 <div class="flex items-center space-x-3">
                     <button onclick="startPosterEdit()" class="text-xs px-3 py-1.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-sm transition flex items-center shadow-sm">
                         <i class="fas fa-edit mr-1.5"></i> 수정
+                    </button>
+                    <button onclick="deletePoster()" class="text-xs px-3 py-1.5 bg-white border border-red-200 hover:bg-red-50 text-red-500 font-medium rounded-sm transition flex items-center shadow-sm">
+                        <i class="fas fa-trash-alt mr-1.5"></i> 삭제
                     </button>
                     <button onclick="closePosterModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
                         <i class="fas fa-times text-xl"></i>
@@ -523,23 +583,24 @@
     </div>
     <!-- 기능 구현 Javascript -->
     <script>
-        const categories = ["전체분야", "FPShip", "메디컬화법", "약관&보상&고지의무", "실손보험", "종신&정기보험", "변액보험", "연금&저축성보험", "자동차&운전자보험", "배상책임&화재보험", "치아&어린이&치매보험", "세무설계", "초회상담(AP)", "상담프로세스", "상품영업전략", "DB영업", "AI세일즈", "법인영업"];
+        const categories = ["FPShip", "메디컬화법", "약관&보상&고지의무", "실손보험", "종신&정기보험", "변액보험", "연금&저축성보험", "자동차&운전자보험", "배상책임&화재보험", "치아&어린이&치매보험", "세무설계", "초회상담(AP)", "상담프로세스", "상품영업전략", "DB영업", "AI세일즈", "법인영업", "매니저 육성"];
         
        const instructors = [
     { 
         id: 1, 
         name: "장신영", 
-        type: "제휴",
+        type: "추천",
         videos: [
             { url: "https://vimeo.com/1212513043", title: "상품영업전략" },
             { url: "https://vimeo.com/1212513044", title: "종신&정기보험" },
             { url: "https://vimeo.com/1212513045", title: "상품영업전략" },
         ],
         photo: "https://i.ibb.co/C5w37qxP/2026-07-03-223922-removebg-preview.png", 
-        categories: ["상품영업전략", "종신&정기보험"], 
+        categories: ["상품영업전략", "초회상담(AP)"], 
         title: "보장분석 전문 강사입니다.", 
         profile: "현) FP파트너스 대표 강사\n전) 외국계 생명보험사 지점장", 
-        intro: "매월 바뀌는 보험사별 상품 판매 전략과 트렌드를 분석하여 현장에 즉시 적용 가능한 세일즈 포인트를 제공합니다." 
+        intro: "매월 바뀌는 보험사별 상품 판매 전략과 트렌드를 분석하여 현장에 즉시 적용 가능한 세일즈 포인트를 제공합니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 2, 
@@ -551,10 +612,11 @@
             { url: "https://vimeo.com/1212510053", title: "법인영업" },
         ],
         photo: "https://i.ibb.co/bRyNrgtT/2026-07-06-164042-removebg-preview.png", 
-        categories: ["AI세일즈", "연금&저축성보험", "법인영업"], 
+        categories: ["AI세일즈", "FPShip", "법인영업"], 
         title: "AI 전문가로 만들어드립니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 3, 
@@ -566,10 +628,11 @@
             { url: "https://vimeo.com/1212515055", title: "" },
         ],
         photo: "https://i.ibb.co/gZcBpZHQ/2026-02-27-123319-removebg-preview.png", 
-        categories: ["변액보험", "연금&저축성보험"], 
+        categories: ["DB영업", "상담프로세스", "초회상담(AP)"], 
         title: "FP를 위한 경제 브리핑", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 4, 
@@ -581,55 +644,59 @@
             { url: "https://vimeo.com/1212517123", title: "" },
         ],
         photo: "https://i.ibb.co/23Hs3846/2026-07-21-154054-removebg-preview.png", 
-        categories: ["상품영업전략", "연금&저축성보험"], 
+        categories: ["상품영업전략", "상담프로세스"], 
         title: "AI 전문가로 만들어드립니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 5, 
         name: "이병조", 
-        type: "제휴",
+        type: "추천",
         videos: [
             { url: "https://vimeo.com/1212518927", title: "" },
             { url: "https://vimeo.com/1212518926", title: "" },
             { url: "https://vimeo.com/1212518925", title: "" },
         ],
         photo: "https://i.ibb.co/FM5jtr5/2026-06-20-025447-removebg-preview.png", 
-        categories: ["메디컬화법", "약관&보상&고지의무"], 
+        categories: ["메디컬화법"], 
         title: "메디컬화법 전문 강사입니다", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 6, 
         name: "이해웅", 
-        type: "제휴",
+        type: "추천",
         videos: [
             { url: "https://vimeo.com/1212519971", title: "" },
             { url: "https://vimeo.com/1212519970", title: "" },
             { url: "https://vimeo.com/1212519972", title: "" },
         ],
         photo: "https://i.ibb.co/nSL1Jtd/2026-07-21-160036.png", 
-        categories: ["상품영업전략", "약관&보상&고지의무"], 
+        categories: ["상품영업전략", "상담프로세스", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 7, 
         name: "한민국", 
-        type: "제휴",
+        type: "추천",
         videos: [
             { url: "https://vimeo.com/1212521173", title: "" },
             { url: "https://vimeo.com/1212521172", title: "" },
             { url: "https://vimeo.com/1212521171", title: "" },
         ],
         photo: "https://i.ibb.co/sv6QYyLc/2026-07-21-162756-removebg-preview.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["상담프로세스", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 8, 
@@ -641,10 +708,11 @@
             { url: "https://vimeo.com/1212522734", title: "" },
         ],
         photo: "https://i.ibb.co/0yDfGRSW/2026-07-24-083427.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["종신&정기보험", "상담프로세스", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 9, 
@@ -656,10 +724,11 @@
             { url: "https://vimeo.com/1212542646", title: "" },
         ],
         photo: "https://i.ibb.co/CKd3wKq9/2026-07-24-083855.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["DB영업", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 10, 
@@ -671,10 +740,11 @@
             { url: "https://vimeo.com/1212569737", title: "" },
         ],
         photo: "https://i.ibb.co/WNSm6B9J/2026-07-24-084031.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["DB영업", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },
     { 
         id: 11, 
@@ -686,10 +756,11 @@
             { url: "https://vimeo.com/1212572555", title: "" },
         ],
         photo: "https://i.ibb.co/0R2d7r3t/2026-07-24-084205.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["FPShip", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },   
     { 
         id: 12, 
@@ -701,10 +772,11 @@
             { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/zWw0nyyr/2026-07-24-084507.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["FPShip", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 13, 
@@ -716,10 +788,11 @@
             { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/HLXpt8Vw/2026-07-24-084721.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["종신&정기보험", "FPShip", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 14, 
@@ -731,10 +804,11 @@
             { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/r2KMDL8g/2026-07-24-085235.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["AI세일즈", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },  
     { 
         id: 15, 
@@ -746,40 +820,43 @@
             { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/jkZ2TghS/2026-07-24-085445.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["FPShip", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 16, 
         name: "이상훈", 
-        type: "제휴",
+        type: "추천",
         videos: [
             { url: "https://vimeo.com/1207296757", title: "" },
             { url: "https://vimeo.com/1207296757", title: "" },
             { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/JFs7bCyM/2026-07-24-085624.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["상품영업전략", "초회상담(AP)", "상담프로세스"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 17, 
         name: "박준용", 
-        type: "제휴",
+        type: "추천",
         videos: [
             { url: "https://vimeo.com/1207296757", title: "" },
             { url: "https://vimeo.com/1207296757", title: "" },
             { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/LhXvhk0j/2026-07-24-085747.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["변액보험"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },     
     { 
         id: 18, 
@@ -791,25 +868,27 @@
             { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/XrLX09Ln/2026-07-24-085917.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["상담프로세스", "초회상담(AP)"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },   
     { 
         id: 19, 
         name: "박중환", 
-        type: "제휴",
+        type: "추천",
         videos: [
             { url: "https://vimeo.com/1207296757", title: "" },
             { url: "https://vimeo.com/1207296757", title: "" },
             { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/C5jX9kJC/2026-07-24-090042.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["법인영업"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     },  
     { 
         id: 20, 
@@ -821,10 +900,11 @@
             { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/Z6vKwNBM/2026-07-24-090227.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["법인영업"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
     }, 
     { 
         id: 21, 
@@ -836,26 +916,12 @@
             { url: "https://vimeo.com/1207296757", title: "" },
         ],
         photo: "https://i.ibb.co/SX86czXc/2026-07-24-090414.png", 
-        categories: ["법인영업", "실손보험"], 
+        categories: ["법인영업"], 
         title: "상품영업전략 전문입니다!", 
         profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
-    }, 
-    { 
-        id: 22,
-        name: "장준혁", 
-        type: "제휴",
-        videos: [
-            { url: "https://vimeo.com/1207296757", title: "" },
-            { url: "https://vimeo.com/1207296757", title: "" },
-            { url: "https://vimeo.com/1207296757", title: "" },
-        ],
-        photo: "https://i.ibb.co/vCHWLTzZ/Kakao-Talk-20260303-225628490.jpg", 
-        categories: ["법인영업", "실손보험"], 
-        title: "상품영업전략 전문입니다!", 
-        profile: "투자자산운용사\n경제 칼럼니스트", 
-        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다." 
-    }                       
+        intro: "복잡한 경제 흐름을 고객의 눈높이에 맞춰 쉽게 설명하고, 변액 및 연금 상품 판매로 연결하는 화법을 배웁니다.",
+    phone: "02-525-1686"
+    }                     
            
 ];
 
@@ -872,13 +938,18 @@
         // 📍 새로 추가되는 찾아오는 길 데이터
         mapImage: "https://i.ibb.co/gLnWZtgR/2026-07-24-143047.png",
         mapUrl: "https://map.naver.com/p/entry/place/1372825586",
-        route: "지하철: 2호선 역삼역 3번 출구 도보 5분 거리\n버스: 역삼역 사거리 정류장 하차 후 100m 직진\n* 주차는 건물 지하 1시간 무료 지원됩니다."
+        route: "지하철: 2호선 역삼역 3번 출구 도보 5분 거리\n버스: 역삼역 사거리 정류장 하차 후 100m 직진\n* 주차는 건물 지하 1시간 무료 지원됩니다.",
+        link: "https://fppartners.co.kr/main.php"
     }
     
 ];
-        let currentFilter = "전체분야";
+        let currentFilter = "전체분야";           // (호환용) 대표 필터 - 다중선택 배열로 관리
+        let selectedCategories = [];             // 선택된 분야들 (비어있으면 전체)
         let currentTag = "all"; 
         let currentKeyword = ""; 
+        let currentSort = "default";             // default | name | latest
+        let wishlist = [];                        // 찜한 강사 id 배열
+        let pinnedIds = [];                       // 상단 고정된 강사 id (핀 꽂은 순서)
         let editingId = null; 
         let currentModalId = null; 
         let editingPosterId = null;
@@ -887,6 +958,269 @@
         const INSTRUCTOR_LIMIT = 10;   // 처음 보여줄 강사 수 & 더보기 1회당 추가 수
         let instructorVisibleCount = INSTRUCTOR_LIMIT;
         let lastFilterKey = null;
+
+        // 정렬 변경
+        function setSort(val) {
+            currentSort = val;
+            instructorVisibleCount = INSTRUCTOR_LIMIT;
+            renderInstructors();
+        }
+
+        // 필터 초기화
+        function resetInstructorFilters() {
+            currentFilter = "전체분야";
+            selectedCategories = [];
+            currentTag = "all";
+            currentKeyword = "";
+            currentSort = "default";
+            const si = document.getElementById('search-input'); if (si) si.value = '';
+            const sortSel = document.getElementById('sort-select'); if (sortSel) sortSel.value = 'default';
+            instructorVisibleCount = INSTRUCTOR_LIMIT;
+            renderFilters();
+            setTagFilter('all');   // 태그 버튼 활성 상태 갱신 + 재렌더
+            document.getElementById('instructor-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 강사 삭제
+        function deleteInstructor() {
+            const inst = instructors.find(i => i.id === currentModalId);
+            if (!inst) return;
+            if (!confirm(`'${inst.name}' 강사를 삭제하시겠습니까?\n삭제 후에는 되돌릴 수 없습니다.`)) return;
+            const idx = instructors.findIndex(i => i.id === currentModalId);
+            if (idx > -1) instructors.splice(idx, 1);
+            closeModal();
+            renderInstructors();
+            alert("삭제되었습니다.");
+        }
+
+        // 공고 삭제
+        function deletePoster() {
+            const pos = posters.find(x => x.id === currentPosterModalId);
+            if (!pos) return;
+            if (!confirm(`'${pos.title}' 공고를 삭제하시겠습니까?\n삭제 후에는 되돌릴 수 없습니다.`)) return;
+            const idx = posters.findIndex(x => x.id === currentPosterModalId);
+            if (idx > -1) posters.splice(idx, 1);
+            closePosterModal();
+            renderPosters();
+            alert("삭제되었습니다.");
+        }
+
+        // 강사 순서 변경 (전체 배열 기준으로 이동)
+        // ===== 찜하기 (관심 강사) =====
+        function loadWishlist() {
+            try {
+                const raw = localStorage.getItem('fp_wishlist');
+                wishlist = raw ? JSON.parse(raw) : [];
+            } catch (e) { wishlist = []; }
+        }
+        function saveWishlist() {
+            try { localStorage.setItem('fp_wishlist', JSON.stringify(wishlist)); } catch (e) {}
+        }
+        function toggleWish(id, ev) {
+            if (ev) ev.stopPropagation();   // 카드 클릭(모달) 방지
+            const i = wishlist.indexOf(id);
+            if (i > -1) wishlist.splice(i, 1);
+            else wishlist.push(id);
+            saveWishlist();
+            updateWishCount();
+            renderInstructors();
+            // 찜 목록 모달이 열려 있으면 갱신
+            const wm = document.getElementById('wishlist-modal');
+            if (wm && !wm.classList.contains('hidden')) renderWishlist();
+        }
+        function updateWishCount() {
+            const badge = document.getElementById('wish-count-badge');
+            if (!badge) return;
+            const n = wishlist.length;
+            badge.textContent = n;
+            badge.classList.toggle('hidden', n === 0);
+        }
+        function openWishlist() {
+            renderWishlist();
+            const m = document.getElementById('wishlist-modal');
+            m.classList.remove('hidden');
+            setTimeout(() => { m.classList.remove('opacity-0'); m.firstElementChild.classList.remove('translate-x-full'); }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+        function closeWishlist() {
+            const m = document.getElementById('wishlist-modal');
+            m.classList.add('opacity-0'); m.firstElementChild.classList.add('translate-x-full');
+            setTimeout(() => { m.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+        }
+        function renderWishlist() {
+            const listEl = document.getElementById('wishlist-items');
+            const emptyEl = document.getElementById('wishlist-empty');
+            if (!listEl) return;
+            const items = wishlist.map(id => instructors.find(i => i.id === id)).filter(Boolean);
+            listEl.innerHTML = '';
+            if (items.length === 0) {
+                emptyEl.classList.remove('hidden');
+                listEl.classList.add('hidden');
+                return;
+            }
+            emptyEl.classList.add('hidden');
+            listEl.classList.remove('hidden');
+            items.forEach(inst => {
+                const row = document.createElement('div');
+                row.className = 'flex items-center gap-3 p-3 rounded-xl ring-1 ring-gray-100 hover:ring-primary/30 hover:shadow-sm transition cursor-pointer bg-white';
+                row.onclick = () => { closeWishlist(); openModal(inst.id); };
+                row.innerHTML = `
+                    <img src="${inst.photo}" alt="${inst.name}" class="w-14 h-14 rounded-lg object-cover object-top ring-1 ring-gray-100 flex-shrink-0">
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm font-bold text-gray-900 truncate">${inst.name}</p>
+                        <p class="text-xs text-gray-500 truncate">${inst.title || ''}</p>
+                    </div>
+                    <button onclick="toggleWish(${inst.id}, event)" title="찜 해제"
+                            class="w-8 h-8 rounded-full hover:bg-red-50 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-heart text-red-500 text-sm"></i>
+                    </button>`;
+                listEl.appendChild(row);
+            });
+        }
+
+        // 상세페이지 카테고리 클릭 → 해당 분야로 필터
+        function filterByCategory(cat) {
+            selectedCategories = [cat];
+            currentFilter = cat;
+            currentTag = "all";
+            currentKeyword = "";
+            currentSort = "default";
+            const si = document.getElementById('search-input'); if (si) si.value = '';
+            const sortSel = document.getElementById('sort-select'); if (sortSel) sortSel.value = 'default';
+            instructorVisibleCount = INSTRUCTOR_LIMIT;
+            closeModal();
+            renderFilters();
+            setTagFilter('all');   // 태그 초기화 + 재렌더
+            renderInstructors();
+            document.getElementById('instructor-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ===== 강사 문의하기 =====
+        let inquiryInstId = null;
+        // ===== 제휴 vs 추천 비교 팝업 =====
+        function openTypeCompare(activeType) {
+            const data = {
+                "제휴": {
+                    tag: "제휴강사",
+                    headline: "현장의 프로페셔널, 다이렉트 매칭",
+                    lines: [
+                        "현재 보험 교육 현장에서 활약 중인 최고 수준의 전문 강사진입니다.",
+                        "원하시는 강사와 직접 소통하여 신속하고 자유롭게 섭외하실 수 있습니다.",
+                        "고객사 요청 시, FP파트너즈의 맞춤형 강의 기획·진행 지원 및 강사 추천이 가능합니다."
+                    ]
+                },
+                "추천": {
+                    tag: "추천강사",
+                    headline: "영상으로 검증된, 맞춤형 풀케어(Full-care)",
+                    lines: [
+                        "FP파트너즈가 직접 발굴하고 검증한 프리미엄 강사진입니다.",
+                        "텍스트 프로필로는 알 수 없었던 강사의 실제 강의 역량을 영상 클립으로 직관적으로 확인해 보세요.",
+                        "강사 추천부터 강의 기획·교안 구성·일정 조율까지 FP파트너즈가 조직의 니즈에 맞춰 완벽하게 대행해 드립니다."
+                    ]
+                }
+            };
+
+            function cardHtml(type, active) {
+                const d = data[type];
+                const isP = (type === "제휴");
+                // 활성: 색 있는 박스 / 비활성: 회색
+                const box = active
+                    ? (isP ? "bg-[#eef0f9] ring-2 ring-[#3a4ba0]/30" : "bg-[#e4f5ea] ring-2 ring-emerald-500/30")
+                    : "bg-gray-50 ring-1 ring-gray-200 opacity-60";
+                const badge = active
+                    ? (isP ? "bg-[#3a4ba0]" : "bg-emerald-600")
+                    : "bg-gray-300";
+                const headColor = active
+                    ? (isP ? "text-[#3a4ba0]" : "text-emerald-700")
+                    : "text-gray-400";
+                const textColor = active ? "text-gray-600" : "text-gray-400";
+                return `
+                    <div class="flex-1 rounded-2xl p-5 md:p-6 ${box} transition-all duration-300">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-3 py-1 rounded-full text-[12px] font-bold text-white ${badge}">${d.tag}</span>
+                            ${active ? '<span class="text-[11px] font-bold '+headColor+'">현재 강사</span>' : ''}
+                        </div>
+                        <p class="text-[15px] md:text-[16px] font-black mb-3 ${headColor}">${d.headline}</p>
+                        <ul class="space-y-2">
+                            ${d.lines.map(l => `<li class="text-[12.5px] leading-relaxed ${textColor} flex gap-1.5"><span class="${active ? headColor : 'text-gray-300'} mt-0.5">•</span><span>${l}</span></li>`).join('')}
+                        </ul>
+                    </div>`;
+            }
+
+            const wrap = document.getElementById('type-compare-body');
+            wrap.innerHTML = cardHtml("제휴", activeType === "제휴") + cardHtml("추천", activeType === "추천");
+
+            const m = document.getElementById('type-compare-modal');
+            m.classList.remove('hidden');
+            setTimeout(() => { m.classList.remove('opacity-0'); m.firstElementChild.classList.remove('scale-95'); }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+        function closeTypeCompare() {
+            const m = document.getElementById('type-compare-modal');
+            m.classList.add('opacity-0'); m.firstElementChild.classList.add('scale-95');
+            setTimeout(() => { m.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+        }
+
+        function openInquiry(id) {
+            inquiryInstId = id;
+            const inst = instructors.find(i => i.id === id);
+            const nameEl = document.getElementById('inquiry-inst-name');
+            if (nameEl) nameEl.textContent = inst ? inst.name : '';
+            // 입력값 초기화
+            ['inq-org', 'inq-location', 'inq-name', 'inq-dept', 'inq-phone', 'inq-email', 'inq-message'].forEach(k => {
+                const el = document.getElementById(k); if (el) el.value = '';
+            });
+            const m = document.getElementById('inquiry-modal');
+            m.classList.remove('hidden');
+            setTimeout(() => { m.classList.remove('opacity-0'); m.firstElementChild.classList.remove('scale-95'); }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+        function closeInquiry() {
+            const m = document.getElementById('inquiry-modal');
+            m.classList.add('opacity-0'); m.firstElementChild.classList.add('scale-95');
+            setTimeout(() => { m.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+        }
+        function submitInquiry() {
+            const org = document.getElementById('inq-org').value.trim();
+            const location = document.getElementById('inq-location').value.trim();
+            const name = document.getElementById('inq-name').value.trim();
+            const dept = document.getElementById('inq-dept').value.trim();
+            const phone = document.getElementById('inq-phone').value.trim();
+            const email = document.getElementById('inq-email').value.trim();
+            const msg = document.getElementById('inq-message').value.trim();
+            if (!org || !location || !name || !dept || !phone || !email) {
+                alert("회사명, 소재지, 문의자 이름, 부서 및 직위, 핸드폰, 이메일은 필수 입력입니다.");
+                return;
+            }
+            const inst = instructors.find(i => i.id === inquiryInstId);
+            // 실제 서비스에서는 이 데이터를 서버로 전송해야 합니다.
+            console.log("[강사 문의]", { 강사: inst ? inst.name : '', 회사명: org, 소재지: location, 문의자이름: name, 부서직위: dept, 핸드폰: phone, 이메일: email, 문의사항: msg });
+            alert(`문의가 접수되었습니다.\n담당자가 '${phone}'로 연락드리겠습니다.`);
+            closeInquiry();
+        }
+
+        // 상단 고정 핀 토글
+        function togglePin(id, ev) {
+            if (ev) ev.stopPropagation();   // 카드 클릭(모달 열림) 방지
+            const i = pinnedIds.indexOf(id);
+            if (i > -1) {
+                pinnedIds.splice(i, 1);          // 이미 고정 → 해제
+            } else {
+                pinnedIds.push(id);              // 새로 고정 (뒤에 추가 = 핀 순서 유지)
+            }
+            savePins();
+            instructorVisibleCount = INSTRUCTOR_LIMIT;   // 상단으로 올라오니 첫 페이지부터
+            renderInstructors();
+        }
+        function loadPins() {
+            try {
+                const raw = localStorage.getItem('fp_pinned');
+                pinnedIds = raw ? JSON.parse(raw) : [];
+            } catch (e) { pinnedIds = []; }
+        }
+        function savePins() {
+            try { localStorage.setItem('fp_pinned', JSON.stringify(pinnedIds)); } catch (e) {}
+        }
 
         function expandInstructors() {
             instructorVisibleCount += INSTRUCTOR_LIMIT;   // 10명씩 추가
@@ -903,23 +1237,107 @@
         // 배너를 추가/수정하려면 아래 배열만 고치면 됩니다.
        const banners = [
             {
-                image: "https://images.unsplash.com/photo-1762968274962-20c12e6e8ecd?auto=format&fit=crop&w=1920&q=80",
-                line1: "대한민국 보험영업의",
-                line2: "모든 강사 공고",
-                btnText: "강사 공고 보기",
-                link: "#instructor-section"
-            },
-            {
-                image: "https://images.unsplash.com/photo-1544531585-f14f463149ec?auto=format&fit=crop&w=1920&q=80",
+                image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1920&q=80",
                 line1: "현장에서 바로 쓰는",
                 line2: "공개 강좌 안내",
                 btnText: "강좌 일정 보기",
                 link: "#poster-section"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1920&q=80",
+                line1: "대한민국 보험영업의",
+                line2: "모든 강사 공고",
+                btnText: "강사 공고 보기",
+                link: "#instructor-section"
             }
         ];
         
         let bannerIdx = 0;
         let bannerTimer = null;
+
+        // ===== 상단 광고 배너 (gaworld 스타일: 가로 슬라이드) =====
+        const topAds = [
+            {
+                text1: "GA 행사 여행, 비싸게 진행하지 마세요",
+                text2: "3개 여행사 비교하고 <b class=\'text-blue-600\'>무조건 최저가로</b>",
+                image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=400&q=80",
+                bg: "#eef1f4",
+                link: ""
+            },
+            {
+                text1: "우리 지사 사무실, 임대료 아끼세요",
+                text2: "GA 전용 오피스 임차 <b class=\'text-emerald-600\'>최대 40% 절감</b>",
+                image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80",
+                bg: "#eaf3ee",
+                link: ""
+            },
+            {
+                text1: "대한민국 1등 영업 컨설팅",
+                text2: "검증된 강사진과 <b class=\'text-orange-500\'>바로 매칭하세요</b>",
+                image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=400&q=80",
+                bg: "#fdf1e7",
+                link: "#instructor-section"
+            }
+        ];
+        let topAdIdx = 0;
+        let topAdTimer = null;
+
+        function renderTopAds() {
+            const track = document.getElementById('top-ad-track');
+            if (!track) return;
+            if (!topAds.length) { document.getElementById('top-ad-bar')?.remove(); return; }
+            track.innerHTML = '';
+            topAds.forEach((ad, i) => {
+                const slide = document.createElement(ad.link ? 'a' : 'div');
+                if (ad.link) { slide.href = ad.link; }
+                slide.className = 'top-ad-slide absolute inset-0 flex items-center justify-center gap-4 md:gap-10 px-16 transition-all duration-500 ease-in-out';
+                const on = (i === topAdIdx);
+                slide.style.transformOrigin = 'center';
+                slide.style.transform = on ? 'scaleX(1)' : 'scaleX(0)';
+                slide.style.opacity = on ? '1' : '0';
+                slide.style.zIndex = on ? '10' : '0';
+                slide.style.backgroundColor = ad.bg || '#eef0f4';
+                slide.dataset.idx = i;
+                slide.innerHTML = `
+                    <div class="text-right leading-tight">
+                        <p class="text-[12px] md:text-[14px] text-gray-500 mb-0.5">${ad.text1 || ''}</p>
+                        <p class="text-[15px] md:text-[20px] font-bold text-gray-800">${ad.text2 || ''}</p>
+                    </div>
+                    ${ad.image ? `<img src="${ad.image}" alt="광고" class="h-[62px] md:h-[84px] w-auto object-cover rounded-lg shadow-sm">` : ''}
+                `;
+                track.appendChild(slide);
+            });
+            startTopAdAuto();
+        }
+        function updateTopAds() {
+            const track = document.getElementById('top-ad-track');
+            if (!track) return;
+            Array.from(track.children).forEach((el, i) => {
+                const on = (i === topAdIdx);
+                el.style.transform = on ? 'scaleX(1)' : 'scaleX(0)';
+                el.style.opacity = on ? '1' : '0';
+                el.style.zIndex = on ? '10' : '0';
+            });
+            const bar = document.getElementById('top-ad-bar');
+            if (bar && topAds[topAdIdx]) bar.style.backgroundColor = topAds[topAdIdx].bg || '#eef0f4';
+        }
+        function moveTopAd(step) {
+            topAdIdx = (topAdIdx + step + topAds.length) % topAds.length;
+            updateTopAds();
+            startTopAdAuto();
+        }
+        function startTopAdAuto() {
+            clearInterval(topAdTimer);
+            if (topAds.length < 2) return;
+            topAdTimer = setInterval(() => {
+                topAdIdx = (topAdIdx + 1) % topAds.length;
+                updateTopAds();
+            }, 5000);
+        }
+        function closeTopAd() {
+            const bar = document.getElementById('top-ad-bar');
+            if (bar) { bar.style.display = 'none'; clearInterval(topAdTimer); }
+        }
 
         function renderBanner() {
             const track = document.getElementById('banner-track');
@@ -1042,10 +1460,14 @@
             targets.forEach(el => revealObserver.observe(el));
         }
         function init() {
+            loadWishlist();
+            loadPins();
+            renderTopAds();
             renderBanner();
             renderFilters();
             renderInstructors();
             renderPosters();
+            updateWishCount();
             
             const adminCatContainer = document.getElementById('admin-category-checkboxes');
             if (adminCatContainer) {
@@ -1080,16 +1502,31 @@
             initReveal();
         }
 
+        function selectAllCategory() {
+            selectedCategories = [];
+            currentFilter = "전체분야";
+            instructorVisibleCount = INSTRUCTOR_LIMIT;
+            renderFilters();
+            renderInstructors();
+        }
+
       function renderFilters() {
     const container = document.getElementById('category-filters');
     if (!container) return;
+
+    const allBtn = document.getElementById('all-category-btn');
+    if (allBtn) {
+        allBtn.className = (selectedCategories.length === 0)
+            ? "px-8 py-2.5 rounded-full text-[14px] font-bold bg-primary text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200"
+            : "px-8 py-2.5 rounded-full text-[14px] font-bold bg-white ring-1 ring-gray-200 text-gray-500 hover:text-primary hover:ring-primary/30 hover:-translate-y-0.5 transition-all duration-200";
+    }
 
     container.className = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)]";
     container.innerHTML = '';
 
     categories.forEach(cat => {
         const btn = document.createElement('button');
-        const isActive = currentFilter === cat;
+        const isActive = selectedCategories.includes(cat);
 
         const activeClass = "border-b border-r border-gray-100 bg-[#eef0f9] " +
                             "px-2 py-4 text-[13px] text-center font-bold text-primary transition-colors duration-200";
@@ -1101,7 +1538,12 @@
         btn.textContent = cat;
 
         btn.onclick = () => {
-            currentFilter = cat;
+            const i = selectedCategories.indexOf(cat);
+            if (i > -1) selectedCategories.splice(i, 1);
+            else selectedCategories.push(cat);
+            currentFilter = selectedCategories.length === 0 ? "전체분야"
+                          : (selectedCategories.length === 1 ? selectedCategories[0] : "선택분야");
+            instructorVisibleCount = INSTRUCTOR_LIMIT;
             renderFilters();
             renderInstructors();
         };
@@ -1136,11 +1578,13 @@
     // 1. 기존 리스트 비우기 (복제 방지)
     container.innerHTML = '';
 
-    let filtered = instructors;
+    let filtered = instructors.slice();
 
-    // 2. 카테고리 필터링
-    if (currentFilter && currentFilter !== "전체" && currentFilter !== "전체분야") {
-        filtered = filtered.filter(inst => inst.categories && inst.categories.includes(currentFilter));
+    // 2. 카테고리 필터링 (다중 선택 = AND 조건: 선택 분야를 모두 가진 강사만 노출)
+    if (selectedCategories.length > 0) {
+        filtered = filtered.filter(inst =>
+            inst.categories && selectedCategories.every(c => inst.categories.includes(c))
+        );
     }
 
     // 3. 제휴강사 / 추천강사 필터링 ('제휴' / '추천' 단어 완벽 지원)
@@ -1168,12 +1612,45 @@
         );
     }
 
+    // ===== 정렬 =====
+    if (currentSort === "name") {
+        filtered.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ko'));
+    } else if (currentSort === "latest") {
+        // 최신 등록순: id가 클수록 최근에 등록됐다고 가정 (내림차순)
+        filtered.sort((a, b) => (b.id || 0) - (a.id || 0));
+    }
+    // default는 배열 원래 순서(관리자 지정 순서) 유지
+
+    // ===== 고정 핀: 핀 꽂은 강사를 최상단으로 (핀 순서 유지) =====
+    if (pinnedIds.length > 0) {
+        const pinned = [];
+        pinnedIds.forEach(pid => {
+            const found = filtered.find(i => i.id === pid);
+            if (found) pinned.push(found);
+        });
+        const rest = filtered.filter(i => !pinnedIds.includes(i.id));
+        filtered = pinned.concat(rest);
+    }
+
     if (countDisplay) countDisplay.textContent = filtered.length;
+
+    // ===== 필터가 걸려 있으면 인라인 "필터 초기화" 버튼 노출 =====
+    const inlineReset = document.getElementById('reset-filter-inline');
+    if (inlineReset) {
+        const isFiltering =
+            (selectedCategories.length > 0) ||
+            (currentTag && currentTag !== 'all' && currentTag !== '전체') ||
+            (currentKeyword && currentKeyword !== "") ||
+            (currentSort && currentSort !== "default");
+        inlineReset.classList.toggle('hidden', !isFiltering);
+        inlineReset.classList.toggle('flex', isFiltering);
+    }
 
     // ===== 제목 자동 변경: 전체분야면 "이달의 추천 강사", 그 외엔 분야명 =====
     if (listTitle) {
-        const isAll = (!currentFilter || currentFilter === "전체분야" || currentFilter === "전체");
-        listTitle.textContent = isAll ? "이달의 추천 강사" : currentFilter;
+        if (selectedCategories.length === 0) listTitle.textContent = "이달의 추천 강사";
+        else if (selectedCategories.length === 1) listTitle.textContent = selectedCategories[0];
+        else listTitle.textContent = selectedCategories.length + "개 분야 선택됨";
     }
 
     const moreWrap = document.getElementById('instructor-more');
@@ -1190,13 +1667,13 @@
 
     // ===== 전체분야일 때만 10명씩 점진 노출 =====
     // 필터(카테고리/태그/검색어)가 바뀌면 노출 수 초기화
-    const filterKey = currentFilter + '|' + currentTag + '|' + currentKeyword;
+    const filterKey = selectedCategories.join(',') + '|' + currentTag + '|' + currentKeyword + '|' + currentSort;
     if (filterKey !== lastFilterKey) {
         instructorVisibleCount = INSTRUCTOR_LIMIT;
         lastFilterKey = filterKey;
     }
 
-    const isAllCategory = (currentFilter === "전체분야" || currentFilter === "전체");
+    const isAllCategory = (selectedCategories.length === 0);
     // 전체분야가 아니면 개수 제한 없이 전부 노출
     const limited = isAllCategory && filtered.length > INSTRUCTOR_LIMIT;
     const visible = limited ? filtered.slice(0, instructorVisibleCount) : filtered;
@@ -1254,7 +1731,25 @@
             badgeBg = 'bg-emerald-600';
         }
 
+        // 고정 핀 버튼 (전체분야 + 기본정렬 + 검색/태그 없을 때만 노출)
+        const isPinned = pinnedIds.includes(inst.id);
+        const showPin = isAllCategory && (!currentKeyword) && (currentTag === 'all' || currentTag === '전체') && (currentSort === 'default');
+        // 핀이 꽂힌 카드는 항상 핀 아이콘 표시, 아니면 hover 시 표시
+        const reorderHtml = showPin ? `
+            <button onclick="togglePin(${inst.id}, event)" title="${isPinned ? '상단 고정 해제' : '상단 고정'}"
+                    class="absolute top-2 right-2 z-20 w-8 h-8 rounded-full shadow-sm flex items-center justify-center transition-all duration-200
+                           ${isPinned
+                             ? 'bg-primary text-white ring-1 ring-primary'
+                             : 'bg-white/95 ring-1 ring-gray-200 text-gray-500 opacity-0 group-hover:opacity-100 hover:text-primary hover:ring-primary/40'}">
+                <i class="fas fa-thumbtack text-[12px] ${isPinned ? '' : 'rotate-45'}"></i>
+            </button>` : '';
+
+        // 찜(하트) 버튼 - 사진 우측 하단에 배치 (태그/순서버튼 안 가림)
+        const isWished = wishlist.includes(inst.id);
+
+        card.classList.add('relative');
         card.innerHTML = `
+            ${reorderHtml}
             <!-- 상단: 태그 -->
             <div class="flex items-center gap-2 px-3.5 pt-3.5 pb-2.5">
                 <span class="text-[11px] font-bold text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full truncate max-w-[65%]">${catsDisplay}</span>
@@ -1263,9 +1758,13 @@
 
             <!-- 사진 -->
             <div class="px-3.5">
-                <div class="aspect-[3/4] w-full rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100">
+                <div class="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100">
                     <img src="${inst.photo}" alt="${inst.name}"
                          class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]">
+                    <button onclick="toggleWish(${inst.id}, event)" title="찜하기"
+                            class="absolute bottom-2.5 right-2.5 z-20 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm ring-1 ring-gray-200 shadow-md flex items-center justify-center hover:ring-red-200 hover:scale-110 transition">
+                        <i class="${isWished ? 'fas text-red-500' : 'far text-gray-500'} fa-heart text-sm"></i>
+                    </button>
                 </div>
             </div>
 
@@ -1285,24 +1784,56 @@
 }
 
         // [수정된 부분] 포스터 이미지 object-contain 적용
+        // 공고 일시 문자열에서 D-day 계산 ("2026년 6월 15일 ..." 형식)
+        function getDday(dateStr) {
+            if (!dateStr) return null;
+            const m = String(dateStr).match(/(\d{4})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일/);
+            if (!m) return null;
+            const target = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+            const today = new Date();
+            target.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            const diff = Math.round((target - today) / (1000 * 60 * 60 * 24));
+            return diff;
+        }
+
         function renderPosters() {
             const container = document.getElementById('poster-grid');
             if (!container) return;
             container.innerHTML = '';
             
           posters.forEach((poster, idx) => {
+                // ===== D-day 계산 =====
+                const dday = getDday(poster.date);
+                let ddayHtml = '';
+                if (dday !== null) {
+                    let bg, label;
+                    if (dday < 0)        { bg = 'bg-gray-400';    label = '마감'; }
+                    else if (dday === 0) { bg = 'bg-red-500';     label = 'D-DAY'; }
+                    else if (dday <= 3)  { bg = 'bg-red-500';     label = 'D-' + dday; }
+                    else if (dday <= 7)  { bg = 'bg-orange-500';  label = 'D-' + dday; }
+                    else                 { bg = 'bg-primary';     label = 'D-' + dday; }
+                    ddayHtml = `<span class="absolute top-2.5 left-2.5 z-10 px-2.5 py-1 rounded-full text-[11px] font-bold text-white shadow-sm ${bg}">${label}</span>`;
+                }
+
                 const card = document.createElement('div');
-                card.className = 'reveal bg-white rounded-sm border border-gray-200 overflow-hidden cursor-pointer flex flex-col h-full group hover:border-primaryLight transition-colors duration-200';
+                card.className = 'reveal bg-white rounded-2xl overflow-hidden cursor-pointer flex flex-col h-full group ' +
+                                 'ring-1 ring-gray-100 shadow-[0_2px_10px_rgba(17,24,39,0.06)] ' +
+                                 'hover:shadow-[0_10px_28px_rgba(17,24,39,0.13)] hover:-translate-y-1 ' +
+                                 'transition-all duration-300 ease-out';
                 card.style.transitionDelay = (idx % 4) * 70 + 'ms';
                 card.onclick = () => openPosterModal(poster.id);
-                
+
                 card.innerHTML = `
-                    <div class="aspect-w-3 aspect-h-4 bg-gray-50 overflow-hidden relative h-56 sm:h-64 flex items-center justify-center border-b border-gray-100">
-                        <img src="${poster.image}" alt="${poster.title}" class="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105">
+                    <div class="px-3.5 pt-3.5">
+                        <div class="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100 flex items-center justify-center">
+                            ${ddayHtml}
+                            <img src="${poster.image}" alt="${poster.title}" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.04]">
+                        </div>
                     </div>
-                    <div class="p-3.5 flex-1 flex flex-col justify-between">
-                        <h4 class="text-[14px] font-bold text-gray-900 mb-2 line-clamp-2 leading-snug">${poster.title}</h4>
-                        <p class="text-[11px] text-gray-500"><i class="far fa-calendar-alt mr-1 text-primaryLight"></i>${poster.date.split('일')[0]}일</p>
+                    <div class="px-4 pt-3.5 pb-4 flex-1 flex flex-col justify-between">
+                        <h4 class="text-[14px] font-bold text-gray-900 mb-2 line-clamp-2 leading-snug break-keep">${poster.title}</h4>
+                        <p class="text-xs text-gray-500 mt-auto flex items-center"><i class="far fa-calendar-alt mr-1.5 text-primaryLight"></i>${poster.date.split('일')[0]}일</p>
                     </div>
                 `;
                container.appendChild(card);
@@ -1319,8 +1850,8 @@
     const typeStr = String(inst.type || inst.specialTag || '');
     const isRec = typeStr.includes('추천');
     const theme = isRec
-        ? { bg: '#e4f5ea', badge: 'bg-emerald-700', text: 'text-emerald-700', icon: 'text-emerald-600' }
-        : { bg: '#e6eafd', badge: 'bg-[#3a4ba0]', text: 'text-blue-600',    icon: 'text-blue-500'    };
+        ? { bg: '#e4f5ea', badge: 'bg-emerald-700', text: 'text-emerald-700', icon: 'text-emerald-600', btn: 'bg-emerald-600' }
+        : { bg: '#e6eafd', badge: 'bg-[#3a4ba0]', text: 'text-blue-600',    icon: 'text-blue-500',    btn: 'bg-primary'     };
 
     const bodyEl = document.getElementById('modal-body');
     if (bodyEl) bodyEl.style.backgroundColor = theme.bg;
@@ -1330,10 +1861,13 @@
         let badgeHtml = '';
         if (inst.type) {
             badgeHtml = `
-                <span class="inline-flex items-center ml-3 px-4 py-1 rounded-sm text-[13px] font-bold text-white shadow-sm ${theme.badge}">${inst.type}</span>
+                <button onclick="openTypeCompare('${inst.type}')" title="제휴·추천 강사 비교 보기"
+                        class="group inline-flex items-center ml-3 px-4 py-1 rounded-full text-[13px] font-bold text-white shadow-sm ${theme.badge} hover:brightness-110 hover:-translate-y-0.5 transition-all duration-200">
+                    ${inst.type} <i class="fas fa-circle-question text-[11px] ml-1.5 opacity-80"></i>
+                </button>
             `;
         }
-        modalNameEl.innerHTML = `${inst.name}${badgeHtml}`;
+        modalNameEl.innerHTML = `<span class="align-middle">${inst.name}</span>${badgeHtml}`;
     }
 
     document.getElementById('modal-photo').src = inst.photo;
@@ -1348,18 +1882,23 @@
     if (profIcon) profIcon.className = `fas fa-user-circle mr-2 text-lg ${theme.icon}`;
 
     const catsContainer = document.getElementById('modal-categories');
-    catsContainer.textContent = (inst.categories || []).join('  •  ');
+    catsContainer.innerHTML = (inst.categories || []).map(cat =>
+        `<button onclick="filterByCategory('${cat.replace(/'/g, "\\'")}')"
+                 class="inline-flex items-center px-3 py-1 mr-1.5 mb-1.5 rounded-full text-[12px] font-bold bg-white/70 ${theme.text} ring-1 ring-current/20 hover:bg-white hover:shadow-sm transition cursor-pointer">
+            ${cat} <i class="fas fa-search text-[9px] ml-1.5 opacity-60"></i>
+         </button>`
+    ).join('');
 
     // 강의의뢰 및 문의 박스 렌더링
     const contactContainer = document.getElementById('modal-contact-container');
     if (contactContainer) {
         let typeNotice = "";
         if (inst.type === "제휴") {
-            typeNotice = "*본 강사는 제휴강사로 본사 제휴 프로세스에 따라 강의가 진행됩니다.";
+            typeNotice = "*'제휴강사'는 현직에서 활동 중인 전문 강사로, 직접 소통을 통해 자유롭게 섭외하실 수 있습니다.  ·  <button onclick=\'openTypeCompare(\"제휴\")\' class=\'underline hover:text-gray-700\'>자세히</button>";
         } else if (inst.type === "추천") {
-            typeNotice = "*본 강사는 추천강사로 검증된 커리큘럼을 기반으로 특별 매칭됩니다.";
+            typeNotice = "*'추천강사'는 FP파트너즈가 직접 검증한 강사로, 영상 확인부터 강의 기획·운영까지 정성껏 도와드립니다.  ·  <button onclick=\'openTypeCompare(\"추천\")\' class=\'underline hover:text-gray-700\'>자세히</button>";
         } else {
-            typeNotice = "*강의 의뢰 시 담당 실무자가 상세 일정을 안내해 드립니다.";
+            typeNotice = "강의 의뢰 시 담당 실무자가 상세 일정을 안내해 드립니다.";
         }
 
        contactContainer.innerHTML = `
@@ -1367,10 +1906,16 @@
                 <h5 class="text-[15px] font-bold text-gray-900 mb-2 flex items-center">
                     <i class="fas fa-comment-dots ${theme.icon} mr-2 text-lg"></i>강의의뢰 및 문의
                 </h5>
-                <p class="text-[26px] md:text-[30px] font-black ${theme.text} tracking-tight leading-none mb-3">
-                    ${inst.phone || '02-1234-5678'}
-                </p>
-                <p class="text-[11px] text-gray-500 leading-relaxed">${typeNotice}</p>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-2.5">
+                    <p class="text-[26px] md:text-[30px] font-black ${theme.text} tracking-tight leading-none">
+                        ${inst.phone || '02-1234-5678'}
+                    </p>
+                    <button onclick="openInquiry(${inst.id})"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full ${theme.btn || 'bg-primary'} text-white text-[13px] font-bold shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200 flex-shrink-0">
+                        <i class="fas fa-paper-plane text-[12px]"></i> 문의하기
+                    </button>
+                </div>
+                <p class="text-[12.5px] text-gray-500 leading-relaxed">${typeNotice}</p>
             </div>
         `;
     }
@@ -1441,7 +1986,17 @@ function openPosterModal(id) {
     if (titleEl) titleEl.textContent = poster.title;
 
     const imgEl = document.getElementById('poster-modal-img');
-    if (imgEl) imgEl.src = poster.image;
+    if (imgEl) {
+        imgEl.src = poster.image;
+        if (poster.link) {
+            imgEl.style.cursor = 'pointer';
+            imgEl.title = '클릭하면 상세 페이지로 이동합니다';
+            imgEl.onclick = () => window.open(poster.link, '_blank', 'noopener');
+        } else {
+            imgEl.style.cursor = 'default';
+            imgEl.onclick = null;
+        }
+    }
 
     const dateEl = document.getElementById('poster-modal-date');
     if (dateEl) dateEl.textContent = poster.date;
@@ -1620,6 +2175,7 @@ function openPosterModal(id) {
             document.getElementById('admin-poster-topic').value = p.topic || '';
             document.getElementById('admin-poster-mapurl').value = p.mapUrl || '';
             document.getElementById('admin-poster-route').value = p.route || '';
+            document.getElementById('admin-poster-link').value = p.link || '';
             document.getElementById('admin-poster-image').value = '';
             document.getElementById('admin-poster-mapimage').value = '';
             document.getElementById('admin-poster-form-title').textContent = "공고 수정";
@@ -1631,7 +2187,7 @@ function openPosterModal(id) {
             editingPosterId = null;
             document.getElementById('admin-poster-form-title').textContent = "공고 글쓰기";
             const btn = document.getElementById('admin-poster-submit-btn'); btn.textContent = "등록하기"; btn.classList.replace('bg-green-600', 'bg-primaryLight');
-            ['title','date','location','desc','image','topic','mapurl','route','mapimage'].forEach(id => { const el = document.getElementById('admin-poster-'+id); if (el) el.value = ''; });
+            ['title','date','location','desc','image','topic','mapurl','route','mapimage','link'].forEach(id => { const el = document.getElementById('admin-poster-'+id); if (el) el.value = ''; });
         }
 
         function cancelPosterAdminForm() { resetPosterAdminFormUI(); switchTab('landing'); }
@@ -1646,7 +2202,8 @@ function openPosterModal(id) {
                 topic: document.getElementById('admin-poster-topic').value.trim(),
                 description: document.getElementById('admin-poster-desc').value.trim(),
                 mapUrl: document.getElementById('admin-poster-mapurl').value.trim(),
-                route: document.getElementById('admin-poster-route').value.trim()
+                route: document.getElementById('admin-poster-route').value.trim(),
+                link: document.getElementById('admin-poster-link').value.trim()
             };
             const fileInput = document.getElementById('admin-poster-image');
             if (fileInput.files[0]) newData.image = URL.createObjectURL(fileInput.files[0]);
@@ -1667,5 +2224,97 @@ function openPosterModal(id) {
         window.onload = init;
     </script>
   </div>
+    <!-- 🩷 찜 목록 플로팅 버튼 -->
+    <button onclick="openWishlist()" title="찜한 강사"
+            class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-white shadow-[0_6px_20px_rgba(17,24,39,0.18)] ring-1 ring-gray-100 flex items-center justify-center hover:-translate-y-1 hover:shadow-[0_10px_28px_rgba(17,24,39,0.25)] transition-all duration-200 group">
+        <i class="fas fa-heart text-xl text-red-500 group-hover:scale-110 transition-transform"></i>
+        <span id="wish-count-badge" class="hidden absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-primary text-white text-[11px] font-bold flex items-center justify-center shadow">0</span>
+    </button>
+
+    <!-- 찜 목록 슬라이드 패널 -->
+    <div id="wishlist-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="if(event.target===this) closeWishlist()">
+        <div class="absolute top-0 right-0 h-full w-full max-w-sm bg-[#f8f9fc] shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-out">
+            <div class="flex items-center justify-between px-6 py-5 bg-white border-b border-gray-100 flex-shrink-0">
+                <h3 class="text-lg font-black text-gray-900 flex items-center gap-2">
+                    <i class="fas fa-heart text-red-500"></i> 찜한 강사
+                </h3>
+                <button onclick="closeWishlist()" class="w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-5">
+                <div id="wishlist-items" class="space-y-2.5"></div>
+                <div id="wishlist-empty" class="hidden text-center py-24 text-gray-400">
+                    <i class="far fa-heart text-4xl text-gray-200 mb-4"></i>
+                    <p class="text-sm">아직 찜한 강사가 없습니다.</p>
+                    <p class="text-xs text-gray-300 mt-1">강사 카드의 하트를 눌러 담아보세요.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 강사 문의하기 모달 -->
+    <div id="inquiry-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300" onclick="if(event.target===this) closeInquiry()">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md transform scale-95 transition-transform duration-300 overflow-hidden">
+            <div class="bg-gradient-to-r from-[#2f3b89] to-[#5a6ad0] text-white px-6 py-5 flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-black tracking-tight">강의 문의하기</h3>
+                    <p class="text-[12px] text-white/80 mt-0.5"><span id="inquiry-inst-name" class="font-bold"></span> 강사</p>
+                </div>
+                <button onclick="closeInquiry()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/15 transition"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-6 space-y-3.5 max-h-[70vh] overflow-y-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">회사명 <span class="text-red-500">*</span></label>
+                        <input type="text" id="inq-org" class="w-full p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="회사명">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">소재지 <span class="text-red-500">*</span></label>
+                        <input type="text" id="inq-location" class="w-full p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="*시(도), 군(구)까지만 입력해주세요">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">문의자 이름 <span class="text-red-500">*</span></label>
+                        <input type="text" id="inq-name" class="w-full p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="문의자 이름">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">부서 및 직위 <span class="text-red-500">*</span></label>
+                        <input type="text" id="inq-dept" class="w-full p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="부서 및 직위">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">핸드폰 <span class="text-red-500">*</span></label>
+                        <input type="text" id="inq-phone" class="w-full p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="핸드폰">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">이메일 <span class="text-red-500">*</span></label>
+                        <input type="text" id="inq-email" class="w-full p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="이메일">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">문의사항</label>
+                    <textarea id="inq-message" class="w-full p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition h-32 resize-none" placeholder="희망 일정, 대상 인원, 교육 주제 등을 자유롭게 적어주세요."></textarea>
+                </div>
+            </div>
+            <div class="bg-gray-50/70 px-6 py-4 flex justify-end gap-2.5 border-t border-gray-100">
+                <button onclick="closeInquiry()" class="px-5 py-2.5 rounded-full ring-1 ring-gray-200 bg-white text-sm font-medium text-gray-600 hover:ring-gray-300 transition">취소</button>
+                <button onclick="submitInquiry()" class="px-7 py-2.5 rounded-full bg-primary text-sm font-bold text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200">문의 접수</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 제휴 vs 추천 비교 모달 -->
+    <div id="type-compare-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300" onclick="if(event.target===this) closeTypeCompare()">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl transform scale-95 transition-transform duration-300 overflow-hidden">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+                <h3 class="text-lg font-black text-gray-900">제휴강사 · 추천강사 안내</h3>
+                <button onclick="closeTypeCompare()" class="w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"><i class="fas fa-times text-lg"></i></button>
+            </div>
+            <div id="type-compare-body" class="p-6 flex flex-col md:flex-row gap-4"></div>
+            <div class="bg-gray-50/70 px-6 py-4 flex justify-end border-t border-gray-100">
+                <button onclick="closeTypeCompare()" class="px-7 py-2.5 rounded-full bg-primary text-sm font-bold text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 transition-all duration-200">확인</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
