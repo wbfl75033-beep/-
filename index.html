@@ -59,20 +59,26 @@
 <body class="antialiased font-sans">
 
     <!-- 📢 상단 광고 배너 (gaworld 스타일) -->
-    <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 transition-colors duration-500" style="background-color:#eef1f4;">
-        <div id="top-ad-track" class="relative w-full h-[120px] md:h-[150px]"></div>
-        <!-- 좌우 화살표 -->
+    <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 h-[120px] md:h-[150px]">
+        <!-- 배경: 현재 광고 이미지를 확대·블러 처리해서 좌우 여백을 채움 -->
+        <div id="top-ad-bg" class="absolute inset-0 bg-center bg-cover scale-110 blur-xl opacity-60"></div>
+        <div class="absolute inset-0 bg-white/30 backdrop-blur-md"></div>
+        <!-- 가운데: 실제 광고 이미지 (최대폭 안쪽) -->
+        <div class="relative h-full max-w-5xl mx-auto px-14 md:px-16">
+            <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
+        </div>
+        <!-- 좌우 화살표 (여백 거터에 위치) -->
         <button onclick="moveTopAd(-1)" aria-label="이전 광고"
-                class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/70 hover:bg-white text-gray-500 shadow-sm flex items-center justify-center transition">
+                class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-600 shadow-md flex items-center justify-center transition">
             <i class="fas fa-chevron-left text-xs"></i>
         </button>
         <button onclick="moveTopAd(1)" aria-label="다음 광고"
-                class="absolute right-12 md:right-20 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/70 hover:bg-white text-gray-500 shadow-sm flex items-center justify-center transition">
+                class="absolute right-12 md:right-20 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-600 shadow-md flex items-center justify-center transition">
             <i class="fas fa-chevron-right text-xs"></i>
         </button>
         <!-- 닫기 -->
         <button onclick="closeTopAd()" aria-label="광고 닫기"
-                class="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full text-gray-400 hover:text-gray-700 hover:bg-white/60 flex items-center justify-center transition">
+                class="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full text-gray-500 hover:text-gray-800 hover:bg-white/70 flex items-center justify-center transition">
             <i class="fas fa-times text-sm"></i>
         </button>
     </div>
@@ -137,7 +143,7 @@
         <section class="w-full">
             <div id="banner-slider"
                  onmouseenter="clearInterval(bannerTimer)" onmouseleave="startBannerAuto()"
-                 class="group relative w-full h-[340px] md:h-[460px] overflow-hidden bg-gray-900">
+                 class="group relative w-full h-[380px] md:h-[540px] overflow-hidden bg-gray-900">
                 
                 <div id="banner-track" class="absolute inset-0"></div>
 
@@ -1297,6 +1303,41 @@
         let topAdIdx = 0;
         let topAdTimer = null;
 
+        // ===== 하단 파트너사 로고 =====
+        const partners = [
+            "MEGA", "iFA", "삼성생명", "Meraki 33", "(주)엠금융서비스",
+            "에이원금융판매(주)", "SIGNA FINANCE", "한화생명", "메트라이프", "DB손해보험"
+        ];
+        let partnerIdx = 0;
+        const PARTNER_VISIBLE = 6;
+        function renderPartners() {
+            const track = document.getElementById('partner-track');
+            if (!track) return;
+            track.innerHTML = '';
+            partners.forEach(name => {
+                const cell = document.createElement('div');
+                cell.className = 'flex-shrink-0 h-16 flex items-center justify-center rounded-lg border border-gray-200 bg-white px-4';
+                cell.style.width = `calc((100% - ${(PARTNER_VISIBLE-1)}*0.75rem) / ${PARTNER_VISIBLE})`;
+                cell.innerHTML = `<span class="text-[15px] font-bold text-gray-500 text-center break-keep">${name}</span>`;
+                track.appendChild(cell);
+            });
+            updatePartners();
+        }
+        function updatePartners() {
+            const track = document.getElementById('partner-track');
+            if (!track) return;
+            const maxIdx = Math.max(0, partners.length - PARTNER_VISIBLE);
+            if (partnerIdx > maxIdx) partnerIdx = maxIdx;
+            if (partnerIdx < 0) partnerIdx = 0;
+            const step = 100 / PARTNER_VISIBLE;
+            track.style.transform = `translateX(-${partnerIdx * step}%)`;
+        }
+        function movePartners(dir) {
+            const maxIdx = Math.max(0, partners.length - PARTNER_VISIBLE);
+            partnerIdx = Math.min(maxIdx, Math.max(0, partnerIdx + dir));
+            updatePartners();
+        }
+
         function renderTopAds() {
             const track = document.getElementById('top-ad-track');
             if (!track) return;
@@ -1313,10 +1354,11 @@
                 slide.style.zIndex = on ? '10' : '0';
                 slide.dataset.idx = i;
                 slide.innerHTML = `
-                    <img src="${ad.image}" alt="광고 배너" class="w-full h-full object-cover">
+                    <img src="${ad.image}" alt="광고 배너" class="w-full h-full object-contain">
                 `;
                 track.appendChild(slide);
             });
+            updateTopAdBg();
             startTopAdAuto();
         }
         function updateTopAds() {
@@ -1328,8 +1370,12 @@
                 el.style.opacity = on ? '1' : '0';
                 el.style.zIndex = on ? '10' : '0';
             });
-            const bar = document.getElementById('top-ad-bar');
-            if (bar && topAds[topAdIdx] && topAds[topAdIdx].bg) bar.style.backgroundColor = topAds[topAdIdx].bg;
+            updateTopAdBg();
+        }
+        // 현재 광고 이미지를 배경(블러)으로도 사용
+        function updateTopAdBg() {
+            const bg = document.getElementById('top-ad-bg');
+            if (bg && topAds[topAdIdx]) bg.style.backgroundImage = `url('${topAds[topAdIdx].image}')`;
         }
         function moveTopAd(step) {
             topAdIdx = (topAdIdx + step + topAds.length) % topAds.length;
@@ -1372,15 +1418,19 @@
                                 <p class="banner-l1 text-white/90 text-base md:text-2xl font-light mb-1 md:mb-2 break-keep">${b.line1 || ''}</p>
                                 <h2 class="banner-l2 text-white text-2xl md:text-[40px] font-black leading-[1.2] tracking-tight mb-5 md:mb-7 break-keep">${b.line2 || ''}</h2>
                                 ${b.btnText ? `<a href="${b.link || '#'}"
-                                     class="banner-btn inline-flex items-center gap-2 bg-white text-gray-900 text-[13px] md:text-sm font-bold
-                                            px-7 md:px-9 py-2.5 md:py-3 rounded-full shadow-lg hover:bg-gray-100 hover:shadow-xl hover:-translate-y-0.5
-                                            transition-all duration-200">${b.btnText} <i class="fas fa-arrow-right text-[11px]"></i></a>` : ''}
+                                     class="banner-btn group/btn inline-flex items-center gap-2.5 text-white text-[13px] md:text-sm font-bold
+                                            px-8 md:px-10 py-3 md:py-3.5 rounded-full
+                                            bg-gradient-to-r from-[#2f3b89] via-[#4a58b5] to-[#6d7ce0]
+                                            shadow-[0_8px_24px_rgba(47,59,137,0.45)] hover:shadow-[0_12px_32px_rgba(47,59,137,0.6)]
+                                            hover:-translate-y-0.5 transition-all duration-200 ring-1 ring-white/20">
+                                     ${b.btnText}
+                                     <i class="fas fa-arrow-right text-[11px] group-hover/btn:translate-x-1 transition-transform duration-200"></i></a>` : ''}
                             </div>
                             <!-- 오른쪽: 보조 카피 (PC에서만) -->
                             ${(b.sub1 || b.sub2) ? `
                             <div class="banner-sub hidden lg:block text-right flex-shrink-0">
-                                <p class="text-white text-xl xl:text-[26px] font-medium leading-relaxed break-keep">${b.sub1 || ''}</p>
-                                <p class="text-white text-xl xl:text-[26px] font-medium leading-relaxed break-keep">${b.sub2 || ''}</p>
+                                <p class="text-white/95 text-xl xl:text-[26px] font-light leading-relaxed break-keep">${b.sub1 || ''}</p>
+                                <p class="text-white/95 text-xl xl:text-[26px] font-light leading-relaxed break-keep">${b.sub2 || ''}</p>
                             </div>` : ''}
                           </div>
                         </div>
@@ -1482,6 +1532,7 @@
             loadWishlist();
             loadPins();
             renderTopAds();
+            renderPartners();
             renderBanner();
             renderFilters();
             renderInstructors();
@@ -2278,6 +2329,54 @@ function openPosterModal(id) {
 
         window.onload = init;
     </script>
+
+    <!-- ===== 사이트 하단 (Footer) ===== -->
+    <footer class="border-t border-gray-200 bg-white mt-10">
+        <!-- 파트너사 로고 캐러셀 -->
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex items-center gap-3">
+                <button onclick="movePartners(-1)" aria-label="이전" class="flex-shrink-0 w-9 h-9 rounded-md border border-gray-200 text-gray-400 hover:text-gray-700 hover:border-gray-300 flex items-center justify-center transition">
+                    <i class="fas fa-chevron-left text-xs"></i>
+                </button>
+                <div class="flex-1 overflow-hidden">
+                    <div id="partner-track" class="flex gap-3 transition-transform duration-500 ease-out"></div>
+                </div>
+                <button onclick="movePartners(1)" aria-label="다음" class="flex-shrink-0 w-9 h-9 rounded-md border border-gray-200 text-gray-400 hover:text-gray-700 hover:border-gray-300 flex items-center justify-center transition">
+                    <i class="fas fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 하단 링크 바 -->
+        <div class="border-t border-gray-200 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between py-3.5 gap-3">
+                    <div class="flex items-center flex-wrap gap-x-5 gap-y-1 text-[13px] text-gray-600">
+                        <a href="#" class="hover:text-primary">회사소개</a>
+                        <span class="text-gray-200">|</span>
+                        <a href="#" class="hover:text-primary">서비스이용약관</a>
+                        <span class="text-gray-200">|</span>
+                        <a href="#" class="font-bold text-gray-800 hover:text-primary">개인정보처리방침</a>
+                        <span class="text-gray-200">|</span>
+                        <a href="#" class="hover:text-primary">투자 및 제휴문의</a>
+                        <span class="hidden lg:inline text-gray-300 ml-2 text-[12px]">이 사이트는 크롬에 최적화 되어있습니다.</span>
+                    </div>
+                    <p class="text-[15px] font-black text-gray-900 whitespace-nowrap">고객센터 : 02.525.1686</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 회사 정보 -->
+        <div class="border-t border-gray-100 bg-gray-50/60">
+            <div class="max-w-7xl mx-auto px-4 py-6 space-y-1.5 text-[12.5px] text-gray-500 leading-relaxed">
+                <p>서비스 제공 : 에프피파트너즈 주식회사</p>
+                <p>서울특별시 강남구 테헤란로82길 15, 503호(대치동, 디아이타워)&nbsp;&nbsp;&nbsp;사업자 번호 : 733-86-00797&nbsp;&nbsp;&nbsp;통신판매업신고번호 제 2023-서울강남-01083 호</p>
+                <p>대표이사 : 장영민&nbsp;&nbsp;&nbsp;고객센터 : 대표 02-525-1686&nbsp;&nbsp;&nbsp;Email : minzi34@naver.com</p>
+                <p class="pt-1.5 text-gray-400">Copyright &copy; 2015 에프피파트너즈 주식회사. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
   </div>
     <!-- 🩷 찜 목록 플로팅 버튼 -->
     <button onclick="openWishlist()" title="찜한 강사"
