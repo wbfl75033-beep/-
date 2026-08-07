@@ -60,13 +60,13 @@
 
     <!-- 📢 상단 광고 배너 (gaworld 스타일) -->
     <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 h-[120px] md:h-[150px]">
-        <!-- 광고 이미지 (좌우 화살표 영역만 남기고 넓게) -->
-        <div class="relative h-full mx-14 md:mx-16">
+        <!-- 광고 이미지 (좌우 화살표/닫기 영역을 피해 안쪽에 배치) -->
+        <div class="relative h-full ml-16 mr-24 md:ml-20 md:mr-28">
             <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
         </div>
-        <!-- 좌우 끝 블러 거터 (화살표가 얹히는 영역) -->
-        <div class="absolute left-0 top-0 bottom-0 w-14 md:w-16 z-10 bg-white/40 backdrop-blur-md border-r border-white/30 pointer-events-none"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-14 md:w-16 z-10 bg-white/40 backdrop-blur-md border-l border-white/30 pointer-events-none"></div>
+        <!-- 좌우 끝 블러 거터 (화살표/닫기가 얹히는 영역) -->
+        <div class="absolute left-0 top-0 bottom-0 w-16 md:w-20 z-10 bg-white/50 backdrop-blur-lg border-r border-white/40 pointer-events-none"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-24 md:w-28 z-10 bg-white/50 backdrop-blur-lg border-l border-white/40 pointer-events-none"></div>
         <!-- 좌우 화살표 (블러 거터 위에 위치) -->
         <button onclick="moveTopAd(-1)" aria-label="이전 광고"
                 class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-600 shadow-md flex items-center justify-center transition">
