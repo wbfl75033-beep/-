@@ -60,13 +60,8 @@
 
     <!-- 📢 상단 광고 배너 (gaworld 스타일) -->
     <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 h-[120px] md:h-[150px]">
-        <!-- 배경: 현재 광고 이미지를 확대·블러 처리해서 좌우 여백을 채움 -->
-        <div id="top-ad-bg" class="absolute inset-0 bg-center bg-cover scale-110 blur-xl opacity-60"></div>
-        <div class="absolute inset-0 bg-white/30 backdrop-blur-md"></div>
-        <!-- 가운데: 실제 광고 이미지 (최대폭 안쪽) -->
-        <div class="relative h-full max-w-5xl mx-auto px-14 md:px-16">
-            <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
-        </div>
+        <!-- 광고 이미지 (배너 전체 폭) -->
+        <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
         <!-- 좌우 화살표 (여백 거터에 위치) -->
         <button onclick="moveTopAd(-1)" aria-label="이전 광고"
                 class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-600 shadow-md flex items-center justify-center transition">
@@ -1354,11 +1349,10 @@
                 slide.style.zIndex = on ? '10' : '0';
                 slide.dataset.idx = i;
                 slide.innerHTML = `
-                    <img src="${ad.image}" alt="광고 배너" class="w-full h-full object-contain">
+                    <img src="${ad.image}" alt="광고 배너" class="w-full h-full object-cover">
                 `;
                 track.appendChild(slide);
             });
-            updateTopAdBg();
             startTopAdAuto();
         }
         function updateTopAds() {
@@ -1370,12 +1364,6 @@
                 el.style.opacity = on ? '1' : '0';
                 el.style.zIndex = on ? '10' : '0';
             });
-            updateTopAdBg();
-        }
-        // 현재 광고 이미지를 배경(블러)으로도 사용
-        function updateTopAdBg() {
-            const bg = document.getElementById('top-ad-bg');
-            if (bg && topAds[topAdIdx]) bg.style.backgroundImage = `url('${topAds[topAdIdx].image}')`;
         }
         function moveTopAd(step) {
             topAdIdx = (topAdIdx + step + topAds.length) % topAds.length;
