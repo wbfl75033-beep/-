@@ -60,26 +60,28 @@
 
     <!-- 📢 상단 광고 배너 (gaworld 스타일) -->
     <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 h-[120px] md:h-[150px]">
-        <!-- 광고 이미지 (배너를 꽉 채움) -->
-        <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
-        <!-- 좌우 끝 화살표 자리만 이미지 색 블러 거터 -->
-        <div id="top-ad-gutter-l" class="absolute left-0 top-0 bottom-0 w-12 md:w-14 z-10 bg-center bg-cover pointer-events-none"></div>
-        <div class="absolute left-0 top-0 bottom-0 w-12 md:w-14 z-10 backdrop-blur-md bg-white/10 pointer-events-none"></div>
-        <div id="top-ad-gutter-r" class="absolute right-0 top-0 bottom-0 w-20 md:w-24 z-10 bg-center bg-cover pointer-events-none"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-20 md:w-24 z-10 backdrop-blur-md bg-white/10 pointer-events-none"></div>
+        <!-- 광고 이미지: 좌우 대칭 여백(화살표 공간) 안에서 꽉 채움 → 중앙 정렬 -->
+        <div class="absolute inset-y-0 left-14 right-14 md:left-16 md:right-16 overflow-hidden">
+            <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
+        </div>
+        <!-- 좌우 끝 화살표 자리: 이미지 색 블러 거터 (대칭) -->
+        <div id="top-ad-gutter-l" class="absolute left-0 top-0 bottom-0 w-14 md:w-16 z-10 bg-cover pointer-events-none"></div>
+        <div class="absolute left-0 top-0 bottom-0 w-14 md:w-16 z-10 backdrop-blur-md bg-white/10 pointer-events-none"></div>
+        <div id="top-ad-gutter-r" class="absolute right-0 top-0 bottom-0 w-14 md:w-16 z-10 bg-cover pointer-events-none"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-14 md:w-16 z-10 backdrop-blur-md bg-white/10 pointer-events-none"></div>
         <!-- 좌우 화살표 (블러 거터 위에 위치) -->
         <button onclick="moveTopAd(-1)" aria-label="이전 광고"
                 class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-600 shadow-md flex items-center justify-center transition">
             <i class="fas fa-chevron-left text-xs"></i>
         </button>
         <button onclick="moveTopAd(1)" aria-label="다음 광고"
-                class="absolute right-12 md:right-20 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-600 shadow-md flex items-center justify-center transition">
+                class="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-600 shadow-md flex items-center justify-center transition">
             <i class="fas fa-chevron-right text-xs"></i>
         </button>
-        <!-- 닫기 -->
+        <!-- 닫기 (우측 상단) -->
         <button onclick="closeTopAd()" aria-label="광고 닫기"
-                class="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full text-gray-500 hover:text-gray-800 hover:bg-white/70 flex items-center justify-center transition">
-            <i class="fas fa-times text-sm"></i>
+                class="absolute right-2 top-2 z-30 w-7 h-7 rounded-full bg-white/70 text-gray-500 hover:text-gray-800 hover:bg-white flex items-center justify-center transition">
+            <i class="fas fa-times text-xs"></i>
         </button>
     </div>
 
@@ -182,22 +184,6 @@
         <section class="pt-12 pb-8 bg-white">
             <div class="container mx-auto px-4 max-w-5xl">
                 
-                <div class="flex flex-col md:flex-row items-center justify-center space-y-3 md:space-y-0 md:space-x-4 mb-6">
-                    
-                    <h3 class="text-2xl font-black text-gray-900 tracking-tight">어떤 강사를 찾고 계신가요?</h3>
-                    
-                </div>
-                
-                <div class="flex justify-center mb-10">
-                    <div class="w-full max-w-2xl relative">
-                        <input type="text" id="search-input" placeholder="검색어를 입력해주세요." 
-                               class="w-full py-3 pl-5 pr-12 rounded bg-gray-50 border border-gray-200 text-sm text-gray-700 focus:outline-none focus:border-primary transition-all">
-                        <button id="search-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-
                 <!-- 전체분야 (별도 버튼) -->
                 <div class="flex justify-center mb-4">
                     <button id="all-category-btn" onclick="selectAllCategory()"
@@ -1204,6 +1190,7 @@
             ['inq-org', 'inq-location', 'inq-name', 'inq-dept', 'inq-phone', 'inq-email', 'inq-message'].forEach(k => {
                 const el = document.getElementById(k); if (el) el.value = '';
             });
+            const agreeEl = document.getElementById('inq-agree'); if (agreeEl) agreeEl.checked = false;
             const m = document.getElementById('inquiry-modal');
             m.classList.remove('hidden');
             setTimeout(() => { m.classList.remove('opacity-0'); m.firstElementChild.classList.remove('scale-95'); }, 10);
@@ -1224,6 +1211,11 @@
             const msg = document.getElementById('inq-message').value.trim();
             if (!org || !location || !name || !dept || !phone || !email) {
                 alert("회사명, 소재지, 문의자 이름, 부서 및 직위, 핸드폰, 이메일은 필수 입력입니다.");
+                return;
+            }
+            const agreeEl = document.getElementById('inq-agree');
+            if (!agreeEl || !agreeEl.checked) {
+                alert("개인정보 수집·이용에 동의해주셔야 문의 접수가 가능합니다.");
                 return;
             }
             const inst = instructors.find(i => i.id === inquiryInstId);
@@ -1375,8 +1367,8 @@
             if (!img) return;
             const gl = document.getElementById('top-ad-gutter-l');
             const gr = document.getElementById('top-ad-gutter-r');
-            if (gl) { gl.style.backgroundImage = `url('${img}')`; gl.style.backgroundPosition = 'left center'; }
-            if (gr) { gr.style.backgroundImage = `url('${img}')`; gr.style.backgroundPosition = 'right center'; }
+            if (gl) { gl.style.backgroundImage = `url('${img}')`; gl.style.backgroundPosition = 'left center'; gl.style.filter = 'blur(6px)'; }
+            if (gr) { gr.style.backgroundImage = `url('${img}')`; gr.style.backgroundPosition = 'right center'; gr.style.filter = 'blur(6px)'; }
         }
         function updateTopAds() {
             const track = document.getElementById('top-ad-track');
@@ -2464,6 +2456,21 @@ function openPosterModal(id) {
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1.5">문의사항</label>
                     <textarea id="inq-message" class="w-full p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition h-32 resize-none" placeholder="희망 일정, 대상 인원, 교육 주제 등을 구체적으로 작성해주세요."></textarea>
+                </div>
+
+                <!-- 개인정보 수집·이용 동의 -->
+                <div class="rounded-xl ring-1 ring-gray-200 bg-gray-50/70 p-4">
+                    <p class="text-[13px] font-bold text-gray-800 mb-2.5">개인정보 수집·이용 동의 <span class="text-red-500">(필수)</span></p>
+                    <div class="space-y-1.5 text-[12px] text-gray-500 leading-relaxed mb-3">
+                        <p><span class="font-semibold text-gray-600">수집 항목</span> — 회사명, 소재지, 문의자 성명, 부서 및 직위, 휴대전화번호, 이메일</p>
+                        <p><span class="font-semibold text-gray-600">이용 목적</span> — 강의 의뢰 상담 및 강사 연결</p>
+                        <p><span class="font-semibold text-gray-600">보유 기간</span> — 상담 종료 후 1년, 이후 지체 없이 파기</p>
+                        <p><span class="font-semibold text-gray-600">동의 거부 권리</span> — 동의를 거부하실 수 있으며, 이 경우 문의 접수가 제한됩니다.</p>
+                    </div>
+                    <label class="flex items-start gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="inq-agree" class="mt-0.5 w-4 h-4 accent-primary flex-shrink-0">
+                        <span class="text-[12.5px] font-medium text-gray-700">위 내용을 확인하였으며 개인정보 수집·이용에 동의합니다.</span>
+                    </label>
                 </div>
             </div>
             <div class="bg-gray-50/70 px-6 py-4 flex justify-end gap-2.5 border-t border-gray-100">
