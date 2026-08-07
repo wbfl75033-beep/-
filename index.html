@@ -60,9 +60,14 @@
 
     <!-- 📢 상단 광고 배너 (gaworld 스타일) -->
     <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 h-[120px] md:h-[150px]">
-        <!-- 광고 이미지 (배너 전체 폭) -->
-        <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
-        <!-- 좌우 화살표 (여백 거터에 위치) -->
+        <!-- 광고 이미지 (좌우 화살표 영역만 남기고 넓게) -->
+        <div class="relative h-full mx-14 md:mx-16">
+            <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
+        </div>
+        <!-- 좌우 끝 블러 거터 (화살표가 얹히는 영역) -->
+        <div class="absolute left-0 top-0 bottom-0 w-14 md:w-16 z-10 bg-white/40 backdrop-blur-md border-r border-white/30 pointer-events-none"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-14 md:w-16 z-10 bg-white/40 backdrop-blur-md border-l border-white/30 pointer-events-none"></div>
+        <!-- 좌우 화살표 (블러 거터 위에 위치) -->
         <button onclick="moveTopAd(-1)" aria-label="이전 광고"
                 class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-600 shadow-md flex items-center justify-center transition">
             <i class="fas fa-chevron-left text-xs"></i>
@@ -196,8 +201,9 @@
                 <!-- 전체분야 (별도 버튼) -->
                 <div class="flex justify-center mb-4">
                     <button id="all-category-btn" onclick="selectAllCategory()"
-                            class="px-8 py-2.5 rounded-full text-[14px] font-bold bg-primary text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200">
-                        <i class="fas fa-border-all text-[12px] mr-1.5"></i> 전체분야
+                            class="group inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-primary transition-all duration-200">
+                        <span class="w-2 h-2 rounded-full bg-primary group-hover:scale-125 transition-transform"></span>
+                        <span class="border-b-2 border-primary pb-0.5">전체분야</span>
                     </button>
                 </div>
 
@@ -1406,13 +1412,14 @@
                                 <p class="banner-l1 text-white/90 text-base md:text-2xl font-light mb-1 md:mb-2 break-keep">${b.line1 || ''}</p>
                                 <h2 class="banner-l2 text-white text-2xl md:text-[40px] font-black leading-[1.2] tracking-tight mb-5 md:mb-7 break-keep">${b.line2 || ''}</h2>
                                 ${b.btnText ? `<a href="${b.link || '#'}"
-                                     class="banner-btn group/btn inline-flex items-center gap-2.5 text-white text-[13px] md:text-sm font-bold
-                                            px-8 md:px-10 py-3 md:py-3.5 rounded-full
-                                            bg-gradient-to-r from-[#2f3b89] via-[#4a58b5] to-[#6d7ce0]
-                                            shadow-[0_8px_24px_rgba(47,59,137,0.45)] hover:shadow-[0_12px_32px_rgba(47,59,137,0.6)]
-                                            hover:-translate-y-0.5 transition-all duration-200 ring-1 ring-white/20">
-                                     ${b.btnText}
-                                     <i class="fas fa-arrow-right text-[11px] group-hover/btn:translate-x-1 transition-transform duration-200"></i></a>` : ''}
+                                     class="banner-btn group/btn inline-flex items-center gap-3 text-white text-[13px] md:text-[15px] font-bold
+                                            pl-7 md:pl-8 pr-2 md:pr-2.5 py-2 md:py-2.5 rounded-full
+                                            bg-white/10 backdrop-blur-md ring-1 ring-white/40
+                                            hover:bg-white/20 hover:ring-white/70 transition-all duration-300">
+                                     <span>${b.btnText}</span>
+                                     <span class="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-full bg-white text-[#2f3b89] group-hover/btn:translate-x-0.5 transition-transform duration-300">
+                                        <i class="fas fa-arrow-right text-[13px]"></i>
+                                     </span></a>` : ''}
                             </div>
                             <!-- 오른쪽: 보조 카피 (PC에서만) -->
                             ${(b.sub1 || b.sub2) ? `
@@ -1574,9 +1581,13 @@
 
     const allBtn = document.getElementById('all-category-btn');
     if (allBtn) {
-        allBtn.className = (selectedCategories.length === 0)
-            ? "px-8 py-2.5 rounded-full text-[14px] font-bold bg-primary text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200"
-            : "px-8 py-2.5 rounded-full text-[14px] font-bold bg-white ring-1 ring-gray-200 text-gray-500 hover:text-primary hover:ring-primary/30 hover:-translate-y-0.5 transition-all duration-200";
+        const activeAll = (selectedCategories.length === 0);
+        allBtn.innerHTML = activeAll
+            ? `<span class="w-2 h-2 rounded-full bg-primary"></span><span class="border-b-2 border-primary pb-0.5">전체분야</span>`
+            : `<span class="w-2 h-2 rounded-full bg-gray-300 group-hover:bg-primary transition-colors"></span><span class="border-b-2 border-transparent group-hover:border-primary/40 pb-0.5 transition-colors">전체분야</span>`;
+        allBtn.className = activeAll
+            ? "group inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-primary transition-all duration-200"
+            : "group inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-gray-400 hover:text-primary transition-all duration-200";
     }
 
     container.className = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)]";
