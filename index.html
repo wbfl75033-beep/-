@@ -60,13 +60,13 @@
 
     <!-- 📢 상단 광고 배너 (gaworld 스타일) -->
     <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 h-[120px] md:h-[150px]">
-        <!-- 배경: 현재 광고 이미지를 확대·블러 처리 (좌우 여백을 광고 색으로 채움) -->
-        <div id="top-ad-bg" class="absolute inset-0 bg-center bg-cover scale-125 blur-2xl opacity-70"></div>
-        <div class="absolute inset-0 bg-white/20"></div>
-        <!-- 가운데: 실제 광고 이미지 (화살표/닫기를 확실히 피하는 안쪽 폭) -->
-        <div class="relative h-full max-w-4xl mx-auto px-16 md:px-24">
-            <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
-        </div>
+        <!-- 광고 이미지 (배너를 꽉 채움) -->
+        <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
+        <!-- 좌우 끝 화살표 자리만 이미지 색 블러 거터 -->
+        <div id="top-ad-gutter-l" class="absolute left-0 top-0 bottom-0 w-12 md:w-14 z-10 bg-center bg-cover pointer-events-none"></div>
+        <div class="absolute left-0 top-0 bottom-0 w-12 md:w-14 z-10 backdrop-blur-md bg-white/10 pointer-events-none"></div>
+        <div id="top-ad-gutter-r" class="absolute right-0 top-0 bottom-0 w-20 md:w-24 z-10 bg-center bg-cover pointer-events-none"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-20 md:w-24 z-10 backdrop-blur-md bg-white/10 pointer-events-none"></div>
         <!-- 좌우 화살표 (블러 거터 위에 위치) -->
         <button onclick="moveTopAd(-1)" aria-label="이전 광고"
                 class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-600 shadow-md flex items-center justify-center transition">
@@ -1363,7 +1363,7 @@
                 slide.style.zIndex = on ? '10' : '0';
                 slide.dataset.idx = i;
                 slide.innerHTML = `
-                    <img src="${ad.image}" alt="광고 배너" class="w-full h-full object-contain">
+                    <img src="${ad.image}" alt="광고 배너" class="w-full h-full object-cover">
                 `;
                 track.appendChild(slide);
             });
@@ -1371,8 +1371,12 @@
             startTopAdAuto();
         }
         function updateTopAdBg() {
-            const bg = document.getElementById('top-ad-bg');
-            if (bg && topAds[topAdIdx]) bg.style.backgroundImage = `url('${topAds[topAdIdx].image}')`;
+            const img = topAds[topAdIdx] && topAds[topAdIdx].image;
+            if (!img) return;
+            const gl = document.getElementById('top-ad-gutter-l');
+            const gr = document.getElementById('top-ad-gutter-r');
+            if (gl) { gl.style.backgroundImage = `url('${img}')`; gl.style.backgroundPosition = 'left center'; }
+            if (gr) { gr.style.backgroundImage = `url('${img}')`; gr.style.backgroundPosition = 'right center'; }
         }
         function updateTopAds() {
             const track = document.getElementById('top-ad-track');
