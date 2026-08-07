@@ -60,13 +60,13 @@
 
     <!-- 📢 상단 광고 배너 (gaworld 스타일) -->
     <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 h-[120px] md:h-[150px]">
-        <!-- 광고 이미지 (좌우 화살표/닫기 영역을 피해 안쪽에 배치) -->
-        <div class="relative h-full ml-16 mr-24 md:ml-20 md:mr-28">
+        <!-- 배경: 현재 광고 이미지를 확대·블러 처리 (좌우 여백을 광고 색으로 채움) -->
+        <div id="top-ad-bg" class="absolute inset-0 bg-center bg-cover scale-125 blur-2xl opacity-70"></div>
+        <div class="absolute inset-0 bg-white/20"></div>
+        <!-- 가운데: 실제 광고 이미지 (화살표/닫기를 확실히 피하는 안쪽 폭) -->
+        <div class="relative h-full max-w-4xl mx-auto px-16 md:px-24">
             <div id="top-ad-track" class="relative w-full h-full overflow-hidden"></div>
         </div>
-        <!-- 좌우 끝 블러 거터 (화살표/닫기가 얹히는 영역) -->
-        <div class="absolute left-0 top-0 bottom-0 w-16 md:w-20 z-10 bg-white/50 backdrop-blur-lg border-r border-white/40 pointer-events-none"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-24 md:w-28 z-10 bg-white/50 backdrop-blur-lg border-l border-white/40 pointer-events-none"></div>
         <!-- 좌우 화살표 (블러 거터 위에 위치) -->
         <button onclick="moveTopAd(-1)" aria-label="이전 광고"
                 class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-600 shadow-md flex items-center justify-center transition">
@@ -598,6 +598,14 @@
                             </h4>
                             <img id="modalMapImage" src="" alt="약도" class="block w-full max-w-full h-auto rounded border border-gray-200 mb-2 hidden">
                             <p id="modalRouteDescription" class="text-xs text-gray-500 leading-relaxed whitespace-pre-line mb-3"></p>
+                        </div>
+
+                        <!-- 주의 안내 문구 -->
+                        <div class="mt-auto rounded-lg bg-gray-50 border border-gray-100 px-3.5 py-3">
+                            <p class="text-[11px] text-gray-400 leading-relaxed break-keep flex gap-1.5">
+                                <i class="fas fa-circle-info text-gray-300 mt-0.5 flex-shrink-0"></i>
+                                <span>FP파트너즈는 공개되는 강좌와 직접적인 관련이 없으며, 수강 관련 사항은 전적으로 주최자(기관)에 문의하시기 바랍니다. 강좌 내용과 진행에 대한 책임은 주최자에게 있습니다.</span>
+                            </p>
                         </div>
 
                     </div>
@@ -1355,11 +1363,16 @@
                 slide.style.zIndex = on ? '10' : '0';
                 slide.dataset.idx = i;
                 slide.innerHTML = `
-                    <img src="${ad.image}" alt="광고 배너" class="w-full h-full object-cover">
+                    <img src="${ad.image}" alt="광고 배너" class="w-full h-full object-contain">
                 `;
                 track.appendChild(slide);
             });
+            updateTopAdBg();
             startTopAdAuto();
+        }
+        function updateTopAdBg() {
+            const bg = document.getElementById('top-ad-bg');
+            if (bg && topAds[topAdIdx]) bg.style.backgroundImage = `url('${topAds[topAdIdx].image}')`;
         }
         function updateTopAds() {
             const track = document.getElementById('top-ad-track');
@@ -1370,6 +1383,7 @@
                 el.style.opacity = on ? '1' : '0';
                 el.style.zIndex = on ? '10' : '0';
             });
+            updateTopAdBg();
         }
         function moveTopAd(step) {
             topAdIdx = (topAdIdx + step + topAds.length) % topAds.length;
