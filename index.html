@@ -59,7 +59,7 @@
 <body class="antialiased font-sans">
 
     <!-- 📢 상단 광고 배너 (gaworld 스타일) -->
-    <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 h-[64px] md:h-[76px] transition-colors duration-500" style="background-color:#eef1f4;">
+    <div id="top-ad-bar" class="relative w-full overflow-hidden border-b border-gray-200 h-[84px] md:h-[104px] transition-colors duration-500" style="background-color:#eef1f4;">
         <div id="top-ad-track" class="relative w-full h-full"></div>
         <!-- 좌우 화살표 -->
         <button onclick="moveTopAd(-1)" aria-label="이전 광고"
@@ -115,12 +115,12 @@
                         <a href="#" class="text-primary font-bold">강사소개</a>
                     </nav>
 
-                    <div class="flex space-x-2">
-                        <button onclick="switchTab('admin')" class="px-4 py-2 text-xs font-bold text-white bg-primary rounded-full shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200 flex items-center">
-                            <i class="fas fa-user-cog mr-1.5"></i>강사 등록
+                    <div class="flex gap-1.5 md:gap-2 flex-shrink-0">
+                        <button onclick="switchTab('admin')" class="px-2.5 md:px-4 py-2 text-[11px] md:text-xs font-bold text-white bg-primary rounded-full shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200 flex items-center whitespace-nowrap">
+                            <i class="fas fa-user-cog md:mr-1.5"></i><span class="hidden md:inline">강사 등록</span><span class="md:hidden ml-1">등록</span>
                         </button>
-                        <button onclick="switchTab('admin-poster')" class="px-4 py-2 text-xs font-bold text-white bg-primaryLight rounded-full shadow-[0_4px_14px_rgba(126,139,226,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(126,139,226,0.4)] transition-all duration-200 flex items-center">
-                            <i class="fas fa-pen mr-1.5"></i>공고 글쓰기
+                        <button onclick="switchTab('admin-poster')" class="px-2.5 md:px-4 py-2 text-[11px] md:text-xs font-bold text-white bg-primaryLight rounded-full shadow-[0_4px_14px_rgba(126,139,226,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(126,139,226,0.4)] transition-all duration-200 flex items-center whitespace-nowrap">
+                            <i class="fas fa-pen md:mr-1.5"></i><span class="hidden md:inline">공고 글쓰기</span><span class="md:hidden ml-1">글쓰기</span>
                         </button>
                     </div>
                 </div>
@@ -174,16 +174,22 @@
         <section class="pt-12 pb-8 bg-white">
             <div class="container mx-auto px-4 max-w-5xl">
                 
-                <!-- 전체분야 (별도 버튼) -->
-                <div class="flex justify-center mb-4">
+                <!-- 전체분야 (별도 버튼) + 모바일 펼치기 토글 -->
+                <div class="flex justify-center items-center gap-2 mb-4">
                     <button id="all-category-btn" onclick="selectAllCategory()"
                             class="group inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-primary transition-all duration-200">
                         <span class="w-2 h-2 rounded-full bg-primary group-hover:scale-125 transition-transform"></span>
                         <span class="border-b-2 border-primary pb-0.5">전체분야</span>
                     </button>
+                    <!-- 모바일 전용: 분야 펼치기/접기 -->
+                    <button id="category-toggle-btn" onclick="toggleCategoryList()"
+                            class="md:hidden inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-bold text-gray-600 bg-white ring-1 ring-gray-200 transition-all duration-200">
+                        <i class="fas fa-sliders-h text-[11px]"></i><span>분야 선택</span>
+                        <i id="category-toggle-icon" class="fas fa-chevron-down text-[10px] transition-transform"></i>
+                    </button>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)]" id="category-filters">
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)] max-md:hidden" id="category-filters">
                     <!-- JS에서 버튼 생성 -->
                 </div>
 
@@ -249,6 +255,16 @@
                        <div class="w-1.5 h-6 md:h-7 rounded-full bg-gradient-to-b from-[#2f3b89] to-[#9aa8ee] mr-3"></div>
                         <h3 class="text-[22px] md:text-[26px] font-black tracking-tight leading-tight pb-1 bg-gradient-to-r from-[#2f3b89] via-[#5a6ad0] to-[#9aa8ee] bg-clip-text text-transparent">대한민국 보험 공개 강좌 안내</h3>
                     </div>
+                </div>
+
+                <!-- 공고 유형 필터 -->
+                <div class="reveal flex flex-wrap gap-2 mb-6" id="poster-filter-btns">
+                    <button data-ptype="all" onclick="filterPosters('all')"
+                            class="poster-filter-btn px-5 py-2 rounded-full text-[13px] font-bold bg-primary text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] transition-all duration-200">전체보기</button>
+                    <button data-ptype="offline" onclick="filterPosters('offline')"
+                            class="poster-filter-btn px-5 py-2 rounded-full text-[13px] font-bold bg-white ring-1 ring-gray-200 text-gray-500 hover:text-primary hover:ring-primary/30 transition-all duration-200"><i class="fas fa-map-marker-alt text-[11px] mr-1.5"></i>오프라인 강좌</button>
+                    <button data-ptype="zoom" onclick="filterPosters('zoom')"
+                            class="poster-filter-btn px-5 py-2 rounded-full text-[13px] font-bold bg-white ring-1 ring-gray-200 text-gray-500 hover:text-primary hover:ring-primary/30 transition-all duration-200"><i class="fas fa-video text-[11px] mr-1.5"></i>줌 강좌</button>
                 </div>
 
                 <div id="poster-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
@@ -388,6 +404,16 @@
                 
                 <div class="p-6 md:p-8 space-y-5">
                     <div class="flex flex-col md:flex-row md:items-center pt-2">
+                        <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">강좌 유형</label>
+                        <div class="flex gap-2">
+                            <button type="button" id="ptype-offline-btn" onclick="setPosterType('offline')"
+                                    class="px-5 py-2.5 rounded-full text-[13px] font-bold bg-primary text-white transition-all duration-200"><i class="fas fa-map-marker-alt text-[11px] mr-1.5"></i>오프라인 강좌</button>
+                            <button type="button" id="ptype-zoom-btn" onclick="setPosterType('zoom')"
+                                    class="px-5 py-2.5 rounded-full text-[13px] font-bold bg-white ring-1 ring-gray-200 text-gray-500 hover:text-primary hover:ring-primary/30 transition-all duration-200"><i class="fas fa-video text-[11px] mr-1.5"></i>줌 강좌</button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
                         <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">공고 제목</label>
                         <input type="text" id="admin-poster-title" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: 성공적인 숏폼 마케팅 세미나">
                     </div>
@@ -435,8 +461,8 @@
                         </div>
                     </div>
 
-                    <div class="pt-5 mt-1 border-t border-gray-100">
-                        <p class="text-sm font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-map-marker-alt text-primaryLight mr-2"></i>찾아오는 길 <span class="text-xs font-normal text-gray-400 ml-2">(선택)</span></p>
+                    <div class="pt-5 mt-1 border-t border-gray-100" id="poster-offline-fields">
+                        <p class="text-sm font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-map-marker-alt text-primaryLight mr-2"></i>찾아오는 길 <span class="text-xs font-normal text-gray-400 ml-2">(오프라인 · 선택)</span></p>
                         <div class="space-y-4">
                             <div class="flex flex-col md:flex-row md:items-start">
                                 <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">약도 이미지</label>
@@ -451,6 +477,29 @@
                             <div class="flex flex-col md:flex-row md:items-start">
                                 <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">교통 안내</label>
                                 <textarea id="admin-poster-route" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition h-24 resize-none" placeholder="지하철/버스/주차 안내 (엔터로 줄바꿈)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 줌 강좌 전용 -->
+                    <div class="pt-5 mt-1 border-t border-gray-100 hidden" id="poster-zoom-fields">
+                        <p class="text-sm font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-video text-blue-500 mr-2"></i>줌(온라인) 접속 안내 <span class="text-xs font-normal text-gray-400 ml-2">(줌 강좌)</span></p>
+                        <div class="space-y-4">
+                            <div class="flex flex-col md:flex-row md:items-center">
+                                <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">줌 참여 링크</label>
+                                <input type="text" id="admin-poster-zoomlink" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: https://zoom.us/j/123456789">
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center">
+                                <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">회의 ID</label>
+                                <input type="text" id="admin-poster-zoomid" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: 123 4567 8901">
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center">
+                                <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">암호</label>
+                                <input type="text" id="admin-poster-zoompw" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: 0000">
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-start">
+                                <label class="w-32 text-sm font-bold text-gray-800 mt-2 mb-2 md:mb-0">참여 안내</label>
+                                <textarea id="admin-poster-zoomnote" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition h-24 resize-none" placeholder="입장 방법, 준비물, 유의사항 등 (엔터로 줄바꿈)"></textarea>
                             </div>
                         </div>
                     </div>
@@ -469,17 +518,17 @@
         <div class="bg-white rounded-lg shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col transform scale-95 transition-transform duration-300">
 
             <!-- 헤더 (흰색 바: 강사명 + 뱃지) -->
-            <div class="flex justify-between items-center px-7 py-4 bg-white flex-shrink-0 z-10">
-                <h3 class="text-xl font-black text-gray-900 flex items-center tracking-tight" id="modal-name">강사명</h3>
-                <div class="flex items-center space-x-3">
-                    <button onclick="startEdit()" class="text-xs px-3 py-1.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-sm transition flex items-center shadow-sm">
-                        <i class="fas fa-edit mr-1.5"></i> 수정
+            <div class="flex justify-between items-center px-4 md:px-7 py-3 md:py-4 bg-white flex-shrink-0 z-10">
+                <h3 class="text-base md:text-xl font-black text-gray-900 flex items-center tracking-tight min-w-0" id="modal-name">강사명</h3>
+                <div class="flex items-center gap-1.5 md:gap-3 flex-shrink-0">
+                    <button onclick="startEdit()" class="text-xs px-2.5 md:px-3 py-1.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-sm transition flex items-center shadow-sm">
+                        <i class="fas fa-edit md:mr-1.5"></i><span class="hidden md:inline"> 수정</span>
                     </button>
-                    <button onclick="deleteInstructor()" class="text-xs px-3 py-1.5 bg-white border border-red-200 hover:bg-red-50 text-red-500 font-medium rounded-sm transition flex items-center shadow-sm">
-                        <i class="fas fa-trash-alt mr-1.5"></i> 삭제
+                    <button onclick="deleteInstructor()" class="text-xs px-2.5 md:px-3 py-1.5 bg-white border border-red-200 hover:bg-red-50 text-red-500 font-medium rounded-sm transition flex items-center shadow-sm">
+                        <i class="fas fa-trash-alt md:mr-1.5"></i><span class="hidden md:inline"> 삭제</span>
                     </button>
                     <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
-                        <i class="fas fa-times text-xl"></i>
+                        <i class="fas fa-times text-lg md:text-xl"></i>
                     </button>
                 </div>
             </div>
@@ -488,10 +537,10 @@
             <div id="modal-body" class="modal-content overflow-y-auto flex-1 bg-white">
 
                 <!-- 히어로: 좌 텍스트 / 우 사진 -->
-                <div class="flex flex-col md:flex-row md:items-stretch">
+                <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-8 px-7 md:px-10 py-8 md:py-10">
 
                     <!-- 왼쪽: 텍스트 -->
-                    <div class="w-full md:flex-1 min-w-0 px-7 md:px-10 py-8 md:py-10 flex flex-col order-2 md:order-1">
+                    <div class="w-full md:flex-1 min-w-0 flex flex-col order-2 md:order-1">
                         <p id="modal-categories" class="flex flex-wrap gap-2 mb-4"></p>
                         <h4 id="modal-title" class="text-[23px] md:text-[30px] font-black leading-[1.32] tracking-tight mb-5 break-keep bg-gradient-to-r from-[#2f3b89] via-[#4a58b5] to-[#7b8ae6] bg-clip-text text-transparent">타이틀</h4>
                         <p id="modal-intro" class="text-[14.5px] text-gray-600 leading-[1.95] break-keep mb-8 whitespace-pre-line">소개문구</p>
@@ -511,9 +560,9 @@
                         <div id="modal-contact-container" class="mt-auto"></div>
                     </div>
 
-                    <!-- 오른쪽: 강사 사진 (오른쪽 끝까지 꽉, 박스/테두리 없음, 높이 고정) -->
-                    <div class="w-full md:w-[340px] flex-shrink-0 order-1 md:order-2 bg-gray-50 md:self-start">
-                        <div class="w-full aspect-[3/4] relative">
+                    <!-- 오른쪽: 강사 사진 (배경 없음, 3:4 고정, 세로 중앙) -->
+                    <div class="w-full md:w-[320px] flex-shrink-0 order-1 md:order-2 flex justify-center">
+                        <div class="w-[230px] md:w-full aspect-[3/4] relative overflow-hidden rounded-2xl">
                             <img id="modal-photo" src="" alt="강사 사진"
                                  class="absolute inset-0 w-full h-full object-cover object-top">
                         </div>
@@ -597,6 +646,21 @@
                             </h4>
                             <img id="modalMapImage" src="" alt="약도" class="block w-full max-w-full h-auto rounded border border-gray-200 mb-2 hidden">
                             <p id="modalRouteDescription" class="text-xs text-gray-500 leading-relaxed whitespace-pre-line mb-3"></p>
+                        </div>
+
+                        <!-- 2-2. 줌 접속 안내 -->
+                        <div id="modalZoomArea" class="border-t border-gray-200 pt-4 hidden">
+                            <h4 class="font-bold text-gray-800 text-sm mb-3 flex items-center">
+                                <i class="fas fa-video text-blue-500 mr-1.5"></i>줌(온라인) 접속 안내
+                            </h4>
+                            <div class="rounded-lg bg-blue-50/60 ring-1 ring-blue-100 p-3.5 space-y-2 text-[12.5px] text-gray-700">
+                                <p id="modalZoomId" class="hidden"><span class="font-semibold text-gray-500">회의 ID</span> : <b id="modalZoomIdVal"></b></p>
+                                <p id="modalZoomPw" class="hidden"><span class="font-semibold text-gray-500">암호</span> : <b id="modalZoomPwVal"></b></p>
+                                <p id="modalZoomNote" class="hidden whitespace-pre-line text-gray-500 leading-relaxed pt-1"></p>
+                            </div>
+                            <a id="modalZoomBtn" href="#" target="_blank" rel="noopener" class="hidden mt-3 inline-flex items-center justify-center w-full bg-blue-500 text-white font-bold py-2.5 px-4 rounded-sm hover:bg-blue-600 transition-colors text-sm shadow-sm">
+                                <i class="fas fa-video mr-2"></i>줌으로 참여하기
+                            </a>
                         </div>
 
                         <!-- 주의 안내 문구 -->
@@ -960,6 +1024,7 @@
        const posters = [
     { 
         id: 1, 
+        ptype: "offline",
         title: "이달의 보험영업 전략 브리핑 (오프라인 세미나)", 
         image: "https://i.ibb.co/S48jzbnq/44.png", 
         date: "2026년 6월 15일 (월) 10:00 - 12:00", 
@@ -987,6 +1052,8 @@
         let currentModalId = null; 
         let editingPosterId = null;
         let currentPosterModalId = null;
+        let currentPosterType = "all";   // all | offline | zoom
+        let categoryExpanded = false;    // 모바일 분야 펼침 상태
         // ===== 강사 목록 더보기 (전체분야일 때 10명씩 점진 노출) =====
         const INSTRUCTOR_LIMIT = 10;   // 처음 보여줄 강사 수 & 더보기 1회당 추가 수
         let instructorVisibleCount = INSTRUCTOR_LIMIT;
@@ -1176,7 +1243,7 @@
                 return `
                     <div class="flex-1 rounded-2xl p-5 md:p-6 ${box} transition-all duration-300">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-3 py-1 rounded-full text-[12px] font-bold text-white ${badge}">${d.tag}</span>
+                            <span class="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-[12px] font-bold text-white ${badge}">${d.tag}</span>
                             ${active ? '<span class="text-[11px] font-bold '+headColor+'">현재 강사</span>' : ''}
                         </div>
                         <p class="text-[15px] md:text-[16px] font-black mb-3 ${headColor}">${d.headline}</p>
@@ -1306,10 +1373,12 @@
 
         // ===== 상단 광고 배너 (gaworld 스타일: 가로 슬라이드) =====
         // 상단 광고: 업로드된 배너 이미지 3장 (1600 x 150)
+        // image에 주소를 넣으면 가운데에 이미지, 없으면 text 표시. 권장 규격: 가로형 1200 x 100
+        // image에 이미지 주소를 넣어 사용합니다. (텍스트는 사용 안 함) 권장 규격: 가로형 1200 x 100
         const topAds = [
-            { text: "🎉 여름맞이 특별 세미나 — 지금 신청하면 조기등록 혜택!", bg: "#2f3b89", color: "#ffffff", link: "" },
-            { text: "🔥 이달의 인기 강좌 모음 — 현직 전문가에게 직접 배우세요", bg: "#0f766e", color: "#ffffff", link: "" },
-            { text: "📢 강사 · 강좌 등록 문의 02-525-1686 — 언제든 환영합니다", bg: "#b45309", color: "#ffffff", link: "" }
+            { image: "", bg: "#e6f3fb", link: "" },   // 연하늘
+            { image: "", bg: "#fef7d6", link: "" },   // 연노랑
+            { image: "", bg: "#e7f5df", link: "" }    // 연두
         ];
         let topAdIdx = 0;
         let topAdTimer = null;
@@ -1364,9 +1433,9 @@
                 slide.style.opacity = on ? '1' : '0';
                 slide.style.zIndex = on ? '10' : '0';
                 slide.dataset.idx = i;
-                slide.innerHTML = `
-                    <span class="text-[13px] md:text-[15px] font-bold tracking-tight text-center break-keep" style="color:${ad.color || '#fff'};">${ad.text || ''}</span>
-                `;
+                slide.innerHTML = ad.image
+                    ? `<div class="w-full max-w-4xl h-full flex items-center justify-center"><img src="${ad.image}" alt="광고" class="max-w-full max-h-full object-contain"></div>`
+                    : `<span class="text-[11px] md:text-[13px] font-medium text-gray-400 truncate px-2">광고 이미지를 등록해 주세요</span>`;
                 track.appendChild(slide);
             });
             updateTopAdBg();
@@ -1591,6 +1660,21 @@
             renderInstructors();
         }
 
+        // 모바일: 분야 그리드 펼치기/접기 (max-md:hidden 토글, 데스크톱은 항상 표시)
+        function toggleCategoryList() {
+            const grid = document.getElementById('category-filters');
+            const icon = document.getElementById('category-toggle-icon');
+            if (!grid) return;
+            categoryExpanded = !categoryExpanded;
+            if (categoryExpanded) {
+                grid.classList.remove('max-md:hidden');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            } else {
+                grid.classList.add('max-md:hidden');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
       function renderFilters() {
     const container = document.getElementById('category-filters');
     if (!container) return;
@@ -1606,7 +1690,9 @@
             : "group inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-gray-400 hover:text-primary transition-all duration-200";
     }
 
-    container.className = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)]";
+    // 모바일 접힘 상태(categoryExpanded) 유지
+    const mobileHide = (typeof categoryExpanded !== 'undefined' && categoryExpanded) ? '' : ' max-md:hidden';
+    container.className = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 w-full mb-10 rounded-2xl overflow-hidden bg-white border-t border-l border-gray-100 shadow-[0_2px_12px_rgba(17,24,39,0.06)]" + mobileHide;
     container.innerHTML = '';
 
     categories.forEach(cat => {
@@ -1887,8 +1973,13 @@
             const container = document.getElementById('poster-grid');
             if (!container) return;
             container.innerHTML = '';
-            
-          posters.forEach((poster, idx) => {
+
+            const list = posters.filter(p => {
+                const t = p.ptype || 'offline';
+                return currentPosterType === 'all' || t === currentPosterType;
+            });
+
+          list.forEach((poster, idx) => {
                 // ===== D-day 계산 =====
                 const dday = getDday(poster.date);
                 let ddayHtml = '';
@@ -1902,6 +1993,11 @@
                     ddayHtml = `<span class="absolute top-2.5 left-2.5 z-10 px-2.5 py-1 rounded-full text-[11px] font-bold text-white shadow-sm ${bg}">${label}</span>`;
                 }
 
+                const ptype = poster.ptype || 'offline';
+                const typeBadge = ptype === 'zoom'
+                    ? `<span class="absolute top-2.5 right-2.5 z-10 px-2.5 py-1 rounded-full text-[11px] font-bold text-white shadow-sm bg-blue-500"><i class="fas fa-video text-[9px] mr-1"></i>줌</span>`
+                    : `<span class="absolute top-2.5 right-2.5 z-10 px-2.5 py-1 rounded-full text-[11px] font-bold text-white shadow-sm bg-emerald-600"><i class="fas fa-map-marker-alt text-[9px] mr-1"></i>오프라인</span>`;
+
                 const card = document.createElement('div');
                 card.className = 'reveal bg-white rounded-2xl overflow-hidden cursor-pointer flex flex-col h-full group ' +
                                  'ring-1 ring-gray-100 shadow-[0_2px_10px_rgba(17,24,39,0.06)] ' +
@@ -1914,6 +2010,7 @@
                     <div class="px-3.5 pt-3.5">
                         <div class="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100 flex items-center justify-center">
                             ${ddayHtml}
+                            ${typeBadge}
                             <img src="${poster.image}" alt="${poster.title}" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.04]">
                         </div>
                     </div>
@@ -1925,7 +2022,25 @@
                container.appendChild(card);
             });
 
+            if (list.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-16 text-gray-400"><i class="far fa-folder-open text-3xl text-gray-200 mb-3"></i><p class="text-sm">해당 유형의 공고가 없습니다.</p></div>`;
+            }
+
             initReveal();
+        }
+
+        function filterPosters(type) {
+            currentPosterType = type;
+            document.querySelectorAll('.poster-filter-btn').forEach(btn => {
+                const active = btn.dataset.ptype === type;
+                btn.className = active
+                    ? 'poster-filter-btn px-5 py-2 rounded-full text-[13px] font-bold bg-primary text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] transition-all duration-200'
+                    : 'poster-filter-btn px-5 py-2 rounded-full text-[13px] font-bold bg-white ring-1 ring-gray-200 text-gray-500 hover:text-primary hover:ring-primary/30 transition-all duration-200';
+                if (btn.dataset.ptype === 'offline') btn.innerHTML = '<i class="fas fa-map-marker-alt text-[11px] mr-1.5"></i>오프라인 강좌';
+                else if (btn.dataset.ptype === 'zoom') btn.innerHTML = '<i class="fas fa-video text-[11px] mr-1.5"></i>줌 강좌';
+                else btn.innerHTML = '전체보기';
+            });
+            renderPosters();
         }
 
         // 모달 제어
@@ -1948,8 +2063,8 @@
         if (inst.type) {
             badgeHtml = `
                 <button onclick="openTypeCompare('${inst.type}')" title="제휴·추천 강사 비교 보기"
-                        class="group inline-flex items-center ml-3 px-4 py-1 rounded-full text-[13px] font-bold text-white shadow-sm ${theme.badge} hover:brightness-110 hover:-translate-y-0.5 transition-all duration-200">
-                    ${inst.type} <i class="fas fa-circle-question text-[11px] ml-1.5 opacity-80"></i>
+                        class="group inline-flex items-center ml-2 md:ml-3 px-2.5 md:px-4 py-1 rounded-full text-[11px] md:text-[13px] font-bold text-white shadow-sm ${theme.badge} hover:brightness-110 hover:-translate-y-0.5 transition-all duration-200 whitespace-nowrap">
+                    ${inst.type}강사 <i class="fas fa-circle-question text-[10px] md:text-[11px] ml-1 md:ml-1.5 opacity-80"></i>
                 </button>
             `;
         }
@@ -2162,7 +2277,28 @@ function openPosterModal(id) {
 
     // 2. 찾아오는 길 (약도 및 지도 버튼) 영역 처리
     const routeArea = document.getElementById('modalRouteArea');
-    if (routeArea) {
+    const zoomArea = document.getElementById('modalZoomArea');
+    const isZoom = (poster.ptype === 'zoom');
+
+    // 줌 접속 안내
+    if (zoomArea) {
+        if (isZoom) {
+            zoomArea.classList.remove('hidden');
+            const zId = document.getElementById('modalZoomId');
+            const zPw = document.getElementById('modalZoomPw');
+            const zNote = document.getElementById('modalZoomNote');
+            const zBtn = document.getElementById('modalZoomBtn');
+            if (zId) { if (poster.zoomId) { document.getElementById('modalZoomIdVal').textContent = poster.zoomId; zId.classList.remove('hidden'); } else zId.classList.add('hidden'); }
+            if (zPw) { if (poster.zoomPw) { document.getElementById('modalZoomPwVal').textContent = poster.zoomPw; zPw.classList.remove('hidden'); } else zPw.classList.add('hidden'); }
+            if (zNote) { if (poster.zoomNote) { zNote.textContent = poster.zoomNote; zNote.classList.remove('hidden'); } else zNote.classList.add('hidden'); }
+            if (zBtn) { if (poster.zoomLink) { zBtn.href = poster.zoomLink; zBtn.classList.remove('hidden'); } else zBtn.classList.add('hidden'); }
+        } else {
+            zoomArea.classList.add('hidden');
+        }
+    }
+
+    if (isZoom && routeArea) { routeArea.classList.add('hidden'); }
+    else if (routeArea) {
         const hasRouteInfo = poster.mapImage || poster.route || poster.mapUrl;
 
         if (hasRouteInfo) {
@@ -2342,6 +2478,11 @@ function openPosterModal(id) {
             document.getElementById('admin-poster-route').value = p.route || '';
             document.getElementById('admin-poster-link').value = p.link || '';
             document.getElementById('admin-poster-applylink').value = p.applyLink || '';
+            document.getElementById('admin-poster-zoomlink').value = p.zoomLink || '';
+            document.getElementById('admin-poster-zoomid').value = p.zoomId || '';
+            document.getElementById('admin-poster-zoompw').value = p.zoomPw || '';
+            document.getElementById('admin-poster-zoomnote').value = p.zoomNote || '';
+            setPosterType(p.ptype || 'offline');
             document.getElementById('admin-poster-image').value = '';
             document.getElementById('admin-poster-mapimage').value = '';
             document.getElementById('admin-poster-form-title').textContent = "공고 수정";
@@ -2353,16 +2494,38 @@ function openPosterModal(id) {
             editingPosterId = null;
             document.getElementById('admin-poster-form-title').textContent = "공고 글쓰기";
             const btn = document.getElementById('admin-poster-submit-btn'); btn.textContent = "등록하기"; btn.classList.replace('bg-green-600', 'bg-primaryLight');
-            ['title','date','location','desc','image','topic','mapurl','route','mapimage','link','applylink'].forEach(id => { const el = document.getElementById('admin-poster-'+id); if (el) el.value = ''; });
+            ['title','date','location','desc','image','topic','mapurl','route','mapimage','link','applylink','zoomlink','zoomid','zoompw','zoomnote'].forEach(id => { const el = document.getElementById('admin-poster-'+id); if (el) el.value = ''; });
+            setPosterType('offline');
         }
 
         function cancelPosterAdminForm() { resetPosterAdminFormUI(); switchTab('landing'); }
+
+        let adminPosterType = 'offline';
+        function setPosterType(type) {
+            adminPosterType = type;
+            const offBtn = document.getElementById('ptype-offline-btn');
+            const zoomBtn = document.getElementById('ptype-zoom-btn');
+            const activeCls = 'px-5 py-2.5 rounded-full text-[13px] font-bold bg-primary text-white transition-all duration-200';
+            const idleCls = 'px-5 py-2.5 rounded-full text-[13px] font-bold bg-white ring-1 ring-gray-200 text-gray-500 hover:text-primary hover:ring-primary/30 transition-all duration-200';
+            if (type === 'zoom') {
+                if (zoomBtn) { zoomBtn.className = activeCls; zoomBtn.innerHTML = '<i class="fas fa-video text-[11px] mr-1.5"></i>줌 강좌'; }
+                if (offBtn) { offBtn.className = idleCls; offBtn.innerHTML = '<i class="fas fa-map-marker-alt text-[11px] mr-1.5"></i>오프라인 강좌'; }
+                document.getElementById('poster-offline-fields')?.classList.add('hidden');
+                document.getElementById('poster-zoom-fields')?.classList.remove('hidden');
+            } else {
+                if (offBtn) { offBtn.className = activeCls; offBtn.innerHTML = '<i class="fas fa-map-marker-alt text-[11px] mr-1.5"></i>오프라인 강좌'; }
+                if (zoomBtn) { zoomBtn.className = idleCls; zoomBtn.innerHTML = '<i class="fas fa-video text-[11px] mr-1.5"></i>줌 강좌'; }
+                document.getElementById('poster-offline-fields')?.classList.remove('hidden');
+                document.getElementById('poster-zoom-fields')?.classList.add('hidden');
+            }
+        }
 
         function savePoster() {
             const title = document.getElementById('admin-poster-title').value.trim();
             if (!title) { alert("제목을 입력해주세요."); return; }
 
             const newData = {
+                ptype: adminPosterType,
                 title: title, date: document.getElementById('admin-poster-date').value.trim() || '-',
                 location: document.getElementById('admin-poster-location').value.trim() || '-',
                 topic: document.getElementById('admin-poster-topic').value.trim(),
@@ -2370,7 +2533,11 @@ function openPosterModal(id) {
                 mapUrl: document.getElementById('admin-poster-mapurl').value.trim(),
                 route: document.getElementById('admin-poster-route').value.trim(),
                 link: document.getElementById('admin-poster-link').value.trim(),
-                applyLink: document.getElementById('admin-poster-applylink').value.trim()
+                applyLink: document.getElementById('admin-poster-applylink').value.trim(),
+                zoomLink: document.getElementById('admin-poster-zoomlink').value.trim(),
+                zoomId: document.getElementById('admin-poster-zoomid').value.trim(),
+                zoomPw: document.getElementById('admin-poster-zoompw').value.trim(),
+                zoomNote: document.getElementById('admin-poster-zoomnote').value.trim()
             };
             const fileInput = document.getElementById('admin-poster-image');
             if (fileInput.files[0]) newData.image = URL.createObjectURL(fileInput.files[0]);
