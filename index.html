@@ -348,7 +348,7 @@
                         </div>
                         <div class="pt-4 border-t border-gray-100">
                             <label class="block text-sm font-bold text-gray-800 mb-3">영상 등록 (임베드 URL 최대 3개)</label>
-                            <p class="text-[11px] text-gray-400 mb-3">각 영상마다 썸네일 이미지를 등록하면, 상세페이지에서 이미지로 표시되고 클릭 시 재생됩니다. (비워두면 바로 영상 표시)</p>
+                            <p class="text-[11px] text-gray-400 mb-3">각 영상마다 썸네일을 등록하면, 상세페이지에서 이미지로 표시되고 클릭 시 재생됩니다. (비워두면 바로 영상 표시)<br>※ 코드/GitHub로 영구 저장하려면 <b>썸네일 이미지 주소(URL)</b>를 넣으세요. 파일 업로드는 미리보기용(임시)입니다.</p>
                             <div class="space-y-4">
                                <div class="space-y-2">
                                     <div class="flex gap-2">
@@ -357,7 +357,8 @@
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <span class="text-[11px] font-semibold text-gray-500 w-14 flex-shrink-0">썸네일 1</span>
-                                        <input type="file" id="admin-video-thumb-1" accept="image/*" class="flex-1 text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1">
+                                        <input type="text" id="admin-video-thumburl-1" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="썸네일 이미지 주소(URL) 붙여넣기">
+                                        <input type="file" id="admin-video-thumb-1" accept="image/*" class="flex-shrink-0 w-32 text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-2.5 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1">
                                     </div>
                                 </div>
                                 <div class="space-y-2">
@@ -367,7 +368,8 @@
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <span class="text-[11px] font-semibold text-gray-500 w-14 flex-shrink-0">썸네일 2</span>
-                                        <input type="file" id="admin-video-thumb-2" accept="image/*" class="flex-1 text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1">
+                                        <input type="text" id="admin-video-thumburl-2" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="썸네일 이미지 주소(URL) 붙여넣기">
+                                        <input type="file" id="admin-video-thumb-2" accept="image/*" class="flex-shrink-0 w-32 text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-2.5 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1">
                                     </div>
                                 </div>
                                 <div class="space-y-2">
@@ -377,7 +379,8 @@
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <span class="text-[11px] font-semibold text-gray-500 w-14 flex-shrink-0">썸네일 3</span>
-                                        <input type="file" id="admin-video-thumb-3" accept="image/*" class="flex-1 text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1">
+                                        <input type="text" id="admin-video-thumburl-3" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="썸네일 이미지 주소(URL) 붙여넣기">
+                                        <input type="file" id="admin-video-thumb-3" accept="image/*" class="flex-shrink-0 w-32 text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-2.5 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1">
                                     </div>
                                 </div>
                             </div>
@@ -2474,8 +2477,10 @@ function openPosterModal(id) {
                 const v = inst.videos[k];
                 const url = v ? (typeof v === 'string' ? v : (v.url || '')) : '';
                 const ttl = v && typeof v === 'object' ? (v.title || '') : '';
+                const thumb = v && typeof v === 'object' ? (v.thumbnail || '') : '';
                 document.getElementById('admin-video-' + (k+1)).value = url;
                 document.getElementById('admin-video-title-' + (k+1)).value = ttl;
+                const thUrl = document.getElementById('admin-video-thumburl-' + (k+1)); if (thUrl) thUrl.value = thumb;
                 const th = document.getElementById('admin-video-thumb-' + (k+1)); if (th) th.value = '';
             }
             document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = inst.categories.includes(cb.value));
@@ -2493,7 +2498,7 @@ function openPosterModal(id) {
             editingId = null;
             document.getElementById('admin-form-title').textContent = "강사 등록";
             const btn = document.getElementById('admin-submit-btn'); btn.textContent = "등록하기"; btn.classList.replace('bg-green-600', 'bg-primary');
-            ['name','title','intro','profile','phone','photo','profile-file','video-1','video-2','video-3','video-title-1','video-title-2','video-title-3','video-thumb-1','video-thumb-2','video-thumb-3'].forEach(id => { const el = document.getElementById('admin-'+id); if (el) el.value = ''; });
+            ['name','title','intro','profile','phone','photo','profile-file','video-1','video-2','video-3','video-title-1','video-title-2','video-title-3','video-thumb-1','video-thumb-2','video-thumb-3','video-thumburl-1','video-thumburl-2','video-thumburl-3'].forEach(id => { const el = document.getElementById('admin-'+id); if (el) el.value = ''; });
             document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = false);
             const defaultTag = document.querySelector('input[name="admin_tag"][value="none"]'); if(defaultTag) defaultTag.checked = true;
         }
@@ -2513,13 +2518,17 @@ function openPosterModal(id) {
                 categories: selectedCategories, specialTag: document.querySelector('input[name="admin_tag"]:checked')?.value || 'none',
                videos: [1, 2, 3].map(k => {
                     const thumbInput = document.getElementById('admin-video-thumb-' + k);
+                    const thumbUrlInput = document.getElementById('admin-video-thumburl-' + k);
                     const v = {
                         url:   document.getElementById('admin-video-' + k).value.trim(),
                         title: document.getElementById('admin-video-title-' + k).value.trim()
                     };
-                    if (thumbInput && thumbInput.files[0]) v.thumbnail = URL.createObjectURL(thumbInput.files[0]);
+                    // 1순위: 주소(URL) 입력 → 코드에 영구 저장 가능
+                    if (thumbUrlInput && thumbUrlInput.value.trim()) v.thumbnail = thumbUrlInput.value.trim();
+                    // 2순위: 파일 업로드 (임시 미리보기)
+                    else if (thumbInput && thumbInput.files[0]) v.thumbnail = URL.createObjectURL(thumbInput.files[0]);
                     else if (editingId) {
-                        // 수정 시 새 썸네일 안 올리면 기존 썸네일 유지
+                        // 수정 시 새 썸네일 안 넣으면 기존 썸네일 유지
                         const cur = instructors.find(i => i.id === editingId);
                         if (cur && cur.videos && cur.videos[k-1] && typeof cur.videos[k-1] === 'object' && cur.videos[k-1].thumbnail)
                             v.thumbnail = cur.videos[k-1].thumbnail;
