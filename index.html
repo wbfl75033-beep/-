@@ -418,9 +418,18 @@
                         <input type="text" id="admin-poster-title" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: 성공적인 숏폼 마케팅 세미나">
                     </div>
 
-                    <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100">
-                        <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0">일시</label>
-                        <input type="text" id="admin-poster-date" class="flex-1 p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition" placeholder="예: 2026년 6월 20일 (토) 14:00 - 17:00">
+                    <div class="flex flex-col md:flex-row md:items-start pt-4 border-t border-gray-100">
+                        <label class="w-32 text-sm font-bold text-gray-800 mb-2 md:mb-0 md:mt-2.5">일시</label>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <input type="date" id="admin-poster-datepick" class="p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition">
+                                <select id="admin-poster-timestart" class="p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition"></select>
+                                <span class="text-gray-400 text-sm">~</span>
+                                <select id="admin-poster-timeend" class="p-3 rounded-lg ring-1 ring-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition"></select>
+                            </div>
+                            <p class="text-[11px] text-gray-400 mt-1.5">날짜를 선택하고 시작·종료 시간을 고르세요. (요일은 자동으로 표시됩니다)</p>
+                            <input type="hidden" id="admin-poster-date">
+                        </div>
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-center pt-4 border-t border-gray-100" id="poster-location-row">
@@ -653,18 +662,10 @@
                             <p id="modalRouteDescription" class="text-xs text-gray-500 leading-relaxed whitespace-pre-line mb-3"></p>
                         </div>
 
-                        <!-- 2-2. 줌 접속 안내 -->
+                        <!-- 2-2. 줌(온라인) 강좌 참가 -->
                         <div id="modalZoomArea" class="border-t border-gray-200 pt-4 hidden">
-                            <h4 class="font-bold text-gray-800 text-sm mb-3 flex items-center">
-                                <i class="fas fa-video text-blue-500 mr-1.5"></i>줌(온라인) 접속 안내
-                            </h4>
-                            <div class="rounded-lg bg-blue-50/60 ring-1 ring-blue-100 p-3.5 space-y-2 text-[12.5px] text-gray-700">
-                                <p id="modalZoomId" class="hidden"><span class="font-semibold text-gray-500">회의 ID</span> : <b id="modalZoomIdVal"></b></p>
-                                <p id="modalZoomPw" class="hidden"><span class="font-semibold text-gray-500">암호</span> : <b id="modalZoomPwVal"></b></p>
-                                <p id="modalZoomNote" class="hidden whitespace-pre-line text-gray-500 leading-relaxed pt-1"></p>
-                            </div>
-                            <a id="modalZoomBtn" href="#" target="_blank" rel="noopener" class="hidden mt-3 inline-flex items-center justify-center w-full bg-blue-500 text-white font-bold py-2.5 px-4 rounded-sm hover:bg-blue-600 transition-colors text-sm shadow-sm">
-                                <i class="fas fa-video mr-2"></i>줌으로 참여하기
+                            <a id="modalZoomBtn" href="#" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-sm hover:bg-blue-600 transition-colors text-sm shadow-sm">
+                                <i class="fas fa-arrow-right-to-bracket mr-2"></i>강좌 참가하기
                             </a>
                         </div>
 
@@ -1049,16 +1050,12 @@
         id: 2,
         ptype: "zoom",
         title: "온라인 실전 세일즈 특강 (ZOOM 생중계)",
-        image: "https://i.ibb.co/S48jzbnq/44.png",
-        date: "2026년 6월 25일 (수) 20:00 - 22:00",
+        image: "https://i.ibb.co/SLZqQKW/59.png",
+        date: "2026년 8월 25일 (화) 20:00 - 22:00",
         topic: "고객을 사로잡는 화법 & 클로징 전략",
         description: "어디서나 참여 가능한 온라인 ZOOM 특강입니다.\n\n실전에서 바로 쓸 수 있는 상담 화법과 클로징 노하우를 집중적으로 다룹니다. PC·모바일 어디서든 참여하실 수 있으며, 강의 후 질의응답 시간도 마련되어 있습니다.",
         link: "https://fppartners.co.kr/main.php",
-        applyLink: "https://form.naver.com/",
-        zoomLink: "https://zoom.us/j/1234567890",
-        zoomId: "123 4567 8901",
-        zoomPw: "1234",
-        zoomNote: "시작 10분 전부터 입장 가능합니다.\n원활한 참여를 위해 ZOOM 앱을 미리 설치해 주세요.\n입장 시 실명으로 접속 부탁드립니다."
+        applyLink: "https://form.naver.com/"
     }
     
 ];
@@ -1697,6 +1694,7 @@
             renderInstructors();
             renderPosters();
             updateWishCount();
+            populatePosterTimeSelects();
             
             const adminCatContainer = document.getElementById('admin-category-checkboxes');
             if (adminCatContainer) {
@@ -2360,18 +2358,16 @@ function openPosterModal(id) {
     const zoomArea = document.getElementById('modalZoomArea');
     const isZoom = (poster.ptype === 'zoom');
 
-    // 줌 접속 안내
+    // 줌 강좌: 참가하기 버튼만 (링크 우선순위: applyLink > link > zoomLink)
     if (zoomArea) {
         if (isZoom) {
             zoomArea.classList.remove('hidden');
-            const zId = document.getElementById('modalZoomId');
-            const zPw = document.getElementById('modalZoomPw');
-            const zNote = document.getElementById('modalZoomNote');
             const zBtn = document.getElementById('modalZoomBtn');
-            if (zId) { if (poster.zoomId) { document.getElementById('modalZoomIdVal').textContent = poster.zoomId; zId.classList.remove('hidden'); } else zId.classList.add('hidden'); }
-            if (zPw) { if (poster.zoomPw) { document.getElementById('modalZoomPwVal').textContent = poster.zoomPw; zPw.classList.remove('hidden'); } else zPw.classList.add('hidden'); }
-            if (zNote) { if (poster.zoomNote) { zNote.textContent = poster.zoomNote; zNote.classList.remove('hidden'); } else zNote.classList.add('hidden'); }
-            if (zBtn) { if (poster.zoomLink) { zBtn.href = poster.zoomLink; zBtn.classList.remove('hidden'); } else zBtn.classList.add('hidden'); }
+            const joinUrl = poster.applyLink || poster.link || poster.zoomLink || '';
+            if (zBtn) {
+                if (joinUrl) { zBtn.href = joinUrl; zBtn.classList.remove('hidden'); }
+                else { zBtn.classList.add('hidden'); }
+            }
         } else {
             zoomArea.classList.add('hidden');
         }
@@ -2551,7 +2547,7 @@ function openPosterModal(id) {
         function startPosterEdit() {
             const p = posters.find(x => x.id === currentPosterModalId); if (!p) return;
             editingPosterId = p.id;
-            document.getElementById('admin-poster-title').value = p.title; document.getElementById('admin-poster-date').value = p.date;
+            document.getElementById('admin-poster-title').value = p.title; loadPosterDateFromString(p.date);
             document.getElementById('admin-poster-location').value = p.location; document.getElementById('admin-poster-desc').value = p.description;
             document.getElementById('admin-poster-topic').value = p.topic || '';
             document.getElementById('admin-poster-mapurl').value = p.mapUrl || '';
@@ -2575,12 +2571,79 @@ function openPosterModal(id) {
             document.getElementById('admin-poster-form-title').textContent = "공고 글쓰기";
             const btn = document.getElementById('admin-poster-submit-btn'); btn.textContent = "등록하기"; btn.classList.replace('bg-green-600', 'bg-primaryLight');
             ['title','date','location','desc','image','topic','mapurl','route','mapimage','link','applylink','zoomlink','zoomid','zoompw','zoomnote'].forEach(id => { const el = document.getElementById('admin-poster-'+id); if (el) el.value = ''; });
+            populatePosterTimeSelects();
+            const dp = document.getElementById('admin-poster-datepick'); if (dp) dp.value = '';
+            const ts = document.getElementById('admin-poster-timestart'); if (ts) ts.value = '';
+            const te = document.getElementById('admin-poster-timeend'); if (te) te.value = '';
             setPosterType('offline');
         }
 
         function cancelPosterAdminForm() { resetPosterAdminFormUI(); switchTab('landing'); }
 
         let adminPosterType = 'offline';
+        // ===== 공고 일시: 달력 + 시간 선택 =====
+        function populatePosterTimeSelects() {
+            const startSel = document.getElementById('admin-poster-timestart');
+            const endSel = document.getElementById('admin-poster-timeend');
+            if (!startSel || !endSel) return;
+            if (startSel.options && startSel.options.length > 0) return; // 이미 채워짐
+            let opts = '<option value="">시간 선택</option>';
+            for (let h = 0; h < 24; h++) {
+                for (let m of [0, 30]) {
+                    const hh = String(h).padStart(2, '0');
+                    const mm = String(m).padStart(2, '0');
+                    const ampm = h < 12 ? '오전' : '오후';
+                    const h12 = h % 12 === 0 ? 12 : h % 12;
+                    const label = `${ampm} ${h12}:${mm}`;
+                    opts += `<option value="${hh}:${mm}">${label}</option>`;
+                }
+            }
+            startSel.innerHTML = opts;
+            endSel.innerHTML = opts;
+        }
+        // 선택값 → "2026년 6월 20일 (토) 14:00 - 17:00" 형태 문자열
+        function buildPosterDateString() {
+            const dateEl = document.getElementById('admin-poster-datepick');
+            const sEl = document.getElementById('admin-poster-timestart');
+            const eEl = document.getElementById('admin-poster-timeend');
+            const hidden = document.getElementById('admin-poster-date');
+            if (!dateEl || !hidden) return;
+            const dv = dateEl.value; // yyyy-mm-dd
+            if (!dv) { hidden.value = '-'; return; }
+            const [y, mo, d] = dv.split('-').map(Number);
+            const days = ['일','월','화','수','목','금','토'];
+            const dow = days[new Date(y, mo - 1, d).getDay()];
+            let str = `${y}년 ${mo}월 ${d}일 (${dow})`;
+            const s = sEl ? sEl.value : '';
+            const e = eEl ? eEl.value : '';
+            if (s && e) str += ` ${s} - ${e}`;
+            else if (s) str += ` ${s}`;
+            hidden.value = str;
+        }
+        // 편집 시: 저장된 문자열에서 날짜/시간 되살리기 (실패해도 무시)
+        function loadPosterDateFromString(dateStr) {
+            populatePosterTimeSelects();
+            const dateEl = document.getElementById('admin-poster-datepick');
+            const sEl = document.getElementById('admin-poster-timestart');
+            const eEl = document.getElementById('admin-poster-timeend');
+            const hidden = document.getElementById('admin-poster-date');
+            if (hidden) hidden.value = dateStr || '';
+            if (dateEl) dateEl.value = '';
+            if (sEl) sEl.value = '';
+            if (eEl) eEl.value = '';
+            if (!dateStr) return;
+            const m = dateStr.match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/);
+            if (m && dateEl) {
+                const y = m[1], mo = String(m[2]).padStart(2,'0'), d = String(m[3]).padStart(2,'0');
+                dateEl.value = `${y}-${mo}-${d}`;
+            }
+            const times = dateStr.match(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
+            if (times) {
+                if (sEl) sEl.value = times[1].padStart(5,'0');
+                if (eEl) eEl.value = times[2].padStart(5,'0');
+            }
+        }
+
         function setPosterType(type) {
             adminPosterType = type;
             const offBtn = document.getElementById('ptype-offline-btn');
@@ -2607,6 +2670,8 @@ function openPosterModal(id) {
         function savePoster() {
             const title = document.getElementById('admin-poster-title').value.trim();
             if (!title) { alert("제목을 입력해주세요."); return; }
+
+            buildPosterDateString();  // 달력·시간 선택 → 일시 문자열 생성
 
             const newData = {
                 ptype: adminPosterType,
