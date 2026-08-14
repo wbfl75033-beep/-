@@ -174,18 +174,18 @@
         <section class="pt-12 pb-8 bg-white">
             <div class="container mx-auto px-4 max-w-5xl">
                 
-                <!-- 전체분야 (별도 버튼) + 모바일 펼치기 토글 -->
+                <!-- 전체분야 (별도 버튼, PC 전용) + 모바일 분야 선택 -->
                 <div class="flex justify-center items-center gap-2 mb-4">
                     <button id="all-category-btn" onclick="selectAllCategory()"
-                            class="group inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-primary transition-all duration-200">
+                            class="hidden md:inline-flex group items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-primary transition-all duration-200">
                         <span class="w-2 h-2 rounded-full bg-primary group-hover:scale-125 transition-transform"></span>
                         <span class="border-b-2 border-primary pb-0.5">전체분야</span>
                     </button>
-                    <!-- 모바일 전용: 분야 펼치기/접기 -->
+                    <!-- 모바일 전용: 강의분야 선택 펼치기/접기 -->
                     <button id="category-toggle-btn" onclick="toggleCategoryList()"
-                            class="md:hidden inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-bold text-gray-600 bg-white ring-1 ring-gray-200 transition-all duration-200">
-                        <i class="fas fa-sliders-h text-[11px]"></i><span>분야 선택</span>
-                        <i id="category-toggle-icon" class="fas fa-chevron-down text-[10px] transition-transform"></i>
+                            class="md:hidden inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-[14px] font-bold text-primary bg-white ring-1 ring-primary/30 shadow-sm transition-all duration-200">
+                        <i class="fas fa-sliders-h text-[12px]"></i><span>강의분야 선택</span>
+                        <i id="category-toggle-icon" class="fas fa-chevron-down text-[11px] transition-transform"></i>
                     </button>
                 </div>
 
@@ -808,7 +808,8 @@
         title: "FP 육성 전문 강사이자 트레이너 입니다.", 
         profile: "- 세일즈명인아카데미 대표\n- 2019년 푸르덴셜 글로벌 AM 챔피언보험영업 19년(총 세일즈 31년)\n- FP 정착률 기네스(13차월 100%, 25차월90%)\n- 현대해상,신한라이프,인카금융서비스등 국내 주요 생보/손보/GA 공식 강사및 만족도 AAA\n- 1,300회 출강 이력", 
         intro: "세일즈,리쿠르팅,교육과 훈련,매니지먼트,동기부여,코칭\n종합 솔루션 제공강의가 아니라 무기를 드립니다!\n아마추어는 흉내를 내지만 프로는 완성을 합니다!\n듣고 끝나는 교육이 아니라, 당장 고객 앞에서 ‘써먹을 수 있는 실전형 Skill’과 ‘조직 빌드업을 위한 시스템을 장착’ 해드립니다.\nFP를 대상으로 주입식이 아니라 원리를 이해시키고 시범을 보이고 함께 참여하는 능동적 강의 방식으로 진행하여 실전 가용성을 극대화 합니다.",
-    phone: "02-525-1686"
+    phone: "02-525-1686",
+    profileFile: "https://raw.githubusercontent.com/wbfl75033-beep/-/main/2026_세일즈명인아카데미_인쇄용_2026.0101.pdf"
     },
     { 
         id: 9, 
@@ -1243,7 +1244,7 @@
                 return `
                     <div class="flex-1 rounded-2xl p-5 md:p-6 ${box} transition-all duration-300">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-[12px] font-bold text-white ${badge}">${d.tag}</span>
+                            <span class="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-[12px] font-bold text-white whitespace-nowrap flex-shrink-0 ${badge}">${d.tag}</span>
                             ${active ? '<span class="text-[11px] font-bold '+headColor+'">현재 강사</span>' : ''}
                         </div>
                         <p class="text-[15px] md:text-[16px] font-black mb-3 ${headColor}">${d.headline}</p>
@@ -1686,8 +1687,8 @@
             ? `<span class="w-2 h-2 rounded-full bg-primary"></span><span class="border-b-2 border-primary pb-0.5">전체분야</span>`
             : `<span class="w-2 h-2 rounded-full bg-gray-300 group-hover:bg-primary transition-colors"></span><span class="border-b-2 border-transparent group-hover:border-primary/40 pb-0.5 transition-colors">전체분야</span>`;
         allBtn.className = activeAll
-            ? "group inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-primary transition-all duration-200"
-            : "group inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-gray-400 hover:text-primary transition-all duration-200";
+            ? "hidden md:inline-flex group items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-primary transition-all duration-200"
+            : "hidden md:inline-flex group items-center gap-2 px-6 py-2.5 text-[14px] font-bold text-gray-400 hover:text-primary transition-all duration-200";
     }
 
     // 모바일 접힘 상태(categoryExpanded) 유지
@@ -1923,8 +1924,8 @@
             ${reorderHtml}
             <!-- 상단: 태그 -->
             <div class="flex items-center gap-2 px-3.5 pt-3.5 pb-2.5">
-                <span class="text-[11px] font-bold text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full truncate max-w-[65%]">${catsDisplay}</span>
-                ${badgeText ? `<span class="text-[11px] font-bold text-white px-3 py-1 rounded-full shadow-sm ${badgeBg}">${badgeText}</span>` : ''}
+                <span class="text-[11px] font-bold text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full truncate min-w-0 flex-1">${catsDisplay}</span>
+                ${badgeText ? `<span class="text-[11px] font-bold text-white px-3 py-1 rounded-full shadow-sm whitespace-nowrap flex-shrink-0 ${badgeBg}">${badgeText}</span>` : ''}
             </div>
 
             <!-- 사진 -->
@@ -2730,6 +2731,12 @@ function openPosterModal(id) {
                 <button onclick="closeTypeCompare()" class="w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"><i class="fas fa-times text-lg"></i></button>
             </div>
             <div id="type-compare-body" class="p-6 flex flex-col md:flex-row gap-4"></div>
+            <div class="px-6 pt-1 pb-4">
+                <p class="text-[12px] text-gray-500 leading-relaxed break-keep flex gap-1.5">
+                    <i class="fas fa-circle-info text-gray-300 mt-0.5 flex-shrink-0"></i>
+                    <span>강사 Pick에 게재된 모든 강사는 강의 목적 외의 활동, 특히 리크루팅 권유를 하지 않습니다.</span>
+                </p>
+            </div>
             <div class="bg-gray-50/70 px-6 py-4 flex justify-end border-t border-gray-100">
                 <button onclick="closeTypeCompare()" class="px-7 py-2.5 rounded-full bg-primary text-sm font-bold text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 transition-all duration-200">확인</button>
             </div>
