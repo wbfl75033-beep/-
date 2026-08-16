@@ -104,23 +104,9 @@
 
                     </div>
                     
-                    <nav class="hidden lg:flex items-center space-x-5 text-[13px] font-medium text-gray-700">
-                        <a href="#" class="hover:text-primary rounded-full border border-gray-300 px-3 py-1.5 text-xs">콘텐츠보관함</a>
-                        <a href="#" class="bg-primary text-white px-3 py-1.5 rounded-full text-xs hover:bg-opacity-90">무료체험</a>
-                        <a href="#" class="hover:text-primary">FP자료실</a>
-                        <a href="#" class="hover:text-primary">개설과정</a>
-                        <a href="#" class="hover:text-primary">커뮤니티</a>
-                        <a href="#" class="hover:text-primary">추천리뷰</a>
-                        <a href="#" class="hover:text-primary">이용권 구입</a>
-                        <a href="#" class="text-primary font-bold">강사소개</a>
-                    </nav>
-
                     <div class="flex gap-1.5 md:gap-2 flex-shrink-0">
-                        <button onclick="switchTab('admin')" class="px-2.5 md:px-4 py-2 text-[11px] md:text-xs font-bold text-white bg-primary rounded-full shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200 flex items-center whitespace-nowrap">
-                            <i class="fas fa-user-cog md:mr-1.5"></i><span class="hidden md:inline">강사 등록</span><span class="md:hidden ml-1">등록</span>
-                        </button>
-                        <button onclick="switchTab('admin-poster')" class="px-2.5 md:px-4 py-2 text-[11px] md:text-xs font-bold text-white bg-primaryLight rounded-full shadow-[0_4px_14px_rgba(126,139,226,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(126,139,226,0.4)] transition-all duration-200 flex items-center whitespace-nowrap">
-                            <i class="fas fa-pen md:mr-1.5"></i><span class="hidden md:inline">공고 글쓰기</span><span class="md:hidden ml-1">글쓰기</span>
+                        <button onclick="switchTab('admin-hub')" class="px-3 md:px-4 py-2 text-[11px] md:text-xs font-bold text-white bg-primary rounded-full shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(47,59,137,0.35)] transition-all duration-200 flex items-center whitespace-nowrap">
+                            <i class="fas fa-gear md:mr-1.5"></i><span class="hidden md:inline">관리자 설정</span><span class="md:hidden ml-1">관리</span>
                         </button>
                     </div>
                 </div>
@@ -275,6 +261,62 @@
         
         <!-- 푸터 여백 -->
         <div class="h-20 bg-white"></div>
+    </div>
+
+    <!-- [관리자] 설정 허브 -->
+    <div id="admin-hub-tab" class="tab-content bg-[#f6f7fc] min-h-screen py-12">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center">
+                    <div class="w-1.5 h-7 md:h-8 rounded-full bg-gradient-to-b from-[#2f3b89] to-[#9aa8ee] mr-3"></div>
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-black tracking-tight bg-gradient-to-r from-[#2f3b89] via-[#5a6ad0] to-[#9aa8ee] bg-clip-text text-transparent leading-tight">관리자 설정</h2>
+                        <p class="text-sm text-gray-500 mt-1">관리할 항목을 선택하세요. 각 항목을 사이트에서 직접 등록·수정·삭제할 수 있습니다.</p>
+                    </div>
+                </div>
+                <button onclick="switchTab('landing')" class="px-4 py-2 rounded-full ring-1 ring-gray-200 bg-white text-sm font-bold text-gray-600 hover:ring-gray-300 transition flex items-center gap-1.5 flex-shrink-0"><i class="fas fa-arrow-left text-xs"></i> <span class="hidden sm:inline">홈으로</span></button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- 강사 관리 -->
+                <button onclick="switchTab('admin')" class="text-left bg-white rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 p-6 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0"><i class="fas fa-user-tie text-primary text-lg"></i></div>
+                    <div>
+                        <h3 class="text-base font-black text-gray-900 mb-1">강사 관리</h3>
+                        <p class="text-[13px] text-gray-500 leading-relaxed">강사 등록 · 수정 · 삭제, 사진 · 영상 · 프로필 관리</p>
+                    </div>
+                </button>
+                <!-- 공고 관리 -->
+                <button onclick="switchTab('admin-poster')" class="text-left bg-white rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 p-6 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-primaryLight/15 flex items-center justify-center flex-shrink-0"><i class="fas fa-bullhorn text-primaryLight text-lg"></i></div>
+                    <div>
+                        <h3 class="text-base font-black text-gray-900 mb-1">공고 관리</h3>
+                        <p class="text-[13px] text-gray-500 leading-relaxed">공개강좌 공고 등록 · 수정 · 삭제 (오프라인 · 줌)</p>
+                    </div>
+                </button>
+                <!-- 상단 광고 배너 관리 -->
+                <button onclick="switchTab('admin-topad')" class="text-left bg-white rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 p-6 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center flex-shrink-0"><i class="fas fa-rectangle-ad text-sky-500 text-lg"></i></div>
+                    <div>
+                        <h3 class="text-base font-black text-gray-900 mb-1">상단 광고 배너 관리</h3>
+                        <p class="text-[13px] text-gray-500 leading-relaxed">최상단 띠 광고 이미지 · 순서 · 배경색 · 링크</p>
+                    </div>
+                </button>
+                <!-- 메인 배너 관리 -->
+                <button onclick="switchTab('admin-banner')" class="text-left bg-white rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 p-6 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center flex-shrink-0"><i class="fas fa-image text-indigo-500 text-lg"></i></div>
+                    <div>
+                        <h3 class="text-base font-black text-gray-900 mb-1">메인 배너 관리</h3>
+                        <p class="text-[13px] text-gray-500 leading-relaxed">히어로 대형 배너 사진 · 문구 · 버튼 · 링크</p>
+                    </div>
+                </button>
+            </div>
+
+            <div class="mt-6 rounded-xl bg-amber-50/70 ring-1 ring-amber-100 px-4 py-3 text-[12.5px] text-amber-700 leading-relaxed flex gap-2">
+                <i class="fas fa-circle-info mt-0.5 flex-shrink-0"></i>
+                <span>현재는 브라우저에서만 임시로 반영됩니다(새로고침 시 초기화). 실제 영구 저장은 서버·DB 연동 후 동작합니다.</span>
+            </div>
+        </div>
     </div>
 
     <!-- [관리자] 강사 등록 탭 -->
@@ -520,6 +562,48 @@
                 <div class="bg-gray-50/70 px-8 py-5 flex justify-end gap-2.5 border-t border-gray-100">
                     <button class="px-6 py-2.5 rounded-full ring-1 ring-gray-200 bg-white text-sm font-medium text-gray-600 hover:ring-gray-300 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(17,24,39,0.09)] transition-all duration-200" onclick="cancelPosterAdminForm()">취소</button>
                     <button id="admin-poster-submit-btn" class="px-8 py-2.5 rounded-full bg-primaryLight text-sm font-bold text-white shadow-[0_4px_14px_rgba(126,139,226,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(126,139,226,0.4)] transition-all duration-200" onclick="savePoster()">등록하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- [관리자] 상단 광고 배너 관리 탭 -->
+    <div id="admin-topad-tab" class="tab-content bg-[#f6f7fc] min-h-screen py-12">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(17,24,39,0.1)]">
+                <div class="bg-gradient-to-r from-[#2f3b89] to-[#5a6ad0] text-white px-6 md:px-8 py-6 flex items-center justify-between">
+                    <h2 class="text-lg md:text-xl font-black tracking-tight"><i class="fas fa-rectangle-ad mr-2"></i>상단 광고 배너 관리</h2>
+                    <button onclick="switchTab('admin-hub')" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/15 transition"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="p-6 md:p-8">
+                    <p class="text-[13px] text-gray-500 mb-4">권장 이미지 규격: 가로형 1200 × 100px. 이미지 파일을 첨부하세요.</p>
+                    <div id="topad-admin-list" class="space-y-3 mb-6"></div>
+                    <button onclick="addTopAd()" class="w-full py-3 rounded-xl border-2 border-dashed border-gray-200 text-gray-400 text-sm font-bold hover:border-primary/40 hover:text-primary transition"><i class="fas fa-plus mr-1.5"></i>광고 추가</button>
+                    <div class="flex justify-end gap-2 mt-6 pt-5 border-t border-gray-100">
+                        <button onclick="switchTab('admin-hub')" class="px-6 py-2.5 rounded-full ring-1 ring-gray-200 bg-white text-sm font-medium text-gray-600 hover:ring-gray-300 transition">뒤로</button>
+                        <button onclick="saveTopAds()" class="px-8 py-2.5 rounded-full bg-primary text-sm font-bold text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 transition-all duration-200">저장하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- [관리자] 메인 배너 관리 탭 -->
+    <div id="admin-banner-tab" class="tab-content bg-[#f6f7fc] min-h-screen py-12">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(17,24,39,0.1)]">
+                <div class="bg-gradient-to-r from-[#2f3b89] to-[#5a6ad0] text-white px-6 md:px-8 py-6 flex items-center justify-between">
+                    <h2 class="text-lg md:text-xl font-black tracking-tight"><i class="fas fa-image mr-2"></i>메인 배너 관리</h2>
+                    <button onclick="switchTab('admin-hub')" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/15 transition"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="p-6 md:p-8">
+                    <p class="text-[13px] text-gray-500 mb-4">권장 이미지 규격: 1920 × 540px. 좌측에 흰 글씨가 올라가므로 좌측이 어두운 사진을 권장합니다.</p>
+                    <div id="banner-admin-list" class="space-y-4 mb-6"></div>
+                    <button onclick="addBanner()" class="w-full py-3 rounded-xl border-2 border-dashed border-gray-200 text-gray-400 text-sm font-bold hover:border-primary/40 hover:text-primary transition"><i class="fas fa-plus mr-1.5"></i>배너 추가</button>
+                    <div class="flex justify-end gap-2 mt-6 pt-5 border-t border-gray-100">
+                        <button onclick="switchTab('admin-hub')" class="px-6 py-2.5 rounded-full ring-1 ring-gray-200 bg-white text-sm font-medium text-gray-600 hover:ring-gray-300 transition">뒤로</button>
+                        <button onclick="saveBanners()" class="px-8 py-2.5 rounded-full bg-primary text-sm font-bold text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 transition-all duration-200">저장하기</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1174,6 +1258,17 @@
             if (tC) { tC.className = !isInst ? on : off; tC.innerHTML = '<i class="fas fa-bullhorn text-[11px] mr-1.5"></i>강좌 등록 요청'; }
             document.getElementById('regreq-form-instructor')?.classList.toggle('hidden', !isInst);
             document.getElementById('regreq-form-course')?.classList.toggle('hidden', isInst);
+            // 개인정보 동의 문구를 유형에 맞게 변경
+            const itemsEl = document.getElementById('regreq-consent-items');
+            const purposeEl = document.getElementById('regreq-consent-purpose');
+            if (isInst) {
+                if (itemsEl) itemsEl.textContent = '강사명, 연락처, 이메일';
+                if (purposeEl) purposeEl.textContent = '강사 등록 검토 및 등록 안내 연락';
+            } else {
+                if (itemsEl) itemsEl.textContent = '공고 제목, 신청자 연락처, 이메일';
+                if (purposeEl) purposeEl.textContent = '강좌(공고) 등록 검토 및 등록 안내 연락';
+            }
+            const agree = document.getElementById('regreq-agree'); if (agree) agree.checked = false;
         }
         function setRegReqCourseType(type) {
             regReqCourseType = type;
@@ -1197,6 +1292,8 @@
                 const phone = (document.getElementById('rr-c-phone')?.value || '').trim();
                 if (!title || !phone) { alert('공고 제목과 신청자 연락처는 필수입니다.'); return; }
             }
+            const agree = document.getElementById('regreq-agree');
+            if (!agree || !agree.checked) { alert('개인정보 수집·이용에 동의해 주세요.'); return; }
             alert('등록 요청이 접수되었습니다. 담당자가 검토 후 연락드리겠습니다.\n(문의: 02-525-1686)');
             closeRegRequest();
         }
@@ -1462,40 +1559,6 @@
         let topAdIdx = 0;
         let topAdTimer = null;
 
-        // ===== 하단 파트너사 로고 =====
-        const partners = [
-            "MEGA", "iFA", "삼성생명", "Meraki 33", "(주)엠금융서비스",
-            "에이원금융판매(주)", "SIGNA FINANCE", "한화생명", "메트라이프", "DB손해보험"
-        ];
-        let partnerIdx = 0;
-        const PARTNER_VISIBLE = 6;
-        function renderPartners() {
-            const track = document.getElementById('partner-track');
-            if (!track) return;
-            track.innerHTML = '';
-            partners.forEach(name => {
-                const cell = document.createElement('div');
-                cell.className = 'flex-shrink-0 h-16 flex items-center justify-center rounded-lg border border-gray-200 bg-white px-4';
-                cell.style.width = `calc((100% - ${(PARTNER_VISIBLE-1)}*0.75rem) / ${PARTNER_VISIBLE})`;
-                cell.innerHTML = `<span class="text-[15px] font-bold text-gray-500 text-center break-keep">${name}</span>`;
-                track.appendChild(cell);
-            });
-            updatePartners();
-        }
-        function updatePartners() {
-            const track = document.getElementById('partner-track');
-            if (!track) return;
-            const maxIdx = Math.max(0, partners.length - PARTNER_VISIBLE);
-            if (partnerIdx > maxIdx) partnerIdx = maxIdx;
-            if (partnerIdx < 0) partnerIdx = 0;
-            const step = 100 / PARTNER_VISIBLE;
-            track.style.transform = `translateX(-${partnerIdx * step}%)`;
-        }
-        function movePartners(dir) {
-            const maxIdx = Math.max(0, partners.length - PARTNER_VISIBLE);
-            partnerIdx = Math.min(maxIdx, Math.max(0, partnerIdx + dir));
-            updatePartners();
-        }
 
         function renderTopAds() {
             const track = document.getElementById('top-ad-track');
@@ -1565,8 +1628,11 @@
                 slide.style.opacity = (i === 0) ? '1' : '0';
                 slide.style.zIndex  = (i === 0) ? '10' : '0';
                 slide.innerHTML = `
-                    <img src="${b.image}" alt="${b.line2 || ''}"
-                         class="absolute inset-0 w-full h-full object-cover">
+                    ${b.video
+                        ? `<video src="${b.video}" autoplay muted loop playsinline ${b.image ? `poster="${b.image}"` : ''}
+                                 class="absolute inset-0 w-full h-full object-cover"></video>`
+                        : `<img src="${b.image}" alt="${b.line2 || ''}"
+                                 class="absolute inset-0 w-full h-full object-cover">`}
                     <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/25"></div>
                     <div class="absolute inset-0 flex items-center">
                         <div class="container mx-auto px-4 md:px-8 max-w-7xl w-full">
@@ -1611,6 +1677,128 @@
 
             updateBanner();
             startBannerAuto();
+        }
+
+        // ===== [관리자] 상단 광고 배너 관리 =====
+        function renderTopAdAdmin() {
+            const list = document.getElementById('topad-admin-list');
+            if (!list) return;
+            list.innerHTML = '';
+            topAds.forEach((ad, i) => {
+                const row = document.createElement('div');
+                row.className = 'rounded-xl ring-1 ring-gray-100 bg-gray-50/60 p-4';
+                row.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-[13px] font-bold text-gray-700">광고 ${i+1}</span>
+                        <button onclick="removeTopAd(${i})" class="text-red-400 hover:text-red-600 text-sm"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                    <div class="space-y-2.5">
+                        ${ad.image ? `<img src="${ad.image}" class="h-12 rounded ring-1 ring-gray-200 object-contain bg-white mb-1">` : ''}
+                        <div class="flex items-center gap-2">
+                            <span class="text-[12px] font-semibold text-gray-500 w-14 flex-shrink-0">이미지</span>
+                            <input type="file" accept="image/*" onchange="onTopAdImage(${i}, this)" class="flex-1 text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1.5">
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" data-ta="bg" data-i="${i}" value="${ad.bg || ''}" placeholder="배경색 (예: #e6f3fb)" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40">
+                            <input type="text" data-ta="link" data-i="${i}" value="${ad.link || ''}" placeholder="클릭 시 이동 링크(선택)" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40">
+                        </div>
+                    </div>`;
+                list.appendChild(row);
+            });
+            if (topAds.length === 0) list.innerHTML = '<p class="text-center text-gray-400 text-sm py-6">등록된 광고가 없습니다. 아래 버튼으로 추가하세요.</p>';
+        }
+        function collectTopAdInputs() {
+            document.querySelectorAll('#topad-admin-list [data-ta]').forEach(el => {
+                const i = +el.dataset.i, key = el.dataset.ta;
+                if (topAds[i]) topAds[i][key] = el.value.trim();
+            });
+        }
+        function onTopAdImage(i, input) {
+            collectTopAdInputs();
+            if (input.files && input.files[0]) topAds[i].image = URL.createObjectURL(input.files[0]);
+            renderTopAdAdmin();
+        }
+        function addTopAd() { collectTopAdInputs(); topAds.push({ image: '', bg: '#eef1f4', link: '' }); renderTopAdAdmin(); }
+        function removeTopAd(i) { collectTopAdInputs(); topAds.splice(i, 1); renderTopAdAdmin(); }
+        function saveTopAds() {
+            collectTopAdInputs();
+            topAdIdx = 0;
+            renderTopAds();
+            alert('상단 광고가 반영되었습니다.\n(영구 저장은 서버 연동 후 동작합니다)');
+            switchTab('landing');
+        }
+
+        // ===== [관리자] 메인 배너 관리 =====
+        function renderBannerAdmin() {
+            const list = document.getElementById('banner-admin-list');
+            if (!list) return;
+            list.innerHTML = '';
+            banners.forEach((b, i) => {
+                const row = document.createElement('div');
+                row.className = 'rounded-xl ring-1 ring-gray-100 bg-gray-50/60 p-4';
+                row.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-[13px] font-bold text-gray-700">배너 ${i+1}</span>
+                        <button onclick="removeBanner(${i})" class="text-red-400 hover:text-red-600 text-sm"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                    <div class="space-y-2.5">
+                        ${b.image ? `<img src="${b.image}" class="h-16 w-full rounded ring-1 ring-gray-200 object-cover mb-1">` : ''}
+                        <div class="flex items-center gap-2">
+                            <span class="text-[12px] font-semibold text-gray-500 w-14 flex-shrink-0">이미지</span>
+                            <input type="file" accept="image/*" onchange="onBannerImage(${i}, this)" class="flex-1 text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1.5">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[12px] font-semibold text-gray-500 w-14 flex-shrink-0">영상</span>
+                            <input type="file" accept="video/*" onchange="onBannerVideo(${i}, this)" class="flex-1 text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer ring-1 ring-gray-200 rounded-lg p-1.5">
+                            ${b.video ? '<button onclick="clearBannerVideo('+i+')" class="text-[11px] text-red-400 hover:text-red-600 flex-shrink-0 px-1">영상 제거</button>' : ''}
+                        </div>
+                        <p class="text-[11px] text-gray-400 -mt-1">영상을 넣으면 배경이 영상으로 표시됩니다(이미지 대신). 영상이 없으면 이미지가 배경이 됩니다.</p>
+                        <div class="flex gap-2">
+                            <input type="text" data-bn="line1" data-i="${i}" value="${(b.line1||'').replace(/"/g,'&quot;')}" placeholder="윗줄 문구" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40">
+                            <input type="text" data-bn="line2" data-i="${i}" value="${(b.line2||'').replace(/"/g,'&quot;')}" placeholder="메인 카피(큰 글씨)" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40">
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" data-bn="btnText" data-i="${i}" value="${(b.btnText||'').replace(/"/g,'&quot;')}" placeholder="버튼 문구" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40">
+                            <input type="text" data-bn="link" data-i="${i}" value="${(b.link||'').replace(/"/g,'&quot;')}" placeholder="버튼 링크 (예: #poster-section)" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40">
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" data-bn="sub1" data-i="${i}" value="${(b.sub1||'').replace(/"/g,'&quot;')}" placeholder="우측 보조문구 1 (PC)" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40">
+                            <input type="text" data-bn="sub2" data-i="${i}" value="${(b.sub2||'').replace(/"/g,'&quot;')}" placeholder="우측 보조문구 2 (PC)" class="flex-1 p-2.5 rounded-lg ring-1 ring-gray-200 bg-white text-xs focus:outline-none focus:ring-2 focus:ring-primary/40">
+                        </div>
+                    </div>`;
+                list.appendChild(row);
+            });
+            if (banners.length === 0) list.innerHTML = '<p class="text-center text-gray-400 text-sm py-6">등록된 배너가 없습니다. 아래 버튼으로 추가하세요.</p>';
+        }
+        function collectBannerInputs() {
+            document.querySelectorAll('#banner-admin-list [data-bn]').forEach(el => {
+                const i = +el.dataset.i, key = el.dataset.bn;
+                if (banners[i]) banners[i][key] = el.value.trim();
+            });
+        }
+        function onBannerImage(i, input) {
+            collectBannerInputs();
+            if (input.files && input.files[0]) banners[i].image = URL.createObjectURL(input.files[0]);
+            renderBannerAdmin();
+        }
+        function onBannerVideo(i, input) {
+            collectBannerInputs();
+            if (input.files && input.files[0]) banners[i].video = URL.createObjectURL(input.files[0]);
+            renderBannerAdmin();
+        }
+        function clearBannerVideo(i) {
+            collectBannerInputs();
+            banners[i].video = '';
+            renderBannerAdmin();
+        }
+        function addBanner() { collectBannerInputs(); banners.push({ image:'', video:'', line1:'', line2:'', btnText:'', link:'', sub1:'', sub2:'' }); renderBannerAdmin(); }
+        function removeBanner(i) { collectBannerInputs(); banners.splice(i, 1); renderBannerAdmin(); }
+        function saveBanners() {
+            collectBannerInputs();
+            bannerIdx = 0;
+            renderBanner();
+            alert('메인 배너가 반영되었습니다.\n(영구 저장은 서버 연동 후 동작합니다)');
+            switchTab('landing');
         }
 
         function updateBanner() {
@@ -1691,7 +1879,6 @@
             loadWishlist();
             loadPins();
             renderTopAds();
-            renderPartners();
             renderBanner();
             renderFilters();
             renderInstructors();
@@ -1789,14 +1976,34 @@
         btn.textContent = cat;
 
         btn.onclick = () => {
-            const i = selectedCategories.indexOf(cat);
-            if (i > -1) selectedCategories.splice(i, 1);
-            else selectedCategories.push(cat);
+            const isMobile = window.innerWidth < 768;
+            if (isMobile) {
+                // 모바일: 하나만 선택. 같은 걸 다시 누르면 해제(전체), 아니면 교체
+                if (selectedCategories.length === 1 && selectedCategories[0] === cat) {
+                    selectedCategories = [];
+                } else {
+                    selectedCategories = [cat];
+                }
+            } else {
+                // PC: 중복 선택(토글)
+                const i = selectedCategories.indexOf(cat);
+                if (i > -1) selectedCategories.splice(i, 1);
+                else selectedCategories.push(cat);
+            }
             currentFilter = selectedCategories.length === 0 ? "전체분야"
                           : (selectedCategories.length === 1 ? selectedCategories[0] : "선택분야");
             instructorVisibleCount = INSTRUCTOR_LIMIT;
             renderFilters();
             renderInstructors();
+            // 모바일: 선택 후 분야 목록 닫고 강사 목록으로 이동
+            if (isMobile) {
+                categoryExpanded = false;
+                const grid = document.getElementById('category-filters');
+                if (grid) grid.classList.add('max-md:hidden');
+                const icon = document.getElementById('category-toggle-icon');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+                document.getElementById('instructor-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         };
         container.appendChild(btn);
     });
@@ -2460,7 +2667,9 @@ function openPosterModal(id) {
 
         function switchTab(tabId) {
             if (tabId === 'admin' && editingId === null) resetAdminFormUI();
-            if (tabId === 'admin-poster' && editingPosterId === null) resetPosterAdminFormUI(); 
+            if (tabId === 'admin-poster' && editingPosterId === null) resetPosterAdminFormUI();
+            if (tabId === 'admin-topad') renderTopAdAdmin();
+            if (tabId === 'admin-banner') renderBannerAdmin();
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(`${tabId}-tab`).classList.add('active');
             window.scrollTo(0, 0);
@@ -2718,21 +2927,6 @@ function openPosterModal(id) {
 
     <!-- ===== 사이트 하단 (Footer) ===== -->
     <footer class="border-t border-gray-200 bg-white mt-10">
-        <!-- 파트너사 로고 캐러셀 -->
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <div class="flex items-center gap-3">
-                <button onclick="movePartners(-1)" aria-label="이전" class="flex-shrink-0 w-9 h-9 rounded-md border border-gray-200 text-gray-400 hover:text-gray-700 hover:border-gray-300 flex items-center justify-center transition">
-                    <i class="fas fa-chevron-left text-xs"></i>
-                </button>
-                <div class="flex-1 overflow-hidden">
-                    <div id="partner-track" class="flex gap-3 transition-transform duration-500 ease-out"></div>
-                </div>
-                <button onclick="movePartners(1)" aria-label="다음" class="flex-shrink-0 w-9 h-9 rounded-md border border-gray-200 text-gray-400 hover:text-gray-700 hover:border-gray-300 flex items-center justify-center transition">
-                    <i class="fas fa-chevron-right text-xs"></i>
-                </button>
-            </div>
-        </div>
-
         <!-- 하단 링크 바 -->
         <div class="border-t border-gray-200 bg-white">
             <div class="max-w-7xl mx-auto px-4">
@@ -2909,6 +3103,21 @@ function openPosterModal(id) {
                         </div>
                     </div>
                 </div>
+
+                <!-- 개인정보 수집·이용 동의 (강사/강좌 공통, 내용은 유형별로 변경) -->
+                <div class="mt-5 rounded-xl bg-gray-50/80 ring-1 ring-gray-100 p-4">
+                    <p class="text-[13px] font-bold text-gray-800 mb-2.5">개인정보 수집·이용 동의 <span class="text-red-500">(필수)</span></p>
+                    <div class="space-y-1 text-[12px] text-gray-500 leading-relaxed">
+                        <p><span class="font-semibold text-gray-600">수집 항목</span> — <span id="regreq-consent-items">강사명, 연락처, 이메일</span></p>
+                        <p><span class="font-semibold text-gray-600">이용 목적</span> — <span id="regreq-consent-purpose">강사 등록 검토 및 안내</span></p>
+                        <p><span class="font-semibold text-gray-600">보유 기간</span> — 검토 종료 후 1년, 이후 지체 없이 파기</p>
+                        <p><span class="font-semibold text-gray-600">동의 거부 권리</span> — 동의를 거부하실 수 있으며, 이 경우 등록 요청 접수가 제한됩니다.</p>
+                    </div>
+                    <label class="flex items-center gap-2 mt-3 cursor-pointer select-none">
+                        <input type="checkbox" id="regreq-agree" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary/40">
+                        <span class="text-[12.5px] font-medium text-gray-700">위 내용을 확인하였으며 개인정보 수집·이용에 동의합니다.</span>
+                    </label>
+                </div>
             </div>
 
             <div class="bg-gray-50/70 px-6 md:px-8 py-4 flex justify-end gap-2.5 border-t border-gray-100 flex-shrink-0">
@@ -2984,19 +3193,21 @@ function openPosterModal(id) {
 
     <!-- 제휴 vs 추천 비교 모달 -->
     <div id="type-compare-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300" onclick="if(event.target===this) closeTypeCompare()">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl transform scale-95 transition-transform duration-300 overflow-hidden">
-            <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-                <h3 class="text-lg font-black text-gray-900">제휴강사 · 추천강사 안내</h3>
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl transform scale-95 transition-transform duration-300 overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="flex items-center justify-between px-5 md:px-6 py-4 md:py-5 border-b border-gray-100 flex-shrink-0">
+                <h3 class="text-base md:text-lg font-black text-gray-900">제휴강사 · 추천강사 안내</h3>
                 <button onclick="closeTypeCompare()" class="w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"><i class="fas fa-times text-lg"></i></button>
             </div>
-            <div id="type-compare-body" class="p-6 flex flex-col md:flex-row gap-4"></div>
-            <div class="px-6 pt-1 pb-4">
-                <p class="text-[12.5px] text-red-600 leading-relaxed break-keep flex gap-1.5">
-                    <i class="fas fa-circle-info text-red-500 mt-0.5 flex-shrink-0"></i>
-                    <span>강사 Pick에 게재된 모든 강사는 강의 목적 외의 활동, 특히 리크루팅 권유를 하지 않습니다.</span>
-                </p>
+            <div class="overflow-y-auto flex-1">
+                <div id="type-compare-body" class="p-4 md:p-6 flex flex-col md:flex-row gap-3 md:gap-4"></div>
+                <div class="px-4 md:px-6 pt-1 pb-3 md:pb-4">
+                    <p class="text-[12px] md:text-[12.5px] text-red-600 leading-relaxed break-keep flex gap-1.5">
+                        <i class="fas fa-circle-info text-red-500 mt-0.5 flex-shrink-0"></i>
+                        <span>강사 Pick에 게재된 모든 강사는 강의 목적 외의 활동, 특히 리크루팅 권유를 하지 않습니다.</span>
+                    </p>
+                </div>
             </div>
-            <div class="bg-gray-50/70 px-6 py-4 flex justify-end border-t border-gray-100">
+            <div class="bg-gray-50/70 px-5 md:px-6 py-3 md:py-4 flex justify-end border-t border-gray-100 flex-shrink-0">
                 <button onclick="closeTypeCompare()" class="px-7 py-2.5 rounded-full bg-primary text-sm font-bold text-white shadow-[0_4px_14px_rgba(47,59,137,0.25)] hover:-translate-y-0.5 transition-all duration-200">확인</button>
             </div>
         </div>
